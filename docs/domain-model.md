@@ -136,8 +136,11 @@ status ∈ {pendiente, enviada, fallida}, attempts, scheduled_for, sent_at?, fai
 
 ---
 
-## 6. Comandos (14)
-RegistrarParticipante · VerificarRegistro · RegistrarAltaAlGrupo · EncolarAcciónDeSalida · ConfirmarAcciónEnviada · EvaluarContenidoDelDía · EvaluarTimeoutReplay · RegistrarRespuestaEncuesta · MarcarPresentaciónRealizada · RegistrarVideoVisto · RegistrarPagoP60 · ResolverAtribución · RegistrarExperiencia · RegistrarReembolso.
+## 6. Comandos (22)
+**Ciclo de vida del participante:** RegistrarParticipante · VerificarRegistro · RegistrarAltaAlGrupo · EncolarAcciónDeSalida · ConfirmarAcciónEnviada · EvaluarContenidoDelDía · EvaluarTimeoutReplay · RegistrarRespuestaEncuesta · MarcarPresentaciónRealizada · RegistrarVideoVisto · RegistrarPagoP60 · ResolverAtribución · RegistrarExperiencia · RegistrarReembolso.
+**Operación interna (Ops / Organizador — ver `ui-audit.md` y Bloque G del event-storming):** CrearCohorte · ActualizarCohorte · CambiarEstadoCohorte · ReintentarAcción · ReenviarAcceso · ResolverAtribuciónManual · MarcarSinInvitador · DarDeBaja.
+
+**Eventos de operación interna:** CohorteCreada · CohorteActualizada · CohorteEstadoCambiado · AtribuciónDescartada · ParticipanteDadoDeBaja (→ estado `BAJA`; resuelve el evento provisional de Q2). `ReintentarAcción` y `ReenviarAcceso` re-emiten `AcciónEncolada`.
 
 ## 7. Policies (12) — el "cerebro"
 generar token · al aceptar→encolar `alta_grupo` · al unirse→encolar bienvenida · al unirse→programar contenido relativo · día N→encolar contenido · presentación→encolar replay · VideoVisto→segmentar · segmento→encolar follow-up · timeout→no_vio · match pago→convertir · post-conversión→resolver atribución · reembolso→revertir.

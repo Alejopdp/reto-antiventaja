@@ -71,6 +71,8 @@ function show(s){
   });
 }
 show('rech');
+function T(m){var t=document.getElementById('__toast');if(!t){t=document.createElement('div');t.id='__toast';t.style.cssText='position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:9999;display:none;background:#0E3A2A;color:#FBF6EC;padding:10px 16px;border-radius:12px;font-size:13px;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,.18)';document.body.appendChild(t);}t.textContent=m;t.style.display='block';clearTimeout(t._t);t._t=setTimeout(function(){t.style.display='none';},2200);}
+[...document.querySelectorAll('a[href="#"]')].forEach(function(a){a.onclick=function(ev){ev.preventDefault();T('(demo) '+a.textContent.trim());};});
 </script>
 </body>
 </html>

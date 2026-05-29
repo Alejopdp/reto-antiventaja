@@ -90,15 +90,29 @@ Agregados 📦: **Participante** (su estado), **Cohorte**, **AcciónDeSalida** (
 - 🟨 Participante → 🟦 `RegistrarExperiencia` → 🟧 **ExperienciaCompletada**
 - (Analítica: read models del embudo y de atribución se actualizan con cada 🟧.)
 
+### Bloque G — Operación interna (Ops / Organizador) — *surgido de los wireframes (ui-audit.md)*
+
+> El event-storming original modelaba solo el ciclo de vida del participante. El panel interno destapó comandos de **operación** ejecutados por Ops y Organizador. Esto confirma a ambos como **actores activos** del core.
+
+- 🟨 **Organizador** → 🟦 `CrearCohorte` → 🟧 **CohorteCreada**
+- 🟨 **Organizador** → 🟦 `ActualizarCohorte` → 🟧 **CohorteActualizada**
+- 🟨 **Organizador** → 🟦 `CambiarEstadoCohorte` (borrador→activa→cerrada) → 🟧 **CohorteEstadoCambiado**
+- 🟨 **Ops** → 🟦 `ReintentarAcción` (sobre una `AcciónResuelta(fallida)`) → 🟧 **AcciónEncolada** (reintento; relaciona Q28)
+- 🟨 **Ops** → 🟦 `ReenviarAcceso` → 🟧 **AcciónEncolada(alta_grupo/bienvenida)**
+- 🟨 **Ops** → 🟦 `ResolverAtribuciónManual` (desde la bandeja de sin-atribuir) → 🟧 **AtribuciónResuelta**
+- 🟨 **Ops** → 🟦 `MarcarSinInvitador` → 🟧 **AtribuciónDescartada**
+- 🟨 **Ops/Participante** → 🟦 `DarDeBaja` → 🟧 **ParticipanteDadoDeBaja** (resuelve el evento provisional de Q2)
+  → 🟪 *Cuando ParticipanteDadoDeBaja: no encolar ninguna acción futura (estado `BAJA`).*
+
 ---
 
 ## Resumen de elementos
 
-**Eventos de dominio 🟧 (17):** ParticipanteRegistrado, AtribuciónCapturada, ParticipanteAceptadoEnCohorte, ParticipanteRechazado, ParticipanteUnidoAlGrupo, **AcciónEncolada** `{ action_type, params, dedupe_key }`, **AcciónResuelta** `{ status: enviada \| fallida, reason? }`, EncuestaRespondida, PresentaciónP60Realizada, VideoVisto, ComportamientoSegmentado, PagoP60Recibido, ParticipanteConvertido, AtribuciónResuelta, ExperienciaCompletada, **ReembolsoP60Recibido**, **ParticipanteRevertido**.
+**Eventos de dominio 🟧 (22):** ParticipanteRegistrado, AtribuciónCapturada, ParticipanteAceptadoEnCohorte, ParticipanteRechazado, ParticipanteUnidoAlGrupo, **AcciónEncolada** `{ action_type, params, dedupe_key }`, **AcciónResuelta** `{ status: enviada \| fallida, reason? }`, EncuestaRespondida, PresentaciónP60Realizada, VideoVisto, ComportamientoSegmentado, PagoP60Recibido, ParticipanteConvertido, AtribuciónResuelta, ExperienciaCompletada, ReembolsoP60Recibido, ParticipanteRevertido, **CohorteCreada**, **CohorteActualizada**, **CohorteEstadoCambiado**, **AtribuciónDescartada**, **ParticipanteDadoDeBaja** *(+ operación interna, Bloque G)*.
 
 > **Acciones de salida = evento abstracto tipado** (ver ADR-0001). `action_type` tiene dos familias: **mensajes** `{ bienvenida, contenido_diario, followup_1, followup_2, cta_final, [recordatorio] }` y **gestión de grupo** `{ alta_grupo }` — ambas reusan la misma cola/maquinaria (idempotencia, throttling, retry, ack). El día va en `params: { day: N }`, NO en el tipo de evento. No se modelan eventos por tipo (`BienvenidaEnviada`, etc.).
 
-**Comandos 🟦 (14):** RegistrarParticipante, VerificarRegistro (aceptar/rechazar), RegistrarAltaAlGrupo, EncolarAcciónDeSalida, ConfirmarAcciónEnviada, EvaluarContenidoDelDía, **EvaluarTimeoutReplay**, RegistrarRespuestaEncuesta, MarcarPresentaciónRealizada, RegistrarVideoVisto, RegistrarPagoP60, ResolverAtribución, RegistrarExperiencia, **RegistrarReembolso**.
+**Comandos 🟦 (22):** RegistrarParticipante, VerificarRegistro (aceptar/rechazar), RegistrarAltaAlGrupo, EncolarAcciónDeSalida, ConfirmarAcciónEnviada, EvaluarContenidoDelDía, EvaluarTimeoutReplay, RegistrarRespuestaEncuesta, MarcarPresentaciónRealizada, RegistrarVideoVisto, RegistrarPagoP60, ResolverAtribución, RegistrarExperiencia, RegistrarReembolso, **CrearCohorte**, **ActualizarCohorte**, **CambiarEstadoCohorte**, **ReintentarAcción**, **ReenviarAcceso**, **ResolverAtribuciónManual**, **MarcarSinInvitador**, **DarDeBaja**.
 
 **Policies 🟪 (el "cerebro") (12):** generar token; **al aceptar en cohorte → encolar `alta_grupo`**; matchear alta y encolar bienvenida; programar contenido relativo; encolar contenido del día N; **al realizarse la presentación → encolar replay**; segmentar por video; encolar follow-up por segmento; timeout→no_vio; matchear pago y convertir; resolver atribución; **al recibir reembolso → revertir estado**.
 

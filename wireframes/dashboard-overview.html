@@ -102,5 +102,11 @@ document.getElementById('funnel').innerHTML = stages.map((s,i)=>`
     <div class="h-9 w-full rounded-lg bg-sand/60"><div class="bar flex h-9 items-center rounded-lg ${bg[s.tone]} px-3 text-[12px] font-semibold text-cream" style="width:${Math.max(s.w,12)}%;animation-delay:${i*.08}s">${s.w<18?'':s.pct}</div></div>
   </div>`).join('');
 </script>
+<script>(function(){
+function T(m){var t=document.getElementById('__toast');if(!t){t=document.createElement('div');t.id='__toast';t.style.cssText='position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:9999;display:none;background:#0E3A2A;color:#FBF6EC;padding:10px 16px;border-radius:12px;font-size:13px;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,.18)';document.body.appendChild(t);}t.textContent=m;t.style.display='block';clearTimeout(t._t);t._t=setTimeout(function(){t.style.display='none';},2200);}
+var c=[...document.querySelectorAll('button')].find(function(b){return b.textContent.trim().indexOf('Cohorte:')>-1;});
+if(c)c.onclick=function(){T('(demo) selector de cohorte');};
+[...document.querySelectorAll('a[href="#"]')].forEach(function(a){a.setAttribute('href','dashboard-atribucion.html');});
+})();</script>
 </body>
 </html>

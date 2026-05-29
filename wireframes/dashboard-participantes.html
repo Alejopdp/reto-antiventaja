@@ -41,7 +41,6 @@ tailwind.config={theme:{extend:{colors:{cream:'#FBF6EC',paper:'#FFFDF8',ink:'#21
         <h1 class="mt-1 font-display text-[2rem] font-medium leading-none tracking-[-0.01em]">Participantes</h1>
         <p class="mt-1.5 text-[13px] text-inksoft">318 personas en esta cohorte</p>
       </div>
-      <button class="flex items-center gap-2 rounded-lg border border-line bg-paper px-3.5 py-2 text-[13px] font-medium hover:bg-sand/40">Exportar CSV</button>
     </div>
 
     <!-- filtros -->
@@ -105,7 +104,7 @@ const data=[
 ];
 function segClass(p){const m=p.prog.match(/(completo|parcial|no vio)/);return m?(seg[m[1].replace(' ','_')]||''):'';}
 document.getElementById('tbody').innerHTML=data.map(p=>`
-  <tr class="row border-b border-line/70 last:border-0" onclick="location.href='dashboard-participante.html'">
+  <tr class="row border-b border-line/70 last:border-0" data-state="${p.s}" onclick="location.href='dashboard-participante.html'">
     <td class="py-3 pl-5"><div class="flex items-center gap-2.5"><span class="flex h-8 w-8 flex-none items-center justify-center rounded-full bg-sand text-[12px] font-semibold text-forestdeep">${p.ini}</span><span class="font-medium">${p.n}</span></div></td>
     <td class="py-3"><span class="rounded-full px-2.5 py-1 text-[12px] font-semibold ${st[p.s].c}">${st[p.s].t}</span></td>
     <td class="py-3 ${segClass(p)}">${p.prog}</td>
@@ -113,10 +112,22 @@ document.getElementById('tbody').innerHTML=data.map(p=>`
     <td class="py-3 text-inksoft">${p.act}</td>
     <td class="py-3 pr-5 text-right text-inksoft">›</td>
   </tr>`).join('');
-// filtro visual
+// toast
+function T(m){var t=document.getElementById('__toast');if(!t){t=document.createElement('div');t.id='__toast';t.style.cssText='position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:9999;display:none;background:#0E3A2A;color:#FBF6EC;padding:10px 16px;border-radius:12px;font-size:13px;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,.18)';document.body.appendChild(t);}t.textContent=m;t.style.display='block';clearTimeout(t._t);t._t=setTimeout(function(){t.style.display='none';},2200);}
+// filtro por estado (funcional)
+function applyFilter(f){document.querySelectorAll('#tbody tr').forEach(tr=>{tr.style.display=(f==='todos'||tr.dataset.state===f)?'':'none';});}
 document.querySelectorAll('#statefilter button').forEach(b=>b.onclick=()=>{
   document.querySelectorAll('#statefilter button').forEach(x=>x.className='rounded-lg px-3 py-1.5 font-medium text-inksoft hover:bg-sand/50');
   b.className='rounded-lg bg-forest px-3 py-1.5 font-medium text-cream';
+  applyFilter(b.dataset.f);
+});
+// búsqueda
+var search=document.querySelector('input[placeholder^="Buscar"]');
+if(search)search.oninput=()=>{var q=search.value.toLowerCase();document.querySelectorAll('#tbody tr').forEach(tr=>{tr.style.display=tr.textContent.toLowerCase().includes(q)?'':'none';});};
+// paginación (demo)
+document.querySelectorAll('.flex.items-center.gap-1 button').forEach(b=>{
+  if(/^\d+$/.test(b.textContent.trim())){b.onclick=()=>{document.querySelectorAll('.flex.items-center.gap-1 button').forEach(x=>{if(/^\d+$/.test(x.textContent.trim()))x.className='rounded-md border border-line px-2.5 py-1 hover:bg-sand/40';});b.className='rounded-md bg-forest px-2.5 py-1 font-medium text-cream';T('Página '+b.textContent.trim()+' (demo)');};}
+  else b.onclick=()=>T('(demo) paginación');
 });
 </script>
 </body>

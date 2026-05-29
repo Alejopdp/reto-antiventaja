@@ -79,5 +79,16 @@ tailwind.config={theme:{extend:{colors:{cream:'#FBF6EC',paper:'#FFFDF8',ink:'#21
     </div>
   </main>
 </div>
+<script>(function(){
+function T(m){var t=document.getElementById('__toast');if(!t){t=document.createElement('div');t.id='__toast';t.style.cssText='position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:9999;display:none;background:#0E3A2A;color:#FBF6EC;padding:10px 16px;border-radius:12px;font-size:13px;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,.18)';document.body.appendChild(t);}t.textContent=m;t.style.display='block';clearTimeout(t._t);t._t=setTimeout(function(){t.style.display='none';},2200);}
+var byText=function(txt){return [...document.querySelectorAll('button')].find(function(e){return e.textContent.trim().toLowerCase().indexOf(txt.toLowerCase())>-1;});};
+byText('Nueva cohorte').onclick=function(){T('Abriría el formulario de creación · CrearCohorte');};
+var est=[...document.querySelectorAll('button')].filter(function(b){return ['Borrador','Activa','Cerrada'].indexOf(b.textContent.trim())>-1;});
+est.forEach(function(b){b.onclick=function(){est.forEach(function(x){x.className='flex-1 rounded-md px-2 py-1.5 font-medium text-inksoft hover:bg-sand/40';});b.className='flex-1 rounded-md bg-forest px-2 py-1.5 font-medium text-cream';T('Estado → '+b.textContent.trim()+' · CambiarEstadoCohorte');};});
+byText('Guardar cambios').onclick=function(){T('Cambios guardados · ActualizarCohorte');};
+byText('Cancelar').onclick=function(){T('Cambios descartados');};
+var nameInput=document.querySelector('input[value="Mayo 2026"]');
+document.querySelectorAll('tbody tr').forEach(function(tr){tr.style.cursor='pointer';tr.onclick=function(){var c=tr.querySelector('td');var n=c?c.textContent.trim():'';if(nameInput)nameInput.value=n;T('Editando '+n);};});
+})();</script>
 </body>
 </html>

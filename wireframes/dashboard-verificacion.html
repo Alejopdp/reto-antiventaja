@@ -214,6 +214,8 @@ function clearSel(){ document.querySelectorAll('.rowck').forEach(c=>c.checked=fa
 function bulkAccept(){ const s=selected(); s.forEach((id,i)=>setTimeout(()=>accept(id), i*80)); toast(`✓ ${s.length} aceptados`); }
 function toast(m){ const t=document.getElementById('toast'); t.textContent=m; t.classList.remove('hidden'); t.classList.add('flex'); clearTimeout(t._t); t._t=setTimeout(()=>{t.classList.add('hidden');t.classList.remove('flex')},2200); }
 render();
+var coh=[...document.querySelectorAll('button')].find(function(b){return b.textContent.trim().indexOf('Cohorte:')>-1;});
+if(coh)coh.onclick=function(){toast('(demo) selector de cohorte');};
 </script>
 </body>
 </html>
