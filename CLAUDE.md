@@ -32,6 +32,7 @@ docs/                         ← documentación (fuente de verdad del diseño)
 ├── integration-research.md   candidatos (WhatsApp/video/PSP): rate limits, pricing, riesgos (deep-research)
 ├── ui-audit.md               inventario de controles UI ↔ comandos de dominio
 ├── open-questions.md         ⭐ DUDAS ABIERTAS vivas — [CLIENTE] vs [DISEÑO], algunas para el cliente
+├── client-questions.md       las dudas en lenguaje no técnico, priorizadas (agenda de reunión)
 ├── wireframe-brief.md        brief que originó los prototipos
 └── adr/                      ADRs: 0001 acciones, 0002 persistencia, 0003 stack, 0004 cloud (propuesto)
 wireframes/                   ← prototipos HTML interactivos (abrir index.html)

@@ -46,6 +46,7 @@ O abrir directamente `wireframes/index.html` en el navegador. Para compartir onl
 | [`integration-research.md`](./docs/integration-research.md) | Candidatos de plataforma (WhatsApp/vídeo/pagos): límites, precios, riesgos |
 | [`ui-audit.md`](./docs/ui-audit.md) | Inventario de controles UI ↔ comandos de dominio |
 | [`open-questions.md`](./docs/open-questions.md) | ⭐ Dudas abiertas vivas (para el cliente y de diseño) |
+| [`client-questions.md`](./docs/client-questions.md) | Las dudas en lenguaje no técnico, priorizadas (agenda de reunión) |
 | [`wireframe-brief.md`](./docs/wireframe-brief.md) | Brief que originó los prototipos |
 | [`adr/`](./docs/adr/) | Architecture Decision Records |
 
