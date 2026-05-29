@@ -1,0 +1,139 @@
+openapi: 3.1.0
+info:
+  title: Reto Antiventaja — Frontera HTTP
+  version: 0.1.0-draft
+  description: >
+    Contrato de la frontera del "cerebro": webhooks de entrada (formulario,
+    automatizador de WhatsApp, host de video, PSP) y cola de acciones de salida
+    que consume la capa no-code. Spec de diseño — deriva de contracts/http-boundary.md.
+servers:
+  - url: https://api.reto-antiventaja.example/v1
+
+components:
+  securitySchemes:
+    webhookSignature:
+      type: apiKey
+      in: header
+      name: X-Signature        # HMAC del proveedor; el adapter verifica
+    nocodeSecret:
+      type: http
+      scheme: bearer           # secreto compartido con la capa no-code
+  schemas:
+    RegisterRequest:
+      type: object
+      required: [fullName, whatsappNumber, consent]
+      properties:
+        fullName: { type: string }
+        whatsappNumber: { type: string, description: E.164, example: "+34612345678" }
+        email: { type: string, format: email }
+        referredByRaw: { type: string, description: "texto libre (Modelo A)" }
+        consent: { type: boolean }
+    RegisterResponse:
+      type: object
+      properties:
+        participantId: { type: string, format: uuid }
+        token: { type: string }
+    GroupJoinEvent:
+      type: object
+      required: [whatsappNumber, providerEventId]
+      properties:
+        whatsappNumber: { type: string }
+        groupId: { type: string }
+        occurredAt: { type: string, format: date-time }
+        providerEventId: { type: string }
+    OutboundAction:
+      type: object
+      properties:
+        id: { type: string }
+        actionType:
+          type: string
+          enum: [bienvenida, contenido_diario, followup_1, followup_2, cta_final, recordatorio, alta_grupo]
+        recipient:
+          type: object
+          properties: { whatsappNumber: { type: string } }
+        params: { type: object, additionalProperties: true, example: { day: 5 } }
+        scheduledFor: { type: string, format: date-time }
+    AckRequest:
+      type: object
+      required: [status]
+      properties:
+        status: { type: string, enum: [enviada, fallida] }
+        reason: { type: string }
+    Accepted:
+      type: object
+      properties: { received: { type: boolean, example: true } }
+
+paths:
+  /register:
+    post:
+      summary: Alta desde el formulario propio (genera token; estado PENDIENTE_VERIFICACION)
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/RegisterRequest' } } }
+      responses:
+        '200': { description: creado, content: { application/json: { schema: { $ref: '#/components/schemas/RegisterResponse' } } } }
+        '409': { description: duplicado en la cohorte (Q6) }
+
+  /webhooks/group-join:
+    post:
+      summary: El número se unió al grupo (automatizador)
+      security: [{ webhookSignature: [] }]
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/GroupJoinEvent' } } }
+      responses:
+        '202': { description: aceptado (idempotente por providerEventId), content: { application/json: { schema: { $ref: '#/components/schemas/Accepted' } } } }
+
+  /webhooks/video:
+    post:
+      summary: Visionado de replay (host de video) — normalizado por VideoTrackingPort (⚠️ Q1)
+      security: [{ webhookSignature: [] }]
+      requestBody:
+        required: true
+        content: { application/json: { schema: { type: object, description: "payload específico del host; debe permitir recuperar el token y el % visto" } } }
+      responses:
+        '202': { description: aceptado, content: { application/json: { schema: { $ref: '#/components/schemas/Accepted' } } } }
+
+  /webhooks/payment:
+    post:
+      summary: Pago o reembolso (PSP) — normalizado por PaymentPort
+      security: [{ webhookSignature: [] }]
+      requestBody:
+        required: true
+        content: { application/json: { schema: { type: object, description: "payload del PSP; kind=payment|refund; metadata con token (H5)" } } }
+      responses:
+        '202': { description: aceptado (idempotente por reference) }
+
+  /webhooks/survey:
+    post:
+      summary: Respuesta a encuesta/dinámica (se persiste; sin cálculo, H10)
+      security: [{ webhookSignature: [] }]
+      requestBody:
+        required: true
+        content: { application/json: { schema: { type: object, required: [token, providerEventId], properties: { token: { type: string }, surveyId: { type: string }, answers: { type: object, additionalProperties: true }, providerEventId: { type: string } } } } }
+      responses:
+        '202': { description: aceptado }
+
+  /actions/pending:
+    get:
+      summary: Acciones por enviar (la capa no-code consume; respeta throttling y scheduledFor)
+      security: [{ nocodeSecret: [] }]
+      parameters:
+        - { name: limit, in: query, schema: { type: integer, default: 50 } }
+      responses:
+        '200':
+          description: lista de acciones pendientes
+          content: { application/json: { schema: { type: array, items: { $ref: '#/components/schemas/OutboundAction' } } } }
+
+  /actions/{id}/ack:
+    post:
+      summary: Confirmación de ejecución (→ AcciónResuelta; terminal salvo reintento explícito)
+      security: [{ nocodeSecret: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/AckRequest' } } }
+      responses:
+        '200': { description: registrado }
+        '404': { description: acción inexistente }

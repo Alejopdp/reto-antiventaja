@@ -22,8 +22,10 @@ docs/                         ← documentación (fuente de verdad del diseño)
 ├── mvp-scope.md              alcance, modelo de datos, integración, criterio no-regret, roadmap
 ├── event-storming.md         eventos / comandos / policies / sistemas externos / hotspots
 ├── domain-model.md           entidades, statechart, glosario ubicuo, invariantes
-├── contracts/                interfaces de los 3 puertos + frontera HTTP (webhooks/cola)
+├── contracts/                interfaces de los 3 puertos + frontera HTTP + openapi.yaml
+├── schema.sql                DDL de referencia (PostgreSQL) alineado a ADR-0002
 ├── use-cases.md              casos de uso con criterios Given/When/Then
+├── test-plan.md              UC → tipos de test + definition of done (backlog TDD)
 ├── tasks.md                  desglose en waves + DAG (plan de ejecución)
 ├── engineering-guidelines.md capas, DI, estrategia de tests (TDD), convenciones, anti-overeng.
 ├── nfr-and-security.md       escala, idempotencia, GDPR/PII, ToS WhatsApp, observabilidad

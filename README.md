@@ -36,8 +36,10 @@ O abrir directamente `wireframes/index.html` en el navegador. Para compartir onl
 | [`mvp-scope.md`](./docs/mvp-scope.md) | Alcance, modelo de datos, integración, criterio no-regret, roadmap |
 | [`event-storming.md`](./docs/event-storming.md) | Eventos, comandos, policies, sistemas externos, hotspots |
 | [`domain-model.md`](./docs/domain-model.md) | Entidades, statechart, glosario ubicuo, invariantes |
-| [`contracts/`](./docs/contracts/) | Interfaces de los 3 puertos + frontera HTTP (webhooks / cola) |
+| [`contracts/`](./docs/contracts/) | Interfaces de los 3 puertos + frontera HTTP + `openapi.yaml` |
+| [`schema.sql`](./docs/schema.sql) | DDL de referencia (PostgreSQL) |
 | [`use-cases.md`](./docs/use-cases.md) | Casos de uso con criterios Given/When/Then |
+| [`test-plan.md`](./docs/test-plan.md) | UC → tipos de test + definition of done (backlog TDD) |
 | [`tasks.md`](./docs/tasks.md) | Desglose en waves + DAG (plan de ejecución) |
 | [`engineering-guidelines.md`](./docs/engineering-guidelines.md) | Capas, DI, estrategia de tests (TDD), convenciones |
 | [`nfr-and-security.md`](./docs/nfr-and-security.md) | No funcionales, GDPR/PII, ToS WhatsApp, seguridad |
