@@ -36,27 +36,27 @@ tailwind.config={theme:{extend:{colors:{cream:'#FBF6EC',paper:'#FFFDF8',ink:'#21
   <main class="flex-1 px-5 py-6 lg:px-8">
     <div class="rise">
       <h1 class="font-display text-[2rem] font-medium leading-none tracking-[-0.01em]">Salud operativa</h1>
-      <p class="mt-1.5 text-[13px] text-inksoft">El cerebro encola acciones; la capa de WhatsApp las ejecuta y confirma (ack). Aquí ves cómo va ese flujo.</p>
+      <p class="mt-1.5 text-[13px] text-inksoft">El sistema prepara los mensajes y la capa de WhatsApp los va enviando. Aquí ves cómo va ese envío.</p>
     </div>
 
     <!-- estado del canal -->
     <div class="rise mt-6 grid grid-cols-2 gap-3 lg:grid-cols-4" style="animation-delay:.05s">
-      <div class="rounded-xl border border-line bg-paper p-4"><p class="text-[11px] uppercase tracking-wider text-inksoft">En cola</p><p class="mt-1 font-display text-3xl">128</p><p class="text-[12px] text-inksoft">pendientes de enviar</p></div>
+      <div class="rounded-xl border border-line bg-paper p-4"><p class="text-[11px] uppercase tracking-wider text-inksoft">En espera</p><p class="mt-1 font-display text-3xl">128</p><p class="text-[12px] text-inksoft">mensajes por enviar</p></div>
       <div class="rounded-xl border border-line bg-paper p-4"><p class="text-[11px] uppercase tracking-wider text-inksoft">Enviadas hoy</p><p class="mt-1 font-display text-3xl">1.204</p></div>
       <div class="rounded-xl border border-rust/30 bg-rust/5 p-4"><p class="text-[11px] uppercase tracking-wider text-rust">Fallidas</p><p class="mt-1 font-display text-3xl text-rust">3</p><p class="text-[12px] text-inksoft">tras reintentos</p></div>
-      <div class="rounded-xl border border-line bg-paper p-4"><p class="text-[11px] uppercase tracking-wider text-inksoft">Ritmo de envío</p><p class="mt-1 font-display text-3xl">20<span class="text-[14px] font-body text-inksoft">/min</span></p><p class="text-[12px] text-inksoft">throttling activo</p></div>
+      <div class="rounded-xl border border-line bg-paper p-4"><p class="text-[11px] uppercase tracking-wider text-inksoft">Ritmo de envío</p><p class="mt-1 font-display text-3xl">20<span class="text-[14px] font-body text-inksoft">/min</span></p><p class="text-[12px] text-inksoft">ritmo controlado</p></div>
     </div>
 
     <!-- aviso canal -->
     <div class="rise mt-4 flex items-start gap-3 rounded-xl border border-ochre/30 bg-ochre/5 p-4" style="animation-delay:.1s">
       <span class="mt-0.5 text-lg">⚠️</span>
-      <div class="text-[13px]"><p class="font-semibold text-ink">Canal no oficial — ritmo limitado a propósito</p><p class="text-inksoft">Para no arriesgar el número, las acciones se drenan a 20/min. Con 300+ por cohorte puede haber cola; es esperado. <span class="italic">(throttling configurable — H11)</span></p></div>
+      <div class="text-[13px]"><p class="font-semibold text-ink">Enviamos de a poco para cuidar el número</p><p class="text-inksoft">Mandamos hasta 20 mensajes por minuto para no arriesgar el número de WhatsApp. Con 300+ personas es normal que algunos esperen su turno.</p></div>
     </div>
 
     <!-- cola -->
     <div class="rise mt-5 overflow-hidden rounded-2xl border border-line bg-paper" style="animation-delay:.16s">
       <div class="flex flex-wrap items-center justify-between gap-3 border-b border-line px-5 py-3.5">
-        <div><h2 class="text-[15px] font-semibold">Cola de acciones</h2><p class="text-[12px] text-inksoft">Últimas acciones encoladas y su estado.</p></div>
+        <div><h2 class="text-[15px] font-semibold">Mensajes y envíos</h2><p class="text-[12px] text-inksoft">Últimos mensajes preparados y cómo salieron.</p></div>
         <div class="flex gap-1 rounded-lg border border-line p-1 text-[12.5px]">
           <button class="rounded-md bg-forest px-2.5 py-1 font-medium text-cream">Todas</button>
           <button class="rounded-md px-2.5 py-1 font-medium text-inksoft hover:bg-sand/40">Pendientes</button>
@@ -98,7 +98,7 @@ document.getElementById('q').innerHTML=rows.map(r=>`
 function T(m){var t=document.getElementById('__toast');if(!t){t=document.createElement('div');t.id='__toast';t.style.cssText='position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:9999;display:none;background:#0E3A2A;color:#FBF6EC;padding:10px 16px;border-radius:12px;font-size:13px;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,.18)';document.body.appendChild(t);}t.textContent=m;t.style.display='block';clearTimeout(t._t);t._t=setTimeout(function(){t.style.display='none';},2200);}
 var fb=[...document.querySelectorAll('button')].filter(function(b){return ['Todas','Pendientes','Fallidas'].indexOf(b.textContent.trim())>-1;});
 fb.forEach(function(b){b.onclick=function(){fb.forEach(function(x){x.className='rounded-md px-2.5 py-1 font-medium text-inksoft hover:bg-sand/40';});b.className='rounded-md bg-forest px-2.5 py-1 font-medium text-cream';var f=b.textContent.trim().toLowerCase();document.querySelectorAll('#q tr').forEach(function(tr){var sp=tr.querySelector('span.rounded-full');var s=sp?sp.textContent.trim():'';var show=(f==='todas')||(f==='pendientes'&&s==='pendiente')||(f==='fallidas'&&s==='fallida');tr.style.display=show?'':'none';});};});
-document.getElementById('q').addEventListener('click',function(e){var b=e.target.closest('button');if(b&&b.textContent.trim()==='Reintentar'){var tr=b.closest('tr');var sp=tr.querySelector('span.rounded-full');if(sp){sp.textContent='pendiente';sp.className='rounded-full px-2.5 py-1 text-[12px] font-semibold bg-ochre/15 text-ochre';}b.remove();T('Acción reencolada · ReintentarAcción');}});
+document.getElementById('q').addEventListener('click',function(e){var b=e.target.closest('button');if(b&&b.textContent.trim()==='Reintentar'){var tr=b.closest('tr');var sp=tr.querySelector('span.rounded-full');if(sp){sp.textContent='pendiente';sp.className='rounded-full px-2.5 py-1 text-[12px] font-semibold bg-ochre/15 text-ochre';}b.remove();T('Lo volvemos a intentar · ReintentarAcción');}});
 })();</script>
 </body>
 </html>

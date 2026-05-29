@@ -39,11 +39,10 @@ tailwind.config={theme:{extend:{colors:{cream:'#FBF6EC',paper:'#FFFDF8',ink:'#21
   <main class="flex-1 px-5 py-6 lg:px-8">
     <div class="rise flex flex-wrap items-end justify-between gap-4">
       <div>
-        <div class="flex items-center gap-2 text-[12px] text-inksoft"><span>Cohortes</span><span>›</span><span class="font-medium text-ink">Mayo 2026</span></div>
-        <h1 class="mt-1 font-display text-[2rem] font-medium leading-none tracking-[-0.01em]">Embudo del reto</h1>
+        <h1 class="font-display text-[2rem] font-medium leading-none tracking-[-0.01em]">Embudo del reto</h1>
         <p class="mt-1.5 text-[13px] text-inksoft">Día 5 de 7 · 318 personas en esta cohorte · presentación P60 el domingo</p>
       </div>
-      <button class="flex items-center gap-2 rounded-lg border border-line bg-paper px-3.5 py-2 text-[13px] font-medium hover:bg-sand/40">Cohorte: Mayo 2026 <svg class="h-3.5 w-3.5 text-inksoft" viewBox="0 0 12 12" fill="none"><path d="M3 5l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <label class="flex items-center gap-2 rounded-lg border border-line bg-paper px-3 py-2 text-[13px]"><span class="text-inksoft">Cohorte</span><select id="cohortScope" class="cursor-pointer bg-transparent font-medium text-ink focus:outline-none"><option>Mayo 2026</option><option>Abril 2026</option><option>Junio 2026</option><option>Todas las cohortes</option></select></label>
     </div>
 
     <!-- KPIs -->
@@ -104,8 +103,8 @@ document.getElementById('funnel').innerHTML = stages.map((s,i)=>`
 </script>
 <script>(function(){
 function T(m){var t=document.getElementById('__toast');if(!t){t=document.createElement('div');t.id='__toast';t.style.cssText='position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:9999;display:none;background:#0E3A2A;color:#FBF6EC;padding:10px 16px;border-radius:12px;font-size:13px;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,.18)';document.body.appendChild(t);}t.textContent=m;t.style.display='block';clearTimeout(t._t);t._t=setTimeout(function(){t.style.display='none';},2200);}
-var c=[...document.querySelectorAll('button')].find(function(b){return b.textContent.trim().indexOf('Cohorte:')>-1;});
-if(c)c.onclick=function(){T('(demo) selector de cohorte');};
+var scope=document.getElementById('cohortScope');
+if(scope)scope.onchange=function(){T('Cohorte: '+scope.value+' (demo)');};
 [...document.querySelectorAll('a[href="#"]')].forEach(function(a){a.setAttribute('href','dashboard-atribucion.html');});
 })();</script>
 </body>

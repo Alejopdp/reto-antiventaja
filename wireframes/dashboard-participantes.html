@@ -37,10 +37,10 @@ tailwind.config={theme:{extend:{colors:{cream:'#FBF6EC',paper:'#FFFDF8',ink:'#21
   <main class="flex-1 px-5 py-6 lg:px-8">
     <div class="rise flex flex-wrap items-end justify-between gap-4">
       <div>
-        <div class="flex items-center gap-2 text-[12px] text-inksoft"><span>Cohortes</span><span>›</span><span class="font-medium text-ink">Mayo 2026</span></div>
-        <h1 class="mt-1 font-display text-[2rem] font-medium leading-none tracking-[-0.01em]">Participantes</h1>
+        <h1 class="font-display text-[2rem] font-medium leading-none tracking-[-0.01em]">Participantes</h1>
         <p class="mt-1.5 text-[13px] text-inksoft">318 personas en esta cohorte</p>
       </div>
+      <label class="flex items-center gap-2 rounded-lg border border-line bg-paper px-3 py-2 text-[13px]"><span class="text-inksoft">Cohorte</span><select id="cohortScope" class="cursor-pointer bg-transparent font-medium text-ink focus:outline-none"><option>Mayo 2026</option><option>Abril 2026</option><option>Junio 2026</option><option>Todas las cohortes</option></select></label>
     </div>
 
     <!-- filtros -->
@@ -65,6 +65,7 @@ tailwind.config={theme:{extend:{colors:{cream:'#FBF6EC',paper:'#FFFDF8',ink:'#21
           <th class="py-2.5 pl-5 font-medium">Persona</th>
           <th class="py-2.5 font-medium">Estado</th>
           <th class="py-2.5 font-medium">Progreso</th>
+          <th class="py-2.5 font-medium">Cohorte</th>
           <th class="py-2.5 font-medium">Invitada por</th>
           <th class="py-2.5 font-medium">Última actividad</th>
           <th class="py-2.5 pr-5"></th>
@@ -93,37 +94,49 @@ const st={
 };
 const seg={completo:'text-forest',parcial:'text-ochre',no_vio:'text-inksoft'};
 const data=[
-  {n:'Marina López',ini:'ML',s:'conv',prog:'Día 7 · completo',inv:'Carla Giménez',act:'pagó · hace 2 d'},
-  {n:'Diego Fernández',ini:'DF',s:'post',prog:'Día 7 · parcial',inv:'Carla Giménez',act:'vio replay · hace 1 d'},
-  {n:'Sofía Ramírez',ini:'SR',s:'grupo',prog:'Día 5',inv:'la chica del gimnasio',act:'respondió · hoy'},
-  {n:'Juan P. Soto',ini:'JS',s:'grupo',prog:'Día 5',inv:'Martín Rey',act:'activo · hoy'},
-  {n:'Carmen Torres',ini:'CT',s:'pend',prog:'—',inv:'sin atribuir',act:'registro · hace 6 h'},
-  {n:'Lucas Méndez',ini:'LM',s:'post',prog:'Día 7 · no vio',inv:'Martín Rey',act:'inactivo · 3 d'},
-  {n:'Ana Díaz',ini:'AD',s:'baja',prog:'Día 3',inv:'Carla G',act:'pidió baja · hace 4 d'},
-  {n:'Pablo Ruiz',ini:'PR',s:'rech',prog:'—',inv:'—',act:'rechazada · hace 5 d'},
+  {n:'Marina López',ini:'ML',s:'conv',prog:'Día 7 · completo',coh:'Mayo 2026',inv:'Carla Giménez',act:'pagó · hace 2 d'},
+  {n:'Diego Fernández',ini:'DF',s:'post',prog:'Día 7 · parcial',coh:'Mayo 2026',inv:'Carla Giménez',act:'vio replay · hace 1 d'},
+  {n:'Sofía Ramírez',ini:'SR',s:'grupo',prog:'Día 5',coh:'Mayo 2026',inv:'la chica del gimnasio',act:'respondió · hoy'},
+  {n:'Juan P. Soto',ini:'JS',s:'grupo',prog:'Día 5',coh:'Mayo 2026',inv:'Martín Rey',act:'activo · hoy'},
+  {n:'Carmen Torres',ini:'CT',s:'pend',prog:'—',coh:'Mayo 2026',inv:'sin atribuir',act:'registro · hace 6 h'},
+  {n:'Lucas Méndez',ini:'LM',s:'post',prog:'Día 7 · no vio',coh:'Abril 2026',inv:'Martín Rey',act:'inactivo · 3 d'},
+  {n:'Ana Díaz',ini:'AD',s:'baja',prog:'Día 3',coh:'Abril 2026',inv:'Carla G',act:'pidió baja · hace 4 d'},
+  {n:'Pablo Ruiz',ini:'PR',s:'rech',prog:'—',coh:'Abril 2026',inv:'—',act:'rechazada · hace 5 d'},
 ];
 function segClass(p){const m=p.prog.match(/(completo|parcial|no vio)/);return m?(seg[m[1].replace(' ','_')]||''):'';}
 document.getElementById('tbody').innerHTML=data.map(p=>`
-  <tr class="row border-b border-line/70 last:border-0" data-state="${p.s}" onclick="location.href='dashboard-participante.html'">
+  <tr class="row border-b border-line/70 last:border-0" data-state="${p.s}" data-cohort="${p.coh}" onclick="location.href='dashboard-participante.html'">
     <td class="py-3 pl-5"><div class="flex items-center gap-2.5"><span class="flex h-8 w-8 flex-none items-center justify-center rounded-full bg-sand text-[12px] font-semibold text-forestdeep">${p.ini}</span><span class="font-medium">${p.n}</span></div></td>
     <td class="py-3"><span class="rounded-full px-2.5 py-1 text-[12px] font-semibold ${st[p.s].c}">${st[p.s].t}</span></td>
     <td class="py-3 ${segClass(p)}">${p.prog}</td>
+    <td class="py-3 text-inksoft">${p.coh}</td>
     <td class="py-3 text-inksoft">${p.inv==='sin atribuir'||p.inv==='—'?'<span class="text-rust/80">⚠ '+p.inv+'</span>':p.inv}</td>
     <td class="py-3 text-inksoft">${p.act}</td>
     <td class="py-3 pr-5 text-right text-inksoft">›</td>
   </tr>`).join('');
 // toast
 function T(m){var t=document.getElementById('__toast');if(!t){t=document.createElement('div');t.id='__toast';t.style.cssText='position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:9999;display:none;background:#0E3A2A;color:#FBF6EC;padding:10px 16px;border-radius:12px;font-size:13px;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,.18)';document.body.appendChild(t);}t.textContent=m;t.style.display='block';clearTimeout(t._t);t._t=setTimeout(function(){t.style.display='none';},2200);}
-// filtro por estado (funcional)
-function applyFilter(f){document.querySelectorAll('#tbody tr').forEach(tr=>{tr.style.display=(f==='todos'||tr.dataset.state===f)?'':'none';});}
+// filtros combinados: estado + cohorte + búsqueda
+var curState='todos';
+var search=document.querySelector('input[placeholder^="Buscar"]');
+var scopeSel=document.getElementById('cohortScope');
+function refilter(){
+  var coh=scopeSel?scopeSel.value:'Todas las cohortes';
+  var q=(search&&search.value||'').toLowerCase();
+  document.querySelectorAll('#tbody tr').forEach(tr=>{
+    var okState=(curState==='todos'||tr.dataset.state===curState);
+    var okCoh=(coh==='Todas las cohortes'||tr.dataset.cohort===coh);
+    var okText=tr.textContent.toLowerCase().includes(q);
+    tr.style.display=(okState&&okCoh&&okText)?'':'none';
+  });
+}
 document.querySelectorAll('#statefilter button').forEach(b=>b.onclick=()=>{
   document.querySelectorAll('#statefilter button').forEach(x=>x.className='rounded-lg px-3 py-1.5 font-medium text-inksoft hover:bg-sand/50');
   b.className='rounded-lg bg-forest px-3 py-1.5 font-medium text-cream';
-  applyFilter(b.dataset.f);
+  curState=b.dataset.f; refilter();
 });
-// búsqueda
-var search=document.querySelector('input[placeholder^="Buscar"]');
-if(search)search.oninput=()=>{var q=search.value.toLowerCase();document.querySelectorAll('#tbody tr').forEach(tr=>{tr.style.display=tr.textContent.toLowerCase().includes(q)?'':'none';});};
+if(search)search.oninput=refilter;
+if(scopeSel)scopeSel.onchange=refilter;
 // paginación (demo)
 document.querySelectorAll('.flex.items-center.gap-1 button').forEach(b=>{
   if(/^\d+$/.test(b.textContent.trim())){b.onclick=()=>{document.querySelectorAll('.flex.items-center.gap-1 button').forEach(x=>{if(/^\d+$/.test(x.textContent.trim()))x.className='rounded-md border border-line px-2.5 py-1 hover:bg-sand/40';});b.className='rounded-md bg-forest px-2.5 py-1 font-medium text-cream';T('Página '+b.textContent.trim()+' (demo)');};}

@@ -187,6 +187,17 @@ Marcar lo opcional + nota "todos obligatorios salvo los marcados"; **validar on-
 
 ---
 
+## Surgidas al pulir el prototipo (interactividad)
+
+### Q43 [DISEÑO/CLIENTE] 🔴 — Impulsor tipado (para que el ranking de atribución funcione).
+Con Modelo A la atribución es **texto libre** → el ranking de impulsores no agrupa bien (typos/variantes). **Propuesta:** un registro **tipado de impulsores**; Ops resuelve el texto libre asignándolo a un impulsor existente o creando uno nuevo (la pantalla "Asignar impulsor" es ese mecanismo). El ranking agrupa por `impulsorId`, no por texto.
+**A decidir:** ¿el impulsor es (a) otro participante, (b) un promotor externo que no necesariamente participa, o (c) su propia entidad `Impulsor`? Afecta el modelo de datos (`referred_by_participant_id` asume (a)). Relaciona Q38 (Modelo B reusaría esto) y Q4.
+
+### Q44 [DISEÑO] — Navegación/alcance por cohorte en el panel interno.
+El breadcrumb "Cohortes › Mayo 2026" era engañoso. **Decisión de diseño adoptada (prototipo):** un **selector de cohorte global** define el alcance de todo el panel (embudo, verificación, participantes, atribución), con opción **"Todas las cohortes"**; en vistas cross-cohorte se muestra la columna Cohorte. *Confirmar que es el modelo deseado vs. filtros por pantalla.*
+
+---
+
 ## Hotspots del event-storming que siguen para el CLIENTE
 (referencia cruzada; no se decidieron internamente)
 
