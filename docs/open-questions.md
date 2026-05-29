@@ -165,6 +165,13 @@ El dashboard muestra un KPI de participación diaria, pero no está definido qu�
 
 > ⚠️ **Nota transversal de los dashboards (P2.1, P2.4):** están diseñados asumiendo **Q1 = tracking 1:1 tokenizado** (replay visto, segmentos, timeline de video por persona). Si Q1 resuelve "broadcast al grupo", estas vistas pierden esos datos. Revisar tras decidir Q1.
 
+### Q42 [CLIENTE] ✅ **RESUELTO (MVP = WhatsApp-first, sin portal)** — ¿Existe un PORTAL del participante?
+**Decisión:** sin portal. El participante vive en WhatsApp; el Excel solo se entrega; sin login ni captura de datos financieros. El **portal del participante** (carga de Excel, revisar cuenta) queda como **expansión futura / decisión del cliente** (implicaría auth + datos financieros + Q7). Superficies de participante que SÍ se construyen: **experiencia/testimonio** y, condicionales, baja (Q2) y landing de replay (Q1).
+**Supuesto descartado para MVP:** NO. El participante vive en WhatsApp; el Excel **solo se entrega** (sin subida ni captura de datos financieros — decisión de scope); no hay login de participante.
+**Lo que el cliente podría querer (expansión):** un portal donde el participante suba su Excel/reporte avances y revise su cuenta. Implica **auth**, **captura de datos financieros** (hoy descartada) e identidad de persona entre cohortes (Q7). Decisión de producto, no olvido.
+**Superficies de participante que SÍ están en scope hoy y faltan diseñar:** formulario de **experiencia/testimonio** (`ExperienciaCompletada`, lo menciona el mapa original) y, condicional, página de **baja** (Q2) y **landing del replay** tokenizado (Q1).
+
+
 
 ### Q38 [CLIENTE] ✅ **RESUELTO (MVP = Modelo A)** — Modelo de invitación/atribución: link único vs link por impulsor.
 **Decisión:** MVP usa **Modelo A** (link único compartido + texto auto-reportado, editable; atribución resuelta en bandeja Ops). **Modelo B** (link por impulsor) queda como **evolución futura** y/o validación con el cliente (sinergia con Q1). El prototipo se alineó a A.

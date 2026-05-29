@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es-ES">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reto Antiventaja — Tu experiencia</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..600&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script>
+tailwind.config={theme:{extend:{colors:{cream:'#FBF6EC',paper:'#FFFDF8',ink:'#211C15',inksoft:'#6B6256',forest:'#16513C',forestdeep:'#0E3A2A',ochre:'#C97B36',sand:'#EDE3CF',line:'#E4D8C1',rust:'#A8462E'},fontFamily:{display:['Fraunces','serif'],body:['"Hanken Grotesk"','sans-serif']}}}}
+</script>
+<style>
+  body{font-family:'Hanken Grotesk',sans-serif;background:#FBF6EC;color:#211C15}
+  .font-display{font-family:'Fraunces',serif}
+  .grain::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opacity:.04;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  .rise{opacity:0;transform:translateY(14px);animation:rise .7s cubic-bezier(.2,.7,.2,1) forwards}
+  @keyframes rise{to{opacity:1;transform:none}}
+  .field{transition:border-color .2s,box-shadow .2s,background .2s}
+  .field:focus{outline:none;border-color:#16513C;box-shadow:0 0 0 3px rgba(22,81,60,.12);background:#fff}
+  .opt{cursor:pointer}.opt input:checked + div{border-color:#16513C;background:rgba(22,81,60,.06)}
+  .ck:checked + .ckbox{background:#16513C;border-color:#16513C}.ck:checked + .ckbox svg{opacity:1}
+  .protobar{backdrop-filter:blur(8px)}
+</style>
+</head>
+<body class="grain min-h-screen antialiased selection:bg-forest selection:text-cream">
+
+<div class="protobar fixed top-3 left-1/2 -translate-x-1/2 z-[60] flex items-center gap-1 rounded-full border border-line bg-paper/80 px-1.5 py-1 text-xs shadow-sm">
+  <span class="px-2 text-inksoft">Prototipo:</span>
+  <button onclick="show('form')" id="t-form" class="rounded-full px-3 py-1 font-medium">Formulario</button>
+  <button onclick="show('done')" id="t-done" class="rounded-full px-3 py-1 font-medium text-inksoft">Enviado</button>
+</div>
+
+<main class="mx-auto flex min-h-screen max-w-md flex-col px-5 pb-10 pt-16">
+  <header class="rise flex items-center gap-2.5"><div class="flex h-8 w-8 items-center justify-center rounded-lg bg-forest text-cream font-display text-lg leading-none">a</div><div class="text-[13px] font-semibold tracking-tight">Reto Antiventaja</div></header>
+
+  <!-- FORM -->
+  <section id="s-form">
+    <p class="rise mt-8 text-[12px] font-semibold uppercase tracking-wider text-ochre" style="animation-delay:.04s">Reto terminado · cohorte de mayo</p>
+    <h1 class="rise mt-2 font-display text-[2.4rem] font-medium leading-[1.06] tracking-[-0.01em]" style="animation-delay:.08s">¿Cómo te fue, <span class="italic text-forest">Marina</span>?</h1>
+    <p class="rise mt-3 text-[15px] leading-relaxed text-inksoft" style="animation-delay:.14s">Sin postureo: contanos de verdad cómo viviste estos 7 días. Nos ayuda a mejorar el reto y, si querés, a inspirar a quien venga después.</p>
+
+    <form class="rise mt-7 space-y-5" style="animation-delay:.2s" onsubmit="event.preventDefault();show('done')">
+      <div>
+        <label class="mb-1.5 block text-[13.5px] font-medium" for="exp">¿Cómo describirías tu experiencia?</label>
+        <textarea id="exp" rows="3" placeholder="Lo que quieras contarnos…" class="field w-full rounded-xl border border-line bg-paper px-4 py-3 text-[15px] placeholder:text-inksoft/50"></textarea>
+      </div>
+
+      <div>
+        <label class="mb-1.5 block text-[13.5px] font-medium">¿Notas algún cambio en cómo manejas tu dinero?</label>
+        <div class="grid gap-2">
+          <label class="opt"><input type="radio" name="cambio" class="sr-only" checked><div class="rounded-xl border border-line bg-paper px-4 py-3 text-[14px]">Sí, bastante 🌱</div></label>
+          <label class="opt"><input type="radio" name="cambio" class="sr-only"><div class="rounded-xl border border-line bg-paper px-4 py-3 text-[14px]">Algo, empecé a ordenarme</div></label>
+          <label class="opt"><input type="radio" name="cambio" class="sr-only"><div class="rounded-xl border border-line bg-paper px-4 py-3 text-[14px]">Todavía no, pero lo intento</div></label>
+        </div>
+      </div>
+
+      <div>
+        <label class="mb-1.5 block text-[13.5px] font-medium" for="apr">¿Qué te llevas del reto? <span class="font-normal text-inksoft">· opcional</span></label>
+        <input id="apr" placeholder="Un aprendizaje, un hábito nuevo…" class="field w-full rounded-xl border border-line bg-paper px-4 py-3 text-[15px] placeholder:text-inksoft/50">
+      </div>
+
+      <div>
+        <label class="mb-2 block text-[13.5px] font-medium">¿Lo recomendarías a alguien?</label>
+        <div class="flex flex-wrap gap-2 text-[14px]">
+          <label class="opt"><input type="radio" name="rec" class="sr-only" checked><div class="rounded-full border border-line bg-paper px-4 py-2">Sí, sin duda</div></label>
+          <label class="opt"><input type="radio" name="rec" class="sr-only"><div class="rounded-full border border-line bg-paper px-4 py-2">Puede ser</div></label>
+          <label class="opt"><input type="radio" name="rec" class="sr-only"><div class="rounded-full border border-line bg-paper px-4 py-2">No</div></label>
+        </div>
+      </div>
+
+      <label class="flex cursor-pointer items-start gap-3 rounded-xl border border-line bg-sand/30 p-3.5">
+        <input type="checkbox" class="ck peer sr-only">
+        <span class="ckbox mt-0.5 flex h-5 w-5 flex-none items-center justify-center rounded-md border border-line bg-paper transition"><svg class="h-3 w-3 text-cream opacity-0 transition" viewBox="0 0 12 12" fill="none"><path d="M2 6l2.5 2.5L10 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="text-[12.5px] leading-snug text-inksoft">Doy permiso para compartir mi testimonio (con mi nombre de pila). Si no marcas esto, lo usamos solo de forma anónima e interna.</span>
+      </label>
+
+      <button type="submit" class="flex w-full items-center justify-center gap-2 rounded-xl bg-forest px-5 py-4 text-[15px] font-semibold text-cream transition hover:bg-forestdeep active:scale-[.99]">Enviar mi experiencia</button>
+      <p class="text-center text-[12px] text-inksoft">Gracias por tomarte el rato 🌱</p>
+    </form>
+  </section>
+
+  <!-- DONE -->
+  <section id="s-done" class="hidden flex-1 flex-col items-center justify-center text-center">
+    <div class="rise mt-10 flex h-16 w-16 items-center justify-center rounded-2xl bg-forest/10"><span class="text-3xl">🌱</span></div>
+    <h2 class="rise mt-6 font-display text-[2.1rem] font-medium leading-tight tracking-[-0.01em]" style="animation-delay:.06s">¡Gracias, Marina!</h2>
+    <p class="rise mt-3 max-w-xs text-[15px] leading-relaxed text-inksoft" style="animation-delay:.12s">Tu experiencia nos ayuda a mejorar el reto para quien venga después. Ojalá esto sea solo el principio de tu orden financiero.</p>
+  </section>
+</main>
+
+<script>
+function show(s){
+  document.getElementById('s-form').classList.toggle('hidden', s!=='form');
+  document.getElementById('s-done').classList.toggle('hidden', s!=='done');
+  document.getElementById('s-done').classList.toggle('flex', s==='done');
+  document.getElementById('t-form').className='rounded-full px-3 py-1 font-medium '+(s==='form'?'bg-forest text-cream':'text-inksoft');
+  document.getElementById('t-done').className='rounded-full px-3 py-1 font-medium '+(s==='done'?'bg-forest text-cream':'text-inksoft');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+show('form');
+</script>
+</body>
+</html>

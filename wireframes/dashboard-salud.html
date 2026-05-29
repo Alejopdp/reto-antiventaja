@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es-ES">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reto Antiventaja — Salud operativa</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script>
+tailwind.config={theme:{extend:{colors:{cream:'#FBF6EC',paper:'#FFFDF8',ink:'#211C15',inksoft:'#6B6256',forest:'#16513C',forestdeep:'#0E3A2A',ochre:'#C97B36',sand:'#EDE3CF',line:'#E4D8C1',rust:'#A8462E'},fontFamily:{display:['Fraunces','serif'],body:['"Hanken Grotesk"','sans-serif']}}}}
+</script>
+<style>
+  body{font-family:'Hanken Grotesk',sans-serif;background:#FBF6EC;color:#211C15}
+  .font-display{font-family:'Fraunces',serif}
+  .rise{opacity:0;transform:translateY(10px);animation:rise .5s cubic-bezier(.2,.7,.2,1) forwards}
+  @keyframes rise{to{opacity:1;transform:none}}
+  ::selection{background:#16513C;color:#FBF6EC}
+</style>
+</head>
+<body class="min-h-screen antialiased">
+<div class="flex min-h-screen">
+  <aside class="hidden w-60 flex-none flex-col border-r border-line bg-paper px-4 py-5 lg:flex">
+    <div class="flex items-center gap-2.5 px-2"><div class="flex h-8 w-8 items-center justify-center rounded-lg bg-forest text-cream font-display text-lg leading-none">a</div><div class="text-[13px] font-semibold tracking-tight leading-none">Reto Antiventaja<br><span class="text-[11px] font-normal text-inksoft">Panel interno</span></div></div>
+    <nav class="mt-7 space-y-0.5 text-[13.5px]">
+      <a class="flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-inksoft hover:bg-sand/50" href="dashboard-overview.html"><span>📊</span> Embudo</a>
+      <a class="flex items-center justify-between rounded-lg px-2.5 py-2 text-inksoft hover:bg-sand/50" href="dashboard-verificacion.html"><span class="flex items-center gap-2.5"><span>✅</span> Verificación</span><span class="rounded-full bg-forest px-1.5 py-0.5 text-[11px] font-semibold text-cream">12</span></a>
+      <a class="flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-inksoft hover:bg-sand/50" href="dashboard-participantes.html"><span>👥</span> Participantes</a>
+      <a class="flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-inksoft hover:bg-sand/50" href="dashboard-atribucion.html"><span>🌱</span> Atribución</a>
+      <a class="flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-inksoft hover:bg-sand/50" href="dashboard-cohortes.html"><span>🗂️</span> Cohortes</a>
+      <a class="flex items-center justify-between rounded-lg bg-forest/10 px-2.5 py-2 font-semibold text-forest" href="dashboard-salud.html"><span class="flex items-center gap-2.5"><span>📡</span> Salud</span><span class="rounded-full bg-rust/15 px-1.5 py-0.5 text-[11px] font-semibold text-rust">3</span></a>
+    </nav>
+    <div class="mt-auto flex items-center gap-2.5 rounded-lg border border-line p-2.5"><div class="flex h-8 w-8 items-center justify-center rounded-full bg-ochre/20 text-[13px] font-semibold text-ochre">VG</div><div class="text-[12px] leading-tight"><p class="font-semibold">Valentina G.</p><p class="text-inksoft">Operaciones</p></div></div>
+  </aside>
+
+  <main class="flex-1 px-5 py-6 lg:px-8">
+    <div class="rise">
+      <h1 class="font-display text-[2rem] font-medium leading-none tracking-[-0.01em]">Salud operativa</h1>
+      <p class="mt-1.5 text-[13px] text-inksoft">El cerebro encola acciones; la capa de WhatsApp las ejecuta y confirma (ack). Aquí ves cómo va ese flujo.</p>
+    </div>
+
+    <!-- estado del canal -->
+    <div class="rise mt-6 grid grid-cols-2 gap-3 lg:grid-cols-4" style="animation-delay:.05s">
+      <div class="rounded-xl border border-line bg-paper p-4"><p class="text-[11px] uppercase tracking-wider text-inksoft">En cola</p><p class="mt-1 font-display text-3xl">128</p><p class="text-[12px] text-inksoft">pendientes de enviar</p></div>
+      <div class="rounded-xl border border-line bg-paper p-4"><p class="text-[11px] uppercase tracking-wider text-inksoft">Enviadas hoy</p><p class="mt-1 font-display text-3xl">1.204</p></div>
+      <div class="rounded-xl border border-rust/30 bg-rust/5 p-4"><p class="text-[11px] uppercase tracking-wider text-rust">Fallidas</p><p class="mt-1 font-display text-3xl text-rust">3</p><p class="text-[12px] text-inksoft">tras reintentos</p></div>
+      <div class="rounded-xl border border-line bg-paper p-4"><p class="text-[11px] uppercase tracking-wider text-inksoft">Ritmo de envío</p><p class="mt-1 font-display text-3xl">20<span class="text-[14px] font-body text-inksoft">/min</span></p><p class="text-[12px] text-inksoft">throttling activo</p></div>
+    </div>
+
+    <!-- aviso canal -->
+    <div class="rise mt-4 flex items-start gap-3 rounded-xl border border-ochre/30 bg-ochre/5 p-4" style="animation-delay:.1s">
+      <span class="mt-0.5 text-lg">⚠️</span>
+      <div class="text-[13px]"><p class="font-semibold text-ink">Canal no oficial — ritmo limitado a propósito</p><p class="text-inksoft">Para no arriesgar el número, las acciones se drenan a 20/min. Con 300+ por cohorte puede haber cola; es esperado. <span class="italic">(throttling configurable — H11)</span></p></div>
+    </div>
+
+    <!-- cola -->
+    <div class="rise mt-5 overflow-hidden rounded-2xl border border-line bg-paper" style="animation-delay:.16s">
+      <div class="flex flex-wrap items-center justify-between gap-3 border-b border-line px-5 py-3.5">
+        <div><h2 class="text-[15px] font-semibold">Cola de acciones</h2><p class="text-[12px] text-inksoft">Últimas acciones encoladas y su estado.</p></div>
+        <div class="flex gap-1 rounded-lg border border-line p-1 text-[12.5px]">
+          <button class="rounded-md bg-forest px-2.5 py-1 font-medium text-cream">Todas</button>
+          <button class="rounded-md px-2.5 py-1 font-medium text-inksoft hover:bg-sand/40">Pendientes</button>
+          <button class="rounded-md px-2.5 py-1 font-medium text-rust hover:bg-sand/40">Fallidas</button>
+        </div>
+      </div>
+      <table class="w-full text-left text-[13.5px]">
+        <thead class="text-[11px] uppercase tracking-wider text-inksoft"><tr class="border-b border-line">
+          <th class="py-2.5 pl-5 font-medium">Acción</th><th class="py-2.5 font-medium">Destinatario</th><th class="py-2.5 font-medium">Programada</th><th class="py-2.5 font-medium">Intentos</th><th class="py-2.5 font-medium">Estado</th><th class="py-2.5 pr-5"></th>
+        </tr></thead>
+        <tbody id="q"></tbody>
+      </table>
+    </div>
+  </main>
+</div>
+
+<script>
+const sb={enviada:'bg-forest/10 text-forest',fallida:'bg-rust/15 text-rust',pendiente:'bg-ochre/15 text-ochre'};
+const rows=[
+  {a:'contenido_diario · día 5',who:'Marina López',t:'hoy 09:00',n:1,s:'enviada'},
+  {a:'followup_2',who:'Diego Fernández',t:'hoy 08:00',n:1,s:'enviada'},
+  {a:'contenido_diario · día 5',who:'Sofía Ramírez',t:'hoy 09:00',n:2,s:'pendiente'},
+  {a:'cta_final',who:'Lucas Méndez',t:'hoy 08:00',n:3,s:'fallida'},
+  {a:'alta_grupo',who:'Carmen Torres',t:'hoy 11:20',n:1,s:'pendiente'},
+  {a:'bienvenida',who:'Juan P. Soto',t:'ayer 22:31',n:1,s:'enviada'},
+  {a:'contenido_diario · día 4',who:'Nuria Cano',t:'ayer 09:00',n:2,s:'fallida'},
+];
+document.getElementById('q').innerHTML=rows.map(r=>`
+  <tr class="border-b border-line/70 last:border-0 hover:bg-cream/40">
+    <td class="py-3 pl-5"><code class="rounded bg-cream px-1.5 py-0.5 text-[12px] font-semibold text-forestdeep">${r.a}</code></td>
+    <td class="py-3">${r.who}</td>
+    <td class="py-3 text-inksoft">${r.t}</td>
+    <td class="py-3 ${r.n>1?'text-ochre':'text-inksoft'} tabular-nums">${r.n}</td>
+    <td class="py-3"><span class="rounded-full px-2.5 py-1 text-[12px] font-semibold ${sb[r.s]}">${r.s}</span></td>
+    <td class="py-3 pr-5 text-right">${r.s==='fallida'?'<button class="rounded-lg border border-line px-2.5 py-1 text-[12.5px] font-medium hover:bg-sand/40">Reintentar</button>':''}</td>
+  </tr>`).join('');
+</script>
+</body>
+</html>

@@ -47,6 +47,12 @@ Público: el **participante** (probablemente con poca alfabetización financiera
 - **Ya registrado / duplicado (Q6)**: "ya te tenemos registrado".
 - **Error de envío**: reintento claro.
 
+### P1.5 — Experiencia / testimonio (al terminar el reto)
+- **Propósito**: capturar `ExperienciaCompletada` (el mapa original lo menciona como "formulario Excel/Online").
+- **Elementos**: experiencia (texto), cambio percibido en el manejo del dinero (radio), aprendizaje (opcional), ¿recomendarías? y **consentimiento para uso del testimonio (Q25)** — público con nombre de pila vs anónimo/interno. Tokenizado, sin login.
+
+> **Alcance del participante (Q42 — RESUELTO): WhatsApp-first, SIN portal.** El participante NO tiene login ni área de cuenta ni carga de Excel (el Excel solo se entrega; no capturamos datos financieros). Superficies de participante en MVP: P1.1–P1.5 (+ condicionales: baja Q2, landing de replay Q1). Un portal con login/carga/cuenta sería expansión futura.
+
 ---
 
 ## SUPERFICIE 2 — Dashboard interno
