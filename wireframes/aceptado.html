@@ -29,14 +29,14 @@ tailwind.config={theme:{extend:{colors:{cream:'#FBF6EC',paper:'#FFFDF8',ink:'#21
     </div>
     <p class="rise mt-6 text-[12px] font-semibold uppercase tracking-wider text-ochre" style="animation-delay:.1s">Bienvenida · Cohorte de mayo</p>
     <h1 class="rise mt-2 font-display text-[2.5rem] font-medium leading-[1.05] tracking-[-0.01em]" style="animation-delay:.16s">¡Estás dentro, <span class="italic text-forest">Marina</span>!</h1>
-    <p class="rise mt-4 max-w-sm text-[15px] leading-relaxed text-inksoft" style="animation-delay:.22s">Ya formas parte del reto. El último paso es unirte al grupo de WhatsApp: ahí va a pasar todo durante los próximos 7 días.</p>
+    <p class="rise mt-4 max-w-sm text-[15px] leading-relaxed text-inksoft" style="animation-delay:.22s">Ya formas parte del reto y te hemos sumado al grupo de WhatsApp, donde va a pasar todo durante los próximos 7 días. Échale un vistazo: ahí te damos la bienvenida con un vídeo corto.</p>
   </div>
 
   <a href="#" class="rise mt-9 flex items-center justify-center gap-2.5 rounded-xl bg-forest px-5 py-4 text-[15px] font-semibold text-cream transition hover:bg-forestdeep active:scale-[.99]" style="animation-delay:.28s">
     <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 00-8.6 15l-1.4 5 5.1-1.3A10 10 0 1012 2zm0 18a8 8 0 01-4-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8 8 0 1112 20z"/></svg>
-    Unirme al grupo de WhatsApp
+    Abrir WhatsApp
   </a>
-  <p class="rise mt-2.5 text-center text-[12px] text-inksoft" style="animation-delay:.32s">Se abre WhatsApp. Te recibimos con un mensaje y un vídeo corto.</p>
+  <p class="rise mt-2.5 text-center text-[12px] text-inksoft" style="animation-delay:.32s">Abrimos tu WhatsApp para que veas el grupo y la bienvenida.</p>
 
   <div class="rise mt-9 rounded-2xl border border-line bg-paper p-5" style="animation-delay:.38s">
     <p class="text-[12px] font-semibold uppercase tracking-wider text-ochre">Lo que viene</p>
@@ -46,11 +46,11 @@ tailwind.config={theme:{extend:{colors:{cream:'#FBF6EC',paper:'#FFFDF8',ink:'#21
       <li class="flex gap-3"><span class="font-display text-forest">3</span><span class="text-[13.5px] leading-snug text-inksoft"><b class="text-ink">A tu ritmo.</b> Sin prisa y sin que nadie te venda nada.</span></li>
     </ol>
   </div>
-  <p class="rise mt-6 text-center text-[12px] text-inksoft" style="animation-delay:.44s">¿No se abrió el grupo? <a class="font-semibold text-forest underline-offset-2 hover:underline" href="#">Vuelve a intentarlo</a></p>
+  <p class="rise mt-6 text-center text-[12px] text-inksoft" style="animation-delay:.44s">¿No ves el grupo en tu WhatsApp? <a class="font-semibold text-forest underline-offset-2 hover:underline" href="#">Escríbenos</a></p>
 </main>
 <script>(function(){
 function T(m){var t=document.getElementById('__toast');if(!t){t=document.createElement('div');t.id='__toast';t.style.cssText='position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:9999;display:none;background:#0E3A2A;color:#FBF6EC;padding:10px 16px;border-radius:12px;font-size:13px;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,.18)';document.body.appendChild(t);}t.textContent=m;t.style.display='block';clearTimeout(t._t);t._t=setTimeout(function(){t.style.display='none';},2200);}
-[...document.querySelectorAll('a[href="#"]')].forEach(function(a){a.onclick=function(ev){ev.preventDefault();T(a.textContent.trim().toLowerCase().indexOf('grupo')>-1?'(demo) abriría WhatsApp':'(demo)');};});
+[...document.querySelectorAll('a[href="#"]')].forEach(function(a){a.onclick=function(ev){ev.preventDefault();T(a.textContent.trim().toLowerCase().indexOf('whatsapp')>-1?'(demo) abriría WhatsApp':'(demo)');};});
 })();</script>
 </body>
 </html>

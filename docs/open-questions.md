@@ -196,6 +196,15 @@ Con Modelo A la atribución es **texto libre** → el ranking de impulsores no a
 ### Q44 [DISEÑO] — Navegación/alcance por cohorte en el panel interno.
 El breadcrumb "Cohortes › Mayo 2026" era engañoso. **Decisión de diseño adoptada (prototipo):** un **selector de cohorte global** define el alcance de todo el panel (embudo, verificación, participantes, atribución), con opción **"Todas las cohortes"**; en vistas cross-cohorte se muestra la columna Cohorte. *Confirmar que es el modelo deseado vs. filtros por pantalla.*
 
+### Q47 [CLIENTE] 🔴 — Mecanismo de alta al grupo de WhatsApp (¿añadir o invitar?).
+Define la semántica de la acción `alta_grupo` y si la pantalla web "aceptado" tiene sentido.
+- **Modelo 1 — el equipo/automatizador AÑADE el número** (lo que dice el mapa: "lo añade al grupo"): la persona queda dentro sin hacer nada → NO hay acción de "unirse"; un CTA web "Unirme al grupo" es contradictorio.
+- **Modelo 2 — se envía un LINK DE INVITACIÓN** que la persona clickea: el link **llega por WhatsApp**, no por web → la pantalla web sería redundante/respaldo.
+- **Realidad técnica:** por privacidad, muchos usuarios restringen quién puede agregarlos a grupos → a menudo NO se puede añadir un número arbitrario, forzando el Modelo 2. **Confirmar con el cliente / probar con el automatizador elegido.**
+- **Implicación de diseño:** en un MVP WhatsApp-first, aceptación + alta + bienvenida ocurren en WhatsApp; la pantalla `aceptado.html` probablemente sobra (o queda solo como respaldo, sin un botón de "unirse" contradictorio). Relaciona Q42 (sin portal) y la nota de supuestos de P1.3.
+
+---
+
 ## Reglas de negocio y contenido (NO determinadas — del cliente)
 
 ### Q45 [CLIENTE] 🔴 — Reglas de follow-up (no solo la segmentación).
