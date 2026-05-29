@@ -4,7 +4,7 @@
 > ⚠️ Contiene un hallazgo que **cambia un supuesto de diseño** (tracking de video, ver §2).
 
 ## TL;DR — recomendación por categoría
-1. **WhatsApp:** **Whapi.Cloud** (no oficial) sí da las capacidades elegidas (grupos, 1:1, webhooks), **pero** no se pueden añadir números desconocidos directamente (anti-spam) → **hay que usar link de invitación**, y hay **riesgo real de baneo** (viola ToS). Plan B oficial: **Cloud API vía 360dialog** (€49/nº/mes) — pero **no automatiza grupos**.
+1. **WhatsApp:** evaluar **Kapso primero** (⭐ **somos partners**, **oficial** → sin ban-risk, mejor GDPR), pero su **Groups API está en waitlist** → confirmar capacidades y early access. **Whapi.Cloud** (no oficial) ya da grupos+1:1+webhooks, pero con **riesgo de baneo** y solo por **link de invitación** (no se añaden números desconocidos) → **fallback**. Cloud API oficial vía 360dialog (€49/nº/mes) no automatiza grupos.
 2. **Video con tracking por persona:** **Wistia** es lo más cercano (webhook `percent_watched` a 25/50/75/100% + `visitor.id` persistente), **pero NO acepta un token propio en el webhook** → rompe nuestro supuesto de "token en la URL del replay". Hay workarounds (email-gate / mapeo `visitor.id`↔token) o evaluar **api.video** (session tokens).
 3. **Pagos:** **Stripe + Bizum** (1,5% + €0,25, solo EUR, pago único) y **soporta metadata por token en el Checkout que vuelve en el webhook** → **confirma** nuestro matching pago↔participante (H5). Alternativa: **Mollie** (Bizum, sin cuota mensual).
 
@@ -20,6 +20,18 @@
 **Recomendación MVP:** seguir con el enfoque no-oficial que eligió el cliente (Whapi u equivalente), **distribuyendo link de invitación** (no altas directas), con el diseño **canal-agnóstico** ya previsto para migrar a oficial si crece o si hay baneo. **Verificar el precio real de Whapi** (lo refutado) y sus límites de envío antes de presupuestar.
 
 **Banderas:** riesgo de baneo del número (material para un servicio de pago); no se pueden añadir números desconocidos → onboarding por **link de invitación**.
+
+### Kapso — candidato preferente (⭐ somos partners)
+*(Fuente: web/docs de Kapso — una sola fuente vendor; NO pasó la verificación adversarial del resto del research. Confirmar directamente, que para eso somos partners.)*
+
+- **Qué es:** plataforma de WhatsApp para developers **sobre la Cloud API oficial de Meta** (Meta factura las conversaciones directo a tu WABA). Multi-tenant, almacenamiento de conversaciones, **funciones serverless (Cloudflare Workers)** para webhooks/lógica/workflows/agentes, workflow builder visual, SDK TypeScript.
+- **Pricing (vendor):** Free 2K msgs/mes · Pro $25/mes 100K · Platform $299/mes 1M; tarifas de Meta aparte; no-plantilla gratis en ventana 24h.
+- **Grupos:** **waitlist / "coming soon"** — la pieza central de nuestro funnel. **No disponible aún.**
+- **Plus partnership:** potencial **early access** al Groups API + pricing/soporte preferente.
+
+**Por qué importa:** al ser **oficial**, Kapso **elimina el ToS/ban-risk y mejora el cumplimiento GDPR** — justo la bandera roja más grande de Whapi. **Pero** el modelo oficial es 1:1 + plantillas; **el grupo depende del Groups API que aún no salió** → incertidumbre de capacidades y fecha. Para un MVP, depender de una API no liberada es un riesgo.
+
+**Recomendación revisada (WhatsApp):** **evaluar Kapso primero** (aprovechando la partnership) — confirmar qué hace y cuándo su Groups API (add/invite, envío al grupo, webhooks de eventos de grupo) y si hay early access. Si llega a tiempo, es la opción **compliant** preferida. **Whapi queda como fallback** no-oficial si necesitamos grupos ya y Kapso no está listo. El diseño canal-agnóstico permite cambiar sin tocar el core.
 
 ## 2) Video con tracking por persona  ⚠️ cambia un supuesto
 
@@ -60,6 +72,7 @@
 
 ## Fuentes principales (primarias)
 - WhatsApp/Whapi: whapi.cloud/whatsapp-groups-api, support.whapi.cloud (webhooks, add member), 360dialog.com/pricing
+- Kapso (partners): kapso.ai/platform, kapso.ai/pricing, kapso.ai/whatsapp-groups (waitlist), docs.kapso.ai/docs/whatsapp/pricing-faq
 - Video: docs.wistia.com/docs/webhooks, mux.com/docs/webhook-reference, docs.api.video (session tokens)
 - Pagos: docs.stripe.com/payments/bizum, stripe.com/.../local-payment-methods, docs.stripe.com/metadata/use-cases, mollie.com/payments/bizum
 - GDPR: aepd.es (nota de prensa sanción WhatsApp/Facebook), infobae (multa 70.000 € por alta a grupo sin consentimiento)

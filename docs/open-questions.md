@@ -206,6 +206,11 @@ Define la semántica de la acción `alta_grupo` y si la pantalla web "aceptado" 
 
 ---
 
+### Q48 [ACCIÓN] 🔴 — Confirmar con Kapso (somos partners) su WhatsApp Groups API.
+Kapso es oficial (Cloud API) → elimina ban-risk y mejora GDPR vs Whapi, y la partnership puede dar early access. Pero su **Groups API está en waitlist**. **Preguntar a Kapso:** ¿qué hace exactamente el Groups API (añadir/invitar miembros, enviar al grupo, webhooks de eventos de grupo)?, ¿fecha de disponibilidad?, ¿early access para partners?, ¿reemplaza de forma compliant la necesidad de Whapi? Relaciona Q47 (mecanismo de alta) y Q1 (grupo vs 1:1). Ver `integration-research.md §1`.
+
+---
+
 ## Reglas de negocio y contenido (NO determinadas — del cliente)
 
 ### Q45 [CLIENTE] 🔴 — Reglas de follow-up (no solo la segmentación).
