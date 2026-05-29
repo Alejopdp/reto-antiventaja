@@ -16,10 +16,11 @@
 **Impacto:** define si el "cerebro" tiene señal de comportamiento o no. Afecta `VideoTrackingPort`, las policies de follow-up y casi todo el valor del MVP.
 **Probable resolución:** híbrido — comunidad/dinámicas al grupo; replay y CTAs 1:1 tokenizados.
 
-### Q2 [CLIENTE] — Política de baja / opt-out (derecho a no recibir más mensajes).
-**Por qué es crítico:** legal y de reputación. Sin un mecanismo de baja, riesgo de spam/baneo (agravado por usar canal no oficial).
-**Impacto:** estado `BAJA` del participante + chequeo antes de encolar cualquier acción.
-**Default propuesto:** palabra clave de baja (ej. "BAJA") detectada por la capa no-code → evento `ParticipanteDadoDeBaja` → se frena toda acción futura.
+### Q2 [PARCIAL] — Política de baja / opt-out (derecho a no recibir más mensajes).
+**Por qué es crítico:** legal y de reputación. Sin baja, riesgo de spam/baneo (agravado por canal no oficial).
+**Impacto:** estado `BAJA` + chequeo antes de encolar cualquier acción.
+- ✅ **DECIDIDO:** Ops puede dar de baja desde el **panel** (botón en el detalle del participante, ya en el proto) → `DarDeBaja`.
+- 🔴 **PARA EL CLIENTE:** ¿damos además a los **usuarios** la opción de baja por WhatsApp (palabra clave tipo "BAJA")?
 
 ---
 
@@ -63,7 +64,8 @@ La persona fue aceptada pero no hace clic / no se une al grupo.
 ### Q12 [DISEÑO] — Persona que sale o es removida del grupo a mitad del reto.
 **Default propuesto:** evento `ParticipanteSalióDelGrupo` → pausar secuencia de contenido; Ops decide.
 
-### Q13 [CLIENTE] — Roles y permisos: ¿quién es "Ops"? ¿una o varias personas? ¿qué ve cada rol en el dashboard?
+### Q13 [PARCIAL] — Roles y permisos del panel.
+✅ **DECIDIDO:** lo operan **varias personas** (multi-usuario). 🔴 **Pendiente:** ¿hace falta **roles/permisos granulares** (Ops vs Organizador ven cosas distintas) o todos ven todo en MVP?
 
 ---
 
@@ -205,6 +207,12 @@ Define la semántica de la acción `alta_grupo` y si la pantalla web "aceptado" 
 - **GDPR (research):** añadir a alguien a un grupo sin consentimiento fue **multado con 70.000 €** en España → el alta exige consentimiento explícito (ya está el checkbox).
 
 ---
+
+### Q49 [DISEÑO/CLIENTE] — Bloqueo permanente de un número/usuario.
+Idea (de la verificación, Q7): que Ops pueda marcar un número/usuario como **bloqueado para siempre**, que **no pueda volver a registrarse**. **Factibilidad:** trivial con DB propia (lista de bloqueo / flag). **A confirmar con el cliente** si lo quiere y con qué criterio. Relaciona verificación/rechazo (Q8–Q9) y re-registro (Q6 dedup).
+
+### Q50 [CLIENTE] 🔴 — ¿Para qué usamos exactamente el grupo de WhatsApp y cómo?
+Antes de hablar con Kapso hay que **definir el rol del grupo**: ¿es solo comunidad/sensación de movimiento, o también canal de entrega de contenido? Esto determina qué necesitamos del Groups API de Kapso (Q48) y se cruza con Q1 (si el contenido va al grupo o 1:1). **Reflejar en la agenda con el cliente.**
 
 ### Q48 [ACCIÓN] 🔴 — Confirmar con Kapso (somos partners) su WhatsApp Groups API.
 Kapso es oficial (Cloud API) → elimina ban-risk y mejora GDPR vs Whapi, y la partnership puede dar early access. Pero su **Groups API está en waitlist**. **Preguntar a Kapso:** ¿qué hace exactamente el Groups API (añadir/invitar miembros, enviar al grupo, webhooks de eventos de grupo)?, ¿fecha de disponibilidad?, ¿early access para partners?, ¿reemplaza de forma compliant la necesidad de Whapi? Relaciona Q47 (mecanismo de alta) y Q1 (grupo vs 1:1). Ver `integration-research.md §1`.

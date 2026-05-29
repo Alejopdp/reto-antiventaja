@@ -7,16 +7,18 @@
 
 ## 🔴 Bloque 1 — Lo que más nos traba (decidir primero)
 
-**1. ¿El contenido y el replay se ven en el grupo o de forma individual?** `(Q1)`
-Si todo se manda al grupo (todos juntos), no podemos saber **quién vio qué** ni hacer seguimiento personalizado. El seguimiento automático por comportamiento (a quién no vio, lo invitamos distinto que a quien vio todo) **solo funciona si el replay se entrega de forma individual** a cada persona (con un enlace propio).
+**1. ¿El contenido y el replay se ven en el grupo o de forma individual?** `(Q1, H3)`
+Si todo se manda al grupo (todos juntos), no podemos saber **quién vio qué** ni hacer seguimiento personalizado. El seguimiento automático por comportamiento **solo funciona si el replay se entrega de forma individual** a cada persona (con un enlace propio).
 → *Recomendación: comunidad/dinámicas en el grupo, pero replay y videos clave individuales.*
+> **Lo que más nos preocupa resolver:** cómo **identificamos a la persona que abrió el replay** y cómo **medimos cuánto vio**. El research mostró que el host de video más común (Wistia) **no acepta un identificador propio** en su aviso — hay que resolver el approach (email-gate, mapeo, o un host como api.video que sí lo permita). Es un punto técnico a cerrar sí o sí.
 
-**2. WhatsApp: ¿con qué herramienta y cómo se suma la gente al grupo?** `(Q47, Q48)`
-- Técnicamente **no se puede agregar a un número desconocido a un grupo** (WhatsApp lo bloquea por anti-spam) → la gente se suma con un **enlace de invitación**. ¿Lo aceptan así?
-- Tenemos a **Kapso (somos partners)**, que es una vía **oficial** (sin riesgo de que bloqueen el número, y mejor para la ley de datos). Su función de **grupos está por lanzarse** → ¿avanzamos con ellos y preguntamos por acceso anticipado? La alternativa (no oficial, tipo Whapi) ya hace grupos pero **arriesga el baneo del número**.
+**2. WhatsApp: ¿para qué usamos el grupo, con qué herramienta y cómo se suma la gente?** `(Q47, Q48, Q50)`
+- **Primero, definir el rol del grupo:** ¿es solo comunidad / sensación de movimiento, o también canal por donde se entrega contenido? De esto depende qué necesitamos de la herramienta. *(Nuestra opción ideal es Kapso, pero antes de cerrar con ellos tenemos que tener clarísimo para qué y cómo usamos los grupos.)*
+- Tenemos a **Kapso (somos partners)**, vía **oficial** (sin riesgo de baneo, mejor para la ley de datos). Su función de **grupos está por lanzarse** → hay que **hablar con Kapso** (acceso anticipado + qué hace su API de grupos). Alternativa no oficial (Whapi) ya hace grupos pero **arriesga el baneo**.
+- Técnicamente **no se puede agregar a un número desconocido a un grupo** → la gente se suma con un **enlace de invitación**. ¿Lo aceptan así?
 
-**3. ¿Cómo se da de baja alguien que no quiere más mensajes?** `(Q2)`
-En España es obligatorio poder darse de baja. ¿Una palabra clave ("BAJA") por WhatsApp? Definámoslo.
+**3. Baja / dejar de recibir mensajes.** `(Q2)`
+Ya está definido que **Ops puede dar de baja a alguien desde el panel**. La pregunta para ustedes: ¿damos además a los **propios usuarios** la opción de baja por WhatsApp (palabra clave "BAJA")? *(En España es obligatorio que exista un mecanismo de baja.)*
 
 **4. El contenido del reto: ¿quién lo produce y qué alcance tiene?** `(Q46)`
 - Los videos/audios/textos de los 7 días, ¿los hacen ustedes? (Nosotros **no generamos contenido**, solo lo entregamos.) ¿Está listo?
@@ -32,8 +34,11 @@ En España es obligatorio poder darse de baja. ¿Una palabra clave ("BAJA") por 
 **6. "¿Quién te invitó?" e impulsores.** `(Q43, Q4)`
 Hoy es un campo de texto libre → el ranking de quién trae gente no agrupa bien (errores, apodos). ¿Tienen una **lista de impulsores** conocidos para asignar correctamente? ¿El que invita es siempre otro participante o puede ser alguien externo?
 
-**7. Verificación de inscriptos.** `(Q8, Q9, Q10)`
-¿Qué hace que acepten o rechacen a alguien? ¿Al rechazado se le avisa? ¿Puede volver a intentar? ¿Cuánto tardan en verificar (para avisarle a la persona qué esperar)?
+**7. Verificación de inscriptos.** `(Q8, Q9, Q49)`
+El alta la decide el operario (como en el prototipo). A definir con ustedes:
+- ¿Al rechazado se le avisa y puede volver a intentar? *(Nuestra propuesta: sí, se le avisa y puede reintentar.)*
+- ¿Quieren que el operario pueda **bloquear para siempre** a un número/usuario (que no pueda volver a registrarse nunca)? *(Es factible; definir si lo quieren y con qué criterio.)*
+- ¿Cuánto tardan en verificar? (para decirle a la persona qué esperar)
 
 **8. Datos del formulario.** `(Q3)`
 ¿Qué piden exactamente? (nombre, WhatsApp, email, quién invitó…). Cuantos menos campos, más gente se anota.
@@ -41,8 +46,8 @@ Hoy es un campo de texto libre → el ranking de quién trae gente no agrupa bie
 **9. Personas que repiten.** `(Q7)`
 Alguien que estuvo en una cohorte anterior y vuelve, ¿es la misma persona (con historial) o una nueva?
 
-**10. ¿Quién usa el panel interno?** `(Q13)`
-¿Una persona o varias? ¿Todas ven todo o hay roles?
+**10. Roles del panel interno.** `(Q13)`
+Ya sabemos que lo usan **varias personas**. La pregunta: ¿todas ven y hacen todo, o hace falta separar roles/permisos (ej. Ops vs responsable del negocio)?
 
 ---
 
