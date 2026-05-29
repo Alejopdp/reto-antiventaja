@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es-ES">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reto Antiventaja — ¡Estás dentro!</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..600&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script>
+tailwind.config={theme:{extend:{colors:{cream:'#FBF6EC',paper:'#FFFDF8',ink:'#211C15',inksoft:'#6B6256',forest:'#16513C',forestdeep:'#0E3A2A',ochre:'#C97B36',sand:'#EDE3CF',line:'#E4D8C1'},fontFamily:{display:['Fraunces','serif'],body:['"Hanken Grotesk"','sans-serif']}}}}
+</script>
+<style>
+  body{font-family:'Hanken Grotesk',sans-serif;background:#FBF6EC;color:#211C15}
+  .font-display{font-family:'Fraunces',serif}
+  .grain::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opacity:.04;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  .rise{opacity:0;transform:translateY(14px);animation:rise .7s cubic-bezier(.2,.7,.2,1) forwards}
+  @keyframes rise{to{opacity:1;transform:none}}
+  @keyframes pop{0%{transform:scale(.6);opacity:0}60%{transform:scale(1.08)}100%{transform:scale(1);opacity:1}}
+</style>
+</head>
+<body class="grain min-h-screen antialiased selection:bg-forest selection:text-cream">
+<main class="mx-auto flex min-h-screen max-w-md flex-col px-5 pb-10 pt-16">
+  <header class="rise flex items-center gap-2.5"><div class="flex h-8 w-8 items-center justify-center rounded-lg bg-forest text-cream font-display text-lg leading-none">a</div><div class="text-[13px] font-semibold tracking-tight">Reto Antiventaja</div></header>
+
+  <div class="mt-10 flex flex-col items-center text-center">
+    <div class="flex h-20 w-20 items-center justify-center rounded-3xl bg-forest text-cream" style="animation:pop .6s cubic-bezier(.2,.8,.2,1) forwards">
+      <svg class="h-10 w-10" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <p class="rise mt-6 text-[12px] font-semibold uppercase tracking-wider text-ochre" style="animation-delay:.1s">Bienvenida · Cohorte de mayo</p>
+    <h1 class="rise mt-2 font-display text-[2.5rem] font-medium leading-[1.05] tracking-[-0.01em]" style="animation-delay:.16s">¡Estás dentro, <span class="italic text-forest">Marina</span>!</h1>
+    <p class="rise mt-4 max-w-sm text-[15px] leading-relaxed text-inksoft" style="animation-delay:.22s">Ya formas parte del reto. El último paso es unirte al grupo de WhatsApp: ahí va a pasar todo durante los próximos 7 días.</p>
+  </div>
+
+  <a href="#" class="rise mt-9 flex items-center justify-center gap-2.5 rounded-xl bg-forest px-5 py-4 text-[15px] font-semibold text-cream transition hover:bg-forestdeep active:scale-[.99]" style="animation-delay:.28s">
+    <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 00-8.6 15l-1.4 5 5.1-1.3A10 10 0 1012 2zm0 18a8 8 0 01-4-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8 8 0 1112 20z"/></svg>
+    Unirme al grupo de WhatsApp
+  </a>
+  <p class="rise mt-2.5 text-center text-[12px] text-inksoft" style="animation-delay:.32s">Se abre WhatsApp. Te recibimos con un mensaje y un vídeo corto.</p>
+
+  <div class="rise mt-9 rounded-2xl border border-line bg-paper p-5" style="animation-delay:.38s">
+    <p class="text-[12px] font-semibold uppercase tracking-wider text-ochre">Lo que viene</p>
+    <ol class="mt-3.5 space-y-3.5">
+      <li class="flex gap-3"><span class="font-display text-forest">1</span><span class="text-[13.5px] leading-snug text-inksoft"><b class="text-ink">Calentamos motores.</b> Antes de arrancar te mandamos un par de cosas para preparar el terreno.</span></li>
+      <li class="flex gap-3"><span class="font-display text-forest">2</span><span class="text-[13.5px] leading-snug text-inksoft"><b class="text-ink">7 días, un paso por día.</b> Contenido corto, una herramienta para tus gastos y la comunidad.</span></li>
+      <li class="flex gap-3"><span class="font-display text-forest">3</span><span class="text-[13.5px] leading-snug text-inksoft"><b class="text-ink">A tu ritmo.</b> Sin prisa y sin que nadie te venda nada.</span></li>
+    </ol>
+  </div>
+  <p class="rise mt-6 text-center text-[12px] text-inksoft" style="animation-delay:.44s">¿No se abrió el grupo? <a class="font-semibold text-forest underline-offset-2 hover:underline" href="#">Vuelve a intentarlo</a></p>
+</main>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reto Antiventaja — Prototipos</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..600&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>body{font-family:'Hanken Grotesk',sans-serif;background:#FBF6EC;color:#211C15}.font-display{font-family:'Fraunces',serif}</style>
+</head>
+<body class="min-h-screen antialiased">
+<main class="mx-auto max-w-3xl px-6 py-16">
+  <div class="flex items-center gap-2.5"><div class="flex h-8 w-8 items-center justify-center rounded-lg bg-[#16513C] text-[#FBF6EC] font-display text-lg leading-none">a</div><span class="text-[13px] font-semibold">Reto Antiventaja</span></div>
+  <h1 class="mt-8 font-display text-4xl font-medium tracking-[-0.01em]">Prototipos del MVP</h1>
+  <p class="mt-3 max-w-xl text-[15px] leading-relaxed text-[#6B6256]">Dirección estética: <i>claridad financiera cálida</i>. Prototipos throwaway (HTML + Tailwind) para validar flujo y dirección antes de construir la app real.</p>
+  <div class="mt-10 grid gap-4 sm:grid-cols-2">
+    <a href="registro.html" class="group rounded-2xl border border-[#E4D8C1] bg-[#FFFDF8] p-6 transition hover:border-[#16513C]/40 hover:shadow-md">
+      <div class="text-[11px] font-semibold uppercase tracking-wider text-[#C97B36]">Público · móvil</div>
+      <h2 class="mt-2 font-display text-2xl">P1.1 — Registro</h2>
+      <p class="mt-2 text-[13.5px] leading-snug text-[#6B6256]">Formulario (Modelo A) con validación on-blur + estado “estamos verificando”.</p>
+      <span class="mt-4 inline-flex items-center gap-1 text-[13px] font-semibold text-[#16513C]">Ver pantalla →</span>
+    </a>
+    <a href="aceptado.html" class="group rounded-2xl border border-[#E4D8C1] bg-[#FFFDF8] p-6 transition hover:border-[#16513C]/40 hover:shadow-md">
+      <div class="text-[11px] font-semibold uppercase tracking-wider text-[#C97B36]">Público · móvil</div>
+      <h2 class="mt-2 font-display text-2xl">P1.3 — Aceptado → grupo</h2>
+      <p class="mt-2 text-[13.5px] leading-snug text-[#6B6256]">Bienvenida y botón para unirse al grupo de WhatsApp.</p>
+      <span class="mt-4 inline-flex items-center gap-1 text-[13px] font-semibold text-[#16513C]">Ver pantalla →</span>
+    </a>
+    <a href="dashboard-overview.html" class="group rounded-2xl border border-[#E4D8C1] bg-[#FFFDF8] p-6 transition hover:border-[#16513C]/40 hover:shadow-md">
+      <div class="text-[11px] font-semibold uppercase tracking-wider text-[#C97B36]">Interno · desktop</div>
+      <h2 class="mt-2 font-display text-2xl">P2.1 — Embudo</h2>
+      <p class="mt-2 text-[13.5px] leading-snug text-[#6B6256]">Overview: recorrido de la cohorte, KPIs, segmentos e impulsores.</p>
+      <span class="mt-4 inline-flex items-center gap-1 text-[13px] font-semibold text-[#16513C]">Ver pantalla →</span>
+    </a>
+    <a href="dashboard-verificacion.html" class="group rounded-2xl border border-[#E4D8C1] bg-[#FFFDF8] p-6 transition hover:border-[#16513C]/40 hover:shadow-md">
+      <div class="text-[11px] font-semibold uppercase tracking-wider text-[#C97B36]">Interno · desktop</div>
+      <h2 class="mt-2 font-display text-2xl">P2.2 — Verificación ⭐</h2>
+      <p class="mt-2 text-[13.5px] leading-snug text-[#6B6256]">Bandeja de Ops: aceptar/rechazar individual y en lote.</p>
+      <span class="mt-4 inline-flex items-center gap-1 text-[13px] font-semibold text-[#16513C]">Ver pantalla →</span>
+    </a>
+    <a href="dashboard-participante.html" class="group rounded-2xl border border-[#E4D8C1] bg-[#FFFDF8] p-6 transition hover:border-[#16513C]/40 hover:shadow-md sm:col-span-2">
+      <div class="text-[11px] font-semibold uppercase tracking-wider text-[#C97B36]">Interno · desktop</div>
+      <h2 class="mt-2 font-display text-2xl">P2.4 — Detalle de participante</h2>
+      <p class="mt-2 text-[13.5px] leading-snug text-[#6B6256]">Timeline del event log + atribución + replay + acciones de salida.</p>
+      <span class="mt-4 inline-flex items-center gap-1 text-[13px] font-semibold text-[#16513C]">Ver pantalla →</span>
+    </a>
+    <a href="dashboard-participantes.html" class="group rounded-2xl border border-[#E4D8C1] bg-[#FFFDF8] p-6 transition hover:border-[#16513C]/40 hover:shadow-md">
+      <div class="text-[11px] font-semibold uppercase tracking-wider text-[#C97B36]">Interno · desktop</div>
+      <h2 class="mt-2 font-display text-2xl">P2.3 — Lista</h2>
+      <p class="mt-2 text-[13.5px] leading-snug text-[#6B6256]">Participantes filtrables por estado, con búsqueda y paginación.</p>
+      <span class="mt-4 inline-flex items-center gap-1 text-[13px] font-semibold text-[#16513C]">Ver pantalla →</span>
+    </a>
+    <a href="dashboard-atribucion.html" class="group rounded-2xl border border-[#E4D8C1] bg-[#FFFDF8] p-6 transition hover:border-[#16513C]/40 hover:shadow-md">
+      <div class="text-[11px] font-semibold uppercase tracking-wider text-[#C97B36]">Interno · desktop</div>
+      <h2 class="mt-2 font-display text-2xl">P2.6 — Atribución</h2>
+      <p class="mt-2 text-[13.5px] leading-snug text-[#6B6256]">Ranking de impulsores + bandeja de atribuciones sin resolver.</p>
+      <span class="mt-4 inline-flex items-center gap-1 text-[13px] font-semibold text-[#16513C]">Ver pantalla →</span>
+    </a>
+    <a href="dashboard-cohortes.html" class="group rounded-2xl border border-[#E4D8C1] bg-[#FFFDF8] p-6 transition hover:border-[#16513C]/40 hover:shadow-md">
+      <div class="text-[11px] font-semibold uppercase tracking-wider text-[#C97B36]">Interno · desktop</div>
+      <h2 class="mt-2 font-display text-2xl">P2.7 — Cohortes</h2>
+      <p class="mt-2 text-[13.5px] leading-snug text-[#6B6256]">Lista y configuración de cada edición del reto.</p>
+      <span class="mt-4 inline-flex items-center gap-1 text-[13px] font-semibold text-[#16513C]">Ver pantalla →</span>
+    </a>
+    <a href="estados-secundarios.html" class="group rounded-2xl border border-[#E4D8C1] bg-[#FFFDF8] p-6 transition hover:border-[#16513C]/40 hover:shadow-md">
+      <div class="text-[11px] font-semibold uppercase tracking-wider text-[#C97B36]">Público · móvil</div>
+      <h2 class="mt-2 font-display text-2xl">P1.4 — Estados</h2>
+      <p class="mt-2 text-[13.5px] leading-snug text-[#6B6256]">Rechazado · ya registrado · error (con switch para verlos).</p>
+      <span class="mt-4 inline-flex items-center gap-1 text-[13px] font-semibold text-[#16513C]">Ver pantalla →</span>
+    </a>
+  </div>
+  <p class="mt-10 text-[12.5px] text-[#6B6256]">9 pantallas — cubren el flujo público y el panel interno del MVP.</p>
+</main>
+</body>
+</html>

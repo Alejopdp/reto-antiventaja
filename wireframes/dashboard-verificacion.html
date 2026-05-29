@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es-ES">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reto Antiventaja — Verificación</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script>
+tailwind.config = { theme: { extend: {
+  colors: { cream:'#FBF6EC', paper:'#FFFDF8', ink:'#211C15', inksoft:'#6B6256', forest:'#16513C', forestdeep:'#0E3A2A', ochre:'#C97B36', sand:'#EDE3CF', line:'#E4D8C1', rust:'#A8462E' },
+  fontFamily: { display:['Fraunces','serif'], body:['"Hanken Grotesk"','sans-serif'] },
+}}}
+</script>
+<style>
+  body{font-family:'Hanken Grotesk',sans-serif;background:#FBF6EC;color:#211C15}
+  .font-display{font-family:'Fraunces',serif}
+  .rise{opacity:0;transform:translateY(10px);animation:rise .55s cubic-bezier(.2,.7,.2,1) forwards}
+  @keyframes rise{to{opacity:1;transform:none}}
+  tr.row{transition:background .15s}
+  tr.row:hover{background:#FFFDF8}
+  .ck:checked + .ckbox{background:#16513C;border-color:#16513C}
+  .ck:checked + .ckbox svg{opacity:1}
+  .leaving{animation:leave .35s ease forwards}
+  @keyframes leave{to{opacity:0;transform:translateX(20px);height:0}}
+  ::selection{background:#16513C;color:#FBF6EC}
+</style>
+</head>
+<body class="min-h-screen antialiased">
+
+<div class="flex min-h-screen">
+  <!-- SIDEBAR -->
+  <aside class="hidden w-60 flex-none flex-col border-r border-line bg-paper px-4 py-5 lg:flex">
+    <div class="flex items-center gap-2.5 px-2">
+      <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-forest text-cream font-display text-lg leading-none">a</div>
+      <div class="text-[13px] font-semibold tracking-tight leading-none">Reto Antiventaja<br><span class="text-[11px] font-normal text-inksoft">Panel interno</span></div>
+    </div>
+    <nav class="mt-7 space-y-0.5 text-[13.5px]">
+      <a class="flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-inksoft hover:bg-sand/50" href="dashboard-overview.html"><span>📊</span> Embudo</a>
+      <a class="flex items-center justify-between rounded-lg bg-forest/10 px-2.5 py-2 font-semibold text-forest" href="dashboard-verificacion.html"><span class="flex items-center gap-2.5"><span>✅</span> Verificación</span><span class="rounded-full bg-forest px-1.5 py-0.5 text-[11px] font-semibold text-cream">12</span></a>
+      <a class="flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-inksoft hover:bg-sand/50" href="dashboard-participantes.html"><span>👥</span> Participantes</a>
+      <a class="flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-inksoft hover:bg-sand/50" href="dashboard-atribucion.html"><span>🌱</span> Atribución</a>
+      <a class="flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-inksoft hover:bg-sand/50" href="dashboard-cohortes.html"><span>🗂️</span> Cohortes</a>
+      <a class="flex items-center justify-between rounded-lg px-2.5 py-2 text-inksoft hover:bg-sand/50" href="#"><span class="flex items-center gap-2.5"><span>📡</span> Salud</span><span class="rounded-full bg-rust/15 px-1.5 py-0.5 text-[11px] font-semibold text-rust">3</span></a>
+    </nav>
+    <div class="mt-auto flex items-center gap-2.5 rounded-lg border border-line p-2.5">
+      <div class="flex h-8 w-8 items-center justify-center rounded-full bg-ochre/20 text-[13px] font-semibold text-ochre">VG</div>
+      <div class="text-[12px] leading-tight"><p class="font-semibold">Valentina G.</p><p class="text-inksoft">Operaciones</p></div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="flex-1 px-5 py-6 lg:px-8">
+    <!-- header -->
+    <div class="rise flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <div class="flex items-center gap-2 text-[12px] text-inksoft"><span>Cohortes</span><span>›</span><span class="font-medium text-ink">Mayo 2026</span></div>
+        <h1 class="mt-1 font-display text-[2rem] font-medium leading-none tracking-[-0.01em]">Verificación</h1>
+      </div>
+      <button class="flex items-center gap-2 rounded-lg border border-line bg-paper px-3.5 py-2 text-[13px] font-medium hover:bg-sand/40">
+        Cohorte: Mayo 2026
+        <svg class="h-3.5 w-3.5 text-inksoft" viewBox="0 0 12 12" fill="none"><path d="M3 5l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+
+    <!-- EMBUDO -->
+    <div class="rise mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5" style="animation-delay:.05s">
+      <div class="rounded-xl border border-line bg-paper p-3.5">
+        <p class="text-[11px] uppercase tracking-wider text-inksoft">Registrados</p>
+        <p class="mt-1 font-display text-2xl">318</p>
+      </div>
+      <div class="rounded-xl border border-line bg-paper p-3.5">
+        <p class="text-[11px] uppercase tracking-wider text-inksoft">Aceptados</p>
+        <p class="mt-1 font-display text-2xl">271 <span class="text-[12px] font-body font-medium text-inksoft">85%</span></p>
+      </div>
+      <div class="rounded-xl border border-line bg-paper p-3.5">
+        <p class="text-[11px] uppercase tracking-wider text-inksoft">En grupo</p>
+        <p class="mt-1 font-display text-2xl">248 <span class="text-[12px] font-body font-medium text-inksoft">78%</span></p>
+      </div>
+      <div class="rounded-xl border border-line bg-paper p-3.5">
+        <p class="text-[11px] uppercase tracking-wider text-inksoft">Vieron replay</p>
+        <p class="mt-1 font-display text-2xl">163 <span class="text-[12px] font-body font-medium text-inksoft">51%</span></p>
+      </div>
+      <div class="rounded-xl border border-forest/30 bg-forest/5 p-3.5">
+        <p class="text-[11px] uppercase tracking-wider text-forest">Convertidos P60</p>
+        <p class="mt-1 font-display text-2xl text-forestdeep">54 <span class="text-[12px] font-body font-medium text-forest">17%</span></p>
+      </div>
+    </div>
+
+    <!-- BANDEJA -->
+    <div class="rise mt-7 overflow-hidden rounded-2xl border border-line bg-paper" style="animation-delay:.1s">
+      <div class="flex flex-wrap items-center justify-between gap-3 border-b border-line px-5 py-3.5">
+        <div>
+          <h2 class="text-[15px] font-semibold">Pendientes de verificar</h2>
+          <p class="text-[12px] text-inksoft">Confirmá los datos antes de aceptar al reto. <span class="font-medium text-ink">12 en espera</span> · más antiguos primero.</p>
+        </div>
+        <div class="flex items-center gap-2 text-[13px]">
+          <div class="relative">
+            <svg class="absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-inksoft" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.5"/><path d="M11 11l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            <input placeholder="Buscar…" class="w-40 rounded-lg border border-line bg-cream/50 py-1.5 pl-8 pr-2 focus:border-forest focus:outline-none">
+          </div>
+        </div>
+      </div>
+
+      <!-- barra de selección (bulk) -->
+      <div id="bulkbar" class="hidden items-center justify-between gap-3 border-b border-line bg-forest/5 px-5 py-2.5">
+        <span class="text-[13px] font-medium text-forestdeep"><span id="selcount">0</span> seleccionados</span>
+        <div class="flex items-center gap-2">
+          <button onclick="bulkAccept()" class="flex items-center gap-1.5 rounded-lg bg-forest px-3 py-1.5 text-[13px] font-semibold text-cream hover:bg-forestdeep">
+            <svg class="h-3.5 w-3.5" viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3.5 3.5L13 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Aceptar seleccionados
+          </button>
+          <button onclick="clearSel()" class="rounded-lg border border-line px-3 py-1.5 text-[13px] font-medium hover:bg-sand/40">Cancelar</button>
+        </div>
+      </div>
+
+      <table class="w-full text-left text-[13.5px]">
+        <thead class="text-[11px] uppercase tracking-wider text-inksoft">
+          <tr class="border-b border-line">
+            <th class="w-10 py-2.5 pl-5"><label><input type="checkbox" id="all" onchange="toggleAll(this)" class="ck peer sr-only"><span class="ckbox flex h-4 w-4 items-center justify-center rounded border border-line bg-paper"><svg class="h-2.5 w-2.5 text-cream opacity-0" viewBox="0 0 12 12" fill="none"><path d="M2 6l2.5 2.5L10 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></label></th>
+            <th class="py-2.5 font-medium">Persona</th>
+            <th class="py-2.5 font-medium">WhatsApp</th>
+            <th class="py-2.5 font-medium">¿Quién la invitó?</th>
+            <th class="py-2.5 font-medium">Registro</th>
+            <th class="py-2.5 pr-5 text-right font-medium">Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+
+      <!-- estado vacío (oculto) -->
+      <div id="empty" class="hidden flex-col items-center justify-center px-5 py-16 text-center">
+        <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-sand"><span class="text-2xl">🌿</span></div>
+        <p class="mt-4 font-display text-xl">Todo al día</p>
+        <p class="mt-1 text-[13px] text-inksoft">No hay registros esperando verificación.</p>
+      </div>
+    </div>
+    <p class="mt-3 text-[12px] text-inksoft">Consejo: revisa que el WhatsApp y el nombre sean reales antes de aceptar. Ante la duda, rechaza con motivo.</p>
+  </main>
+</div>
+
+<!-- MODAL RECHAZO -->
+<div id="modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-ink/30 p-4 backdrop-blur-sm">
+  <div class="w-full max-w-sm rounded-2xl border border-line bg-paper p-5 shadow-xl">
+    <h3 class="font-display text-xl">Rechazar registro</h3>
+    <p class="mt-1 text-[13px] text-inksoft">Vas a rechazar a <b id="rej-name" class="text-ink"></b>. Contanos por qué (queda registrado).</p>
+    <div class="mt-4 space-y-1.5 text-[13.5px]">
+      <label class="flex items-center gap-2.5 rounded-lg border border-line px-3 py-2 hover:bg-sand/30"><input type="radio" name="motivo" class="accent-forest" checked> Datos incompletos o falsos</label>
+      <label class="flex items-center gap-2.5 rounded-lg border border-line px-3 py-2 hover:bg-sand/30"><input type="radio" name="motivo" class="accent-forest"> WhatsApp inválido</label>
+      <label class="flex items-center gap-2.5 rounded-lg border border-line px-3 py-2 hover:bg-sand/30"><input type="radio" name="motivo" class="accent-forest"> Duplicado</label>
+      <label class="flex items-center gap-2.5 rounded-lg border border-line px-3 py-2 hover:bg-sand/30"><input type="radio" name="motivo" class="accent-forest"> Otro</label>
+    </div>
+    <div class="mt-5 flex justify-end gap-2">
+      <button onclick="closeModal()" class="rounded-lg border border-line px-4 py-2 text-[13px] font-medium hover:bg-sand/40">Cancelar</button>
+      <button onclick="confirmReject()" class="rounded-lg bg-rust px-4 py-2 text-[13px] font-semibold text-cream hover:opacity-90">Rechazar</button>
+    </div>
+  </div>
+</div>
+
+<!-- toast -->
+<div id="toast" class="fixed bottom-5 left-1/2 z-[70] hidden -translate-x-1/2 items-center gap-2 rounded-xl bg-forestdeep px-4 py-2.5 text-[13px] font-medium text-cream shadow-lg"></div>
+
+<script>
+const data = [
+  {id:1, n:'Marina López',    ini:'ML', wpp:'+34 612 345 678', inv:'Carla Giménez', res:true,  t:'hace 3 h'},
+  {id:2, n:'Diego Fernández', ini:'DF', wpp:'+34 645 112 889', inv:'Carla Giménez', res:true,  t:'hace 3 h'},
+  {id:3, n:'Sofía Ramírez',   ini:'SR', wpp:'+34 678 556 123', inv:'la chica del gimnasio', res:false, t:'hace 4 h'},
+  {id:4, n:'Juan P. Soto',    ini:'JS', wpp:'+34 622 411 203', inv:'Martín Rey',      res:true,  t:'hace 5 h'},
+  {id:5, n:'Carmen Torres',   ini:'CT', wpp:'+34 699 338 771', inv:'—',               res:null,  t:'hace 6 h'},
+  {id:6, n:'Lucas Méndez',    ini:'LM', wpp:'+34 634 552 908', inv:'Martín Rey',      res:true,  t:'hace 7 h'},
+  {id:7, n:'Ana Díaz',        ini:'AD', wpp:'+34 611 224 466', inv:'Carla G',          res:false, t:'ayer'},
+];
+let pending = null;
+
+function invChip(p){
+  if(p.inv==='—' || p.res===null) return `<span class="inline-flex items-center gap-1.5 rounded-full bg-rust/10 px-2.5 py-1 text-[12px] text-rust">⚠ sin atribuir</span>`;
+  if(p.res) return `<span class="inline-flex items-center gap-1.5 rounded-full bg-forest/10 px-2.5 py-1 text-[12px] text-forest">✓ ${p.inv}</span>`;
+  return `<span class="inline-flex items-center gap-1.5 rounded-full bg-ochre/15 px-2.5 py-1 text-[12px] text-ochre" title="texto sin resolver">“${p.inv}”</span>`;
+}
+function render(){
+  const tb=document.getElementById('tbody');
+  tb.innerHTML = data.map(p=>`
+   <tr class="row border-b border-line/70 last:border-0" id="r${p.id}">
+     <td class="py-3 pl-5"><label><input type="checkbox" class="ck peer sr-only rowck" data-id="${p.id}" onchange="updateSel()"><span class="ckbox flex h-4 w-4 items-center justify-center rounded border border-line bg-paper"><svg class="h-2.5 w-2.5 text-cream opacity-0" viewBox="0 0 12 12" fill="none"><path d="M2 6l2.5 2.5L10 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></label></td>
+     <td class="py-3"><div class="flex items-center gap-2.5"><span class="flex h-8 w-8 flex-none items-center justify-center rounded-full bg-sand text-[12px] font-semibold text-forestdeep">${p.ini}</span><span class="font-medium">${p.n}</span></div></td>
+     <td class="py-3 text-inksoft tabular-nums">${p.wpp}</td>
+     <td class="py-3">${invChip(p)}</td>
+     <td class="py-3 text-inksoft">${p.t}</td>
+     <td class="py-3 pr-5"><div class="flex justify-end gap-1.5">
+        <button onclick="accept(${p.id})" class="flex items-center gap-1.5 rounded-lg bg-forest px-2.5 py-1.5 text-[12.5px] font-semibold text-cream hover:bg-forestdeep">Aceptar</button>
+        <button onclick="openReject(${p.id})" class="rounded-lg border border-line px-2.5 py-1.5 text-[12.5px] font-medium text-inksoft hover:border-rust hover:text-rust">Rechazar</button>
+     </div></td>
+   </tr>`).join('');
+  updateSel();
+  document.getElementById('empty').classList.toggle('hidden', data.length>0);
+  document.getElementById('empty').classList.toggle('flex', data.length===0);
+}
+function removeRow(id, msg){
+  const r=document.getElementById('r'+id); if(!r)return;
+  r.classList.add('leaving');
+  setTimeout(()=>{ const i=data.findIndex(d=>d.id===id); if(i>-1)data.splice(i,1); render(); }, 320);
+  toast(msg);
+}
+function accept(id){ const p=data.find(d=>d.id===id); removeRow(id,`✓ ${p.n} aceptada — se pidió el alta al grupo`); }
+function openReject(id){ pending=id; document.getElementById('rej-name').textContent=data.find(d=>d.id===id).n; document.getElementById('modal').classList.remove('hidden'); document.getElementById('modal').classList.add('flex'); }
+function closeModal(){ document.getElementById('modal').classList.add('hidden'); document.getElementById('modal').classList.remove('flex'); }
+function confirmReject(){ const p=data.find(d=>d.id===pending); closeModal(); removeRow(pending,`${p.n} rechazada`); }
+function selected(){ return [...document.querySelectorAll('.rowck:checked')].map(c=>+c.dataset.id); }
+function updateSel(){ const s=selected(); document.getElementById('selcount').textContent=s.length; const bar=document.getElementById('bulkbar'); bar.classList.toggle('hidden', s.length===0); bar.classList.toggle('flex', s.length>0); }
+function toggleAll(el){ document.querySelectorAll('.rowck').forEach(c=>c.checked=el.checked); updateSel(); }
+function clearSel(){ document.querySelectorAll('.rowck').forEach(c=>c.checked=false); document.getElementById('all').checked=false; updateSel(); }
+function bulkAccept(){ const s=selected(); s.forEach((id,i)=>setTimeout(()=>accept(id), i*80)); toast(`✓ ${s.length} aceptados`); }
+function toast(m){ const t=document.getElementById('toast'); t.textContent=m; t.classList.remove('hidden'); t.classList.add('flex'); clearTimeout(t._t); t._t=setTimeout(()=>{t.classList.add('hidden');t.classList.remove('flex')},2200); }
+render();
+</script>
+</body>
+</html>

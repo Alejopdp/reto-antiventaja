@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es-ES">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reto Antiventaja — Participantes</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script>
+tailwind.config={theme:{extend:{colors:{cream:'#FBF6EC',paper:'#FFFDF8',ink:'#211C15',inksoft:'#6B6256',forest:'#16513C',forestdeep:'#0E3A2A',ochre:'#C97B36',sand:'#EDE3CF',line:'#E4D8C1',rust:'#A8462E'},fontFamily:{display:['Fraunces','serif'],body:['"Hanken Grotesk"','sans-serif']}}}}
+</script>
+<style>
+  body{font-family:'Hanken Grotesk',sans-serif;background:#FBF6EC;color:#211C15}
+  .font-display{font-family:'Fraunces',serif}
+  .rise{opacity:0;transform:translateY(10px);animation:rise .5s cubic-bezier(.2,.7,.2,1) forwards}
+  @keyframes rise{to{opacity:1;transform:none}}
+  tr.row{transition:background .15s}tr.row:hover{background:#FFFDF8;cursor:pointer}
+  ::selection{background:#16513C;color:#FBF6EC}
+</style>
+</head>
+<body class="min-h-screen antialiased">
+<div class="flex min-h-screen">
+  <aside class="hidden w-60 flex-none flex-col border-r border-line bg-paper px-4 py-5 lg:flex">
+    <div class="flex items-center gap-2.5 px-2"><div class="flex h-8 w-8 items-center justify-center rounded-lg bg-forest text-cream font-display text-lg leading-none">a</div><div class="text-[13px] font-semibold tracking-tight leading-none">Reto Antiventaja<br><span class="text-[11px] font-normal text-inksoft">Panel interno</span></div></div>
+    <nav class="mt-7 space-y-0.5 text-[13.5px]">
+      <a class="flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-inksoft hover:bg-sand/50" href="dashboard-overview.html"><span>📊</span> Embudo</a>
+      <a class="flex items-center justify-between rounded-lg px-2.5 py-2 text-inksoft hover:bg-sand/50" href="dashboard-verificacion.html"><span class="flex items-center gap-2.5"><span>✅</span> Verificación</span><span class="rounded-full bg-forest px-1.5 py-0.5 text-[11px] font-semibold text-cream">12</span></a>
+      <a class="flex items-center gap-2.5 rounded-lg bg-forest/10 px-2.5 py-2 font-semibold text-forest" href="#"><span>👥</span> Participantes</a>
+      <a class="flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-inksoft hover:bg-sand/50" href="dashboard-atribucion.html"><span>🌱</span> Atribución</a>
+      <a class="flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-inksoft hover:bg-sand/50" href="dashboard-cohortes.html"><span>🗂️</span> Cohortes</a>
+      <a class="flex items-center justify-between rounded-lg px-2.5 py-2 text-inksoft hover:bg-sand/50" href="#"><span class="flex items-center gap-2.5"><span>📡</span> Salud</span><span class="rounded-full bg-rust/15 px-1.5 py-0.5 text-[11px] font-semibold text-rust">3</span></a>
+    </nav>
+    <div class="mt-auto flex items-center gap-2.5 rounded-lg border border-line p-2.5"><div class="flex h-8 w-8 items-center justify-center rounded-full bg-ochre/20 text-[13px] font-semibold text-ochre">VG</div><div class="text-[12px] leading-tight"><p class="font-semibold">Valentina G.</p><p class="text-inksoft">Operaciones</p></div></div>
+  </aside>
+
+  <main class="flex-1 px-5 py-6 lg:px-8">
+    <div class="rise flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <div class="flex items-center gap-2 text-[12px] text-inksoft"><span>Cohortes</span><span>›</span><span class="font-medium text-ink">Mayo 2026</span></div>
+        <h1 class="mt-1 font-display text-[2rem] font-medium leading-none tracking-[-0.01em]">Participantes</h1>
+        <p class="mt-1.5 text-[13px] text-inksoft">318 personas en esta cohorte</p>
+      </div>
+      <button class="flex items-center gap-2 rounded-lg border border-line bg-paper px-3.5 py-2 text-[13px] font-medium hover:bg-sand/40">Exportar CSV</button>
+    </div>
+
+    <!-- filtros -->
+    <div class="rise mt-5 flex flex-wrap items-center gap-2" style="animation-delay:.05s">
+      <div class="flex flex-wrap gap-1 rounded-xl border border-line bg-paper p-1 text-[13px]" id="statefilter">
+        <button data-f="todos" class="rounded-lg bg-forest px-3 py-1.5 font-medium text-cream">Todos <span class="opacity-70">318</span></button>
+        <button data-f="pend" class="rounded-lg px-3 py-1.5 font-medium text-inksoft hover:bg-sand/50">Pendientes <span class="opacity-70">12</span></button>
+        <button data-f="grupo" class="rounded-lg px-3 py-1.5 font-medium text-inksoft hover:bg-sand/50">En grupo <span class="opacity-70">248</span></button>
+        <button data-f="post" class="rounded-lg px-3 py-1.5 font-medium text-inksoft hover:bg-sand/50">Post-presentación</button>
+        <button data-f="conv" class="rounded-lg px-3 py-1.5 font-medium text-inksoft hover:bg-sand/50">Convertidos <span class="opacity-70">54</span></button>
+        <button data-f="baja" class="rounded-lg px-3 py-1.5 font-medium text-inksoft hover:bg-sand/50">Bajas</button>
+      </div>
+      <div class="relative ml-auto">
+        <svg class="absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-inksoft" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.5"/><path d="M11 11l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <input placeholder="Buscar nombre o móvil…" class="w-56 rounded-lg border border-line bg-paper py-2 pl-8 pr-2 text-[13px] focus:border-forest focus:outline-none">
+      </div>
+    </div>
+
+    <div class="rise mt-4 overflow-hidden rounded-2xl border border-line bg-paper" style="animation-delay:.1s">
+      <table class="w-full text-left text-[13.5px]">
+        <thead class="text-[11px] uppercase tracking-wider text-inksoft"><tr class="border-b border-line">
+          <th class="py-2.5 pl-5 font-medium">Persona</th>
+          <th class="py-2.5 font-medium">Estado</th>
+          <th class="py-2.5 font-medium">Progreso</th>
+          <th class="py-2.5 font-medium">Invitada por</th>
+          <th class="py-2.5 font-medium">Última actividad</th>
+          <th class="py-2.5 pr-5"></th>
+        </tr></thead>
+        <tbody id="tbody"></tbody>
+      </table>
+      <div class="flex items-center justify-between border-t border-line px-5 py-3 text-[12.5px] text-inksoft">
+        <span>Mostrando 8 de 318</span>
+        <div class="flex items-center gap-1">
+          <button class="rounded-md border border-line px-2.5 py-1 hover:bg-sand/40">Anterior</button>
+          <button class="rounded-md bg-forest px-2.5 py-1 font-medium text-cream">1</button>
+          <button class="rounded-md border border-line px-2.5 py-1 hover:bg-sand/40">2</button>
+          <button class="rounded-md border border-line px-2.5 py-1 hover:bg-sand/40">3</button>
+          <button class="rounded-md border border-line px-2.5 py-1 hover:bg-sand/40">Siguiente</button>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+const st={
+  pend:{t:'Pendiente',c:'bg-ochre/15 text-ochre'}, grupo:{t:'En grupo',c:'bg-forest/10 text-forest'},
+  post:{t:'Post-presentación',c:'bg-sand text-forestdeep'}, conv:{t:'Convertida',c:'bg-forest text-cream'},
+  baja:{t:'Baja',c:'bg-inksoft/15 text-inksoft'}, rech:{t:'Rechazada',c:'bg-rust/15 text-rust'}
+};
+const seg={completo:'text-forest',parcial:'text-ochre',no_vio:'text-inksoft'};
+const data=[
+  {n:'Marina López',ini:'ML',s:'conv',prog:'Día 7 · completo',inv:'Carla Giménez',act:'pagó · hace 2 d'},
+  {n:'Diego Fernández',ini:'DF',s:'post',prog:'Día 7 · parcial',inv:'Carla Giménez',act:'vio replay · hace 1 d'},
+  {n:'Sofía Ramírez',ini:'SR',s:'grupo',prog:'Día 5',inv:'la chica del gimnasio',act:'respondió · hoy'},
+  {n:'Juan P. Soto',ini:'JS',s:'grupo',prog:'Día 5',inv:'Martín Rey',act:'activo · hoy'},
+  {n:'Carmen Torres',ini:'CT',s:'pend',prog:'—',inv:'sin atribuir',act:'registro · hace 6 h'},
+  {n:'Lucas Méndez',ini:'LM',s:'post',prog:'Día 7 · no vio',inv:'Martín Rey',act:'inactivo · 3 d'},
+  {n:'Ana Díaz',ini:'AD',s:'baja',prog:'Día 3',inv:'Carla G',act:'pidió baja · hace 4 d'},
+  {n:'Pablo Ruiz',ini:'PR',s:'rech',prog:'—',inv:'—',act:'rechazada · hace 5 d'},
+];
+function segClass(p){const m=p.prog.match(/(completo|parcial|no vio)/);return m?(seg[m[1].replace(' ','_')]||''):'';}
+document.getElementById('tbody').innerHTML=data.map(p=>`
+  <tr class="row border-b border-line/70 last:border-0" onclick="location.href='dashboard-participante.html'">
+    <td class="py-3 pl-5"><div class="flex items-center gap-2.5"><span class="flex h-8 w-8 flex-none items-center justify-center rounded-full bg-sand text-[12px] font-semibold text-forestdeep">${p.ini}</span><span class="font-medium">${p.n}</span></div></td>
+    <td class="py-3"><span class="rounded-full px-2.5 py-1 text-[12px] font-semibold ${st[p.s].c}">${st[p.s].t}</span></td>
+    <td class="py-3 ${segClass(p)}">${p.prog}</td>
+    <td class="py-3 text-inksoft">${p.inv==='sin atribuir'||p.inv==='—'?'<span class="text-rust/80">⚠ '+p.inv+'</span>':p.inv}</td>
+    <td class="py-3 text-inksoft">${p.act}</td>
+    <td class="py-3 pr-5 text-right text-inksoft">›</td>
+  </tr>`).join('');
+// filtro visual
+document.querySelectorAll('#statefilter button').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('#statefilter button').forEach(x=>x.className='rounded-lg px-3 py-1.5 font-medium text-inksoft hover:bg-sand/50');
+  b.className='rounded-lg bg-forest px-3 py-1.5 font-medium text-cream';
+});
+</script>
+</body>
+</html>

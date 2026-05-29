@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es-ES">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reto Antiventaja — Cohortes</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script>
+tailwind.config={theme:{extend:{colors:{cream:'#FBF6EC',paper:'#FFFDF8',ink:'#211C15',inksoft:'#6B6256',forest:'#16513C',forestdeep:'#0E3A2A',ochre:'#C97B36',sand:'#EDE3CF',line:'#E4D8C1',rust:'#A8462E'},fontFamily:{display:['Fraunces','serif'],body:['"Hanken Grotesk"','sans-serif']}}}}
+</script>
+<style>
+  body{font-family:'Hanken Grotesk',sans-serif;background:#FBF6EC;color:#211C15}
+  .font-display{font-family:'Fraunces',serif}
+  .rise{opacity:0;transform:translateY(10px);animation:rise .5s cubic-bezier(.2,.7,.2,1) forwards}
+  @keyframes rise{to{opacity:1;transform:none}}
+  .field{transition:border-color .2s,box-shadow .2s}.field:focus{outline:none;border-color:#16513C;box-shadow:0 0 0 3px rgba(22,81,60,.12)}
+  ::selection{background:#16513C;color:#FBF6EC}
+</style>
+</head>
+<body class="min-h-screen antialiased">
+<div class="flex min-h-screen">
+  <aside class="hidden w-60 flex-none flex-col border-r border-line bg-paper px-4 py-5 lg:flex">
+    <div class="flex items-center gap-2.5 px-2"><div class="flex h-8 w-8 items-center justify-center rounded-lg bg-forest text-cream font-display text-lg leading-none">a</div><div class="text-[13px] font-semibold tracking-tight leading-none">Reto Antiventaja<br><span class="text-[11px] font-normal text-inksoft">Panel interno</span></div></div>
+    <nav class="mt-7 space-y-0.5 text-[13.5px]">
+      <a class="flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-inksoft hover:bg-sand/50" href="dashboard-overview.html"><span>📊</span> Embudo</a>
+      <a class="flex items-center justify-between rounded-lg px-2.5 py-2 text-inksoft hover:bg-sand/50" href="dashboard-verificacion.html"><span class="flex items-center gap-2.5"><span>✅</span> Verificación</span><span class="rounded-full bg-forest px-1.5 py-0.5 text-[11px] font-semibold text-cream">12</span></a>
+      <a class="flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-inksoft hover:bg-sand/50" href="dashboard-participantes.html"><span>👥</span> Participantes</a>
+      <a class="flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-inksoft hover:bg-sand/50" href="dashboard-atribucion.html"><span>🌱</span> Atribución</a>
+      <a class="flex items-center gap-2.5 rounded-lg bg-forest/10 px-2.5 py-2 font-semibold text-forest" href="#"><span>🗂️</span> Cohortes</a>
+      <a class="flex items-center justify-between rounded-lg px-2.5 py-2 text-inksoft hover:bg-sand/50" href="#"><span class="flex items-center gap-2.5"><span>📡</span> Salud</span><span class="rounded-full bg-rust/15 px-1.5 py-0.5 text-[11px] font-semibold text-rust">3</span></a>
+    </nav>
+    <div class="mt-auto flex items-center gap-2.5 rounded-lg border border-line p-2.5"><div class="flex h-8 w-8 items-center justify-center rounded-full bg-ochre/20 text-[13px] font-semibold text-ochre">VG</div><div class="text-[12px] leading-tight"><p class="font-semibold">Valentina G.</p><p class="text-inksoft">Operaciones</p></div></div>
+  </aside>
+
+  <main class="flex-1 px-5 py-6 lg:px-8">
+    <div class="rise flex flex-wrap items-end justify-between gap-4">
+      <div><h1 class="font-display text-[2rem] font-medium leading-none tracking-[-0.01em]">Cohortes</h1><p class="mt-1.5 text-[13px] text-inksoft">Cada edición del reto. Los días del contenido son relativos a cuándo entra cada persona.</p></div>
+      <button class="flex items-center gap-2 rounded-lg bg-forest px-3.5 py-2 text-[13px] font-semibold text-cream hover:bg-forestdeep"><span class="text-base leading-none">+</span> Nueva cohorte</button>
+    </div>
+
+    <div class="mt-6 grid gap-5 lg:grid-cols-5">
+      <!-- lista -->
+      <section class="rise overflow-hidden rounded-2xl border border-line bg-paper lg:col-span-3" style="animation-delay:.05s">
+        <table class="w-full text-left text-[13.5px]">
+          <thead class="text-[11px] uppercase tracking-wider text-inksoft"><tr class="border-b border-line"><th class="py-2.5 pl-5 font-medium">Cohorte</th><th class="py-2.5 font-medium">Inicio</th><th class="py-2.5 font-medium">Presentación P60</th><th class="py-2.5 font-medium">Personas</th><th class="py-2.5 pr-5 font-medium">Estado</th></tr></thead>
+          <tbody>
+            <tr class="border-b border-line/70 bg-cream/40"><td class="py-3 pl-5 font-medium">Mayo 2026</td><td class="py-3 text-inksoft">13 may</td><td class="py-3 text-inksoft">18 may · 19:00</td><td class="py-3 tabular-nums">318</td><td class="py-3 pr-5"><span class="rounded-full bg-forest/10 px-2.5 py-1 text-[12px] font-semibold text-forest">Activa</span></td></tr>
+            <tr class="border-b border-line/70 hover:bg-cream/40"><td class="py-3 pl-5 font-medium">Abril 2026</td><td class="py-3 text-inksoft">8 abr</td><td class="py-3 text-inksoft">13 abr · 19:00</td><td class="py-3 tabular-nums">276</td><td class="py-3 pr-5"><span class="rounded-full bg-inksoft/15 px-2.5 py-1 text-[12px] font-semibold text-inksoft">Cerrada</span></td></tr>
+            <tr class="hover:bg-cream/40"><td class="py-3 pl-5 font-medium">Junio 2026</td><td class="py-3 text-inksoft">10 jun</td><td class="py-3 text-inksoft">— sin fijar</td><td class="py-3 tabular-nums text-inksoft">0</td><td class="py-3 pr-5"><span class="rounded-full bg-ochre/15 px-2.5 py-1 text-[12px] font-semibold text-ochre">Borrador</span></td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- panel de edición -->
+      <section class="rise rounded-2xl border border-line bg-paper p-5 lg:col-span-2" style="animation-delay:.1s">
+        <h2 class="text-[15px] font-semibold">Editar · Mayo 2026</h2>
+        <div class="mt-4 space-y-3.5 text-[13px]">
+          <div><label class="mb-1.5 block font-medium">Nombre</label><input value="Mayo 2026" class="field w-full rounded-lg border border-line bg-cream/40 px-3 py-2"></div>
+          <div class="grid grid-cols-2 gap-3">
+            <div><label class="mb-1.5 block font-medium">Fecha de inicio</label><input type="date" value="2026-05-13" class="field w-full rounded-lg border border-line bg-cream/40 px-3 py-2"></div>
+            <div><label class="mb-1.5 block font-medium">Zona horaria</label><select class="field w-full rounded-lg border border-line bg-cream/40 px-3 py-2"><option>Europe/Madrid</option><option>Atlantic/Canary</option></select></div>
+          </div>
+          <div><label class="mb-1.5 block font-medium">Presentación P60</label><input type="datetime-local" value="2026-05-18T19:00" class="field w-full rounded-lg border border-line bg-cream/40 px-3 py-2"></div>
+          <div><label class="mb-1.5 block font-medium">Estado</label>
+            <div class="flex gap-1 rounded-lg border border-line p-1">
+              <button class="flex-1 rounded-md px-2 py-1.5 font-medium text-inksoft hover:bg-sand/40">Borrador</button>
+              <button class="flex-1 rounded-md bg-forest px-2 py-1.5 font-medium text-cream">Activa</button>
+              <button class="flex-1 rounded-md px-2 py-1.5 font-medium text-inksoft hover:bg-sand/40">Cerrada</button>
+            </div>
+          </div>
+          <div class="rounded-lg border border-line bg-cream/40 p-3 text-[12px] text-inksoft">
+            <b class="text-ink">Grupo de WhatsApp</b> — el canal lo gestiona la capa de automatización. Una cohorte puede usar uno o más grupos. <span class="text-rust/80">(a confirmar con cliente)</span>
+          </div>
+          <div class="flex gap-2 pt-1"><button class="flex-1 rounded-lg bg-forest px-3 py-2.5 font-semibold text-cream hover:bg-forestdeep">Guardar cambios</button><button class="rounded-lg border border-line px-3 py-2.5 font-medium hover:bg-sand/40">Cancelar</button></div>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+</body>
+</html>
