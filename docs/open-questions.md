@@ -196,6 +196,20 @@ Con Modelo A la atribución es **texto libre** → el ranking de impulsores no a
 ### Q44 [DISEÑO] — Navegación/alcance por cohorte en el panel interno.
 El breadcrumb "Cohortes › Mayo 2026" era engañoso. **Decisión de diseño adoptada (prototipo):** un **selector de cohorte global** define el alcance de todo el panel (embudo, verificación, participantes, atribución), con opción **"Todas las cohortes"**; en vistas cross-cohorte se muestra la columna Cohorte. *Confirmar que es el modelo deseado vs. filtros por pantalla.*
 
+## Reglas de negocio y contenido (NO determinadas — del cliente)
+
+### Q45 [CLIENTE] 🔴 — Reglas de follow-up (no solo la segmentación).
+Tenemos el **motor**: segmentar por % visto del replay → `followup_1` (no vio) / `followup_2` (parcial) / `cta_final` (completo). **NO** tenemos las **reglas de negocio**:
+- ¿Cuántos follow-ups por segmento y con qué **cadencia/horarios**? ¿Hasta cuándo insistir (corte)? (relaciona Q19)
+- ¿Hay follow-ups por **otros comportamientos** además del replay? (no entró al grupo, no participó en el reto, no abrió el contenido diario, abandonó a mitad…)
+- ¿Quién **escribe el copy** de cada mensaje y con qué tono? (relaciona Q12, Q20)
+→ Es decisión de cliente + contenido. Nuestro motor ejecuta las reglas que definan; hoy están como supuesto mínimo.
+
+### Q46 [CLIENTE] 🔴 — Contenido diario: fuente, destinatario y alcance (7 vs 60 días).
+- **Fuente:** ¿quién produce los vídeos/audios/copy del reto? *Supuesto:* los produce el cliente/equipo con sus herramientas (ChatGPT, ElevenLabs, etc.); **nosotros solo orquestamos la entrega, no generamos contenido**. Confirmar.
+- **Destinatario:** el contenido diario del **reto** (7 días) es para todos los participantes de la cohorte. ✔
+- **⚠️ Alcance (importante):** ¿el MVP entrega/trackea **solo el reto gratuito de 7 días** (hasta la conversión al P60), o **también los 60 días del programa P60** (post-pago)? Hoy el diseño **termina en la conversión + experiencia**; la entrega del P60 NO está modelada. Si el cliente espera que el sistema corra también el programa de 60 días, es **una fase nueva** (más contenido, más estados, más tracking). → decisión de alcance.
+
 ---
 
 ## Hotspots del event-storming que siguen para el CLIENTE
