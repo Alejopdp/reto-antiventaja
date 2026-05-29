@@ -22,13 +22,17 @@ docs/                         ← documentación (fuente de verdad del diseño)
 ├── mvp-scope.md              alcance, modelo de datos, integración, criterio no-regret, roadmap
 ├── event-storming.md         eventos / comandos / policies / sistemas externos / hotspots
 ├── domain-model.md           entidades, statechart, glosario ubicuo, invariantes
+├── contracts/                interfaces de los 3 puertos + frontera HTTP (webhooks/cola)
+├── use-cases.md              casos de uso con criterios Given/When/Then
+├── tasks.md                  desglose en waves + DAG (plan de ejecución)
+├── ui-audit.md               inventario de controles UI ↔ comandos de dominio
 ├── open-questions.md         ⭐ DUDAS ABIERTAS vivas — [CLIENTE] vs [DISEÑO], algunas para el cliente
 ├── wireframe-brief.md        brief que originó los prototipos
 └── adr/0001-...              decisiones de arquitectura registradas (ADRs)
 wireframes/                   ← prototipos HTML interactivos (abrir index.html)
 ```
 
-**Orden de lectura recomendado:** `discovery.md` → `mvp-scope.md` → `event-storming.md` → `domain-model.md` → `open-questions.md` → `adr/`. Después abrir `wireframes/index.html`.
+**Orden de lectura recomendado:** `discovery.md` → `mvp-scope.md` → `event-storming.md` → `domain-model.md` → `contracts/` → `use-cases.md` → `tasks.md` → `open-questions.md` → `adr/`. Después abrir `wireframes/index.html`.
 
 ## Decisiones clave ya tomadas (no re-litigar sin motivo; ver docs para el "por qué")
 
@@ -49,12 +53,12 @@ Discovery con JTBD + design thinking → **Event Storming lite** (eventos/comand
 
 **SÍ:**
 - Revisar y cuestionar la documentación y los supuestos (está fomentado: ver `open-questions.md`).
-- Continuar el diseño: faltan `contracts/` (interfaces de los 3 puertos), `use-cases.md` (casos con criterios de aceptación Given/When/Then) y `tasks.md` (desglose en waves + DAG).
-- Ver e iterar los wireframes.
-- Refinar `open-questions.md`.
+- Ver e iterar los wireframes; refinar `open-questions.md`.
+- Cuando se apruebe, **empezar a implementar siguiendo `tasks.md`** (Wave 0 → walking skeleton en Wave 1). El diseño (discovery, dominio, contratos, casos de uso, tareas) ya está completo.
 
 **NO (sin pedirlo explícitamente):**
-- Implementar la aplicación / elegir herramientas concretas de los puertos / commitear o pushear.
+- Arrancar la implementación sin aprobación / elegir herramientas concretas de los puertos antes de las respuestas del cliente / commitear o pushear.
+- Avanzar la parte de **vídeo/segmentación** (Wave 3) antes de cerrar **Q1**.
 
 ## Cómo trabajar en este repo
 

@@ -36,6 +36,10 @@ O abrir directamente `wireframes/index.html` en el navegador. Para compartir onl
 | [`mvp-scope.md`](./docs/mvp-scope.md) | Alcance, modelo de datos, integración, criterio no-regret, roadmap |
 | [`event-storming.md`](./docs/event-storming.md) | Eventos, comandos, policies, sistemas externos, hotspots |
 | [`domain-model.md`](./docs/domain-model.md) | Entidades, statechart, glosario ubicuo, invariantes |
+| [`contracts/`](./docs/contracts/) | Interfaces de los 3 puertos + frontera HTTP (webhooks / cola) |
+| [`use-cases.md`](./docs/use-cases.md) | Casos de uso con criterios Given/When/Then |
+| [`tasks.md`](./docs/tasks.md) | Desglose en waves + DAG (plan de ejecución) |
+| [`ui-audit.md`](./docs/ui-audit.md) | Inventario de controles UI ↔ comandos de dominio |
 | [`open-questions.md`](./docs/open-questions.md) | ⭐ Dudas abiertas vivas (para el cliente y de diseño) |
 | [`wireframe-brief.md`](./docs/wireframe-brief.md) | Brief que originó los prototipos |
 | [`adr/`](./docs/adr/) | Architecture Decision Records |
