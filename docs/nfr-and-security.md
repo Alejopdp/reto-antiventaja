@@ -32,7 +32,8 @@
 - **No PII en logs**: enmascarar teléfono/email en logs y trazas.
 
 ## Cumplimiento de terceros (riesgos a vigilar)
-- **WhatsApp/Meta ToS:** la automatización no-oficial sobre grupos puede violar términos y derivar en **baneo del número** (H11, Q47). Mitigación: diseño **canal-agnóstico** (plan B = API oficial sin tocar el core) + throttling. La investigación de integraciones cuantifica este riesgo.
+- **WhatsApp/Meta ToS:** la automatización no-oficial sobre grupos puede violar términos y derivar en **baneo del número** (H11, Q47). Mitigación: diseño **canal-agnóstico** (plan B = API oficial sin tocar el core) + throttling. Ver `integration-research.md`.
+- **Precedente GDPR concreto (España):** una empresa fue **multada con 70.000 €** por añadir a una persona a un grupo de WhatsApp **sin su consentimiento**; la AEPD también sancionó a WhatsApp/Facebook (300.000 € c/u). ⇒ el alta al grupo **exige consentimiento explícito, informado y revocable** (checkbox de registro + opt-out). No es opcional.
 - **Promesas financieras:** el contenido del cliente debe cuidar la publicidad de resultados económicos (regulación). No es responsabilidad del software, pero se señala.
 
 ## Definición de "suficiente" para el MVP (anti-sobreingeniería)

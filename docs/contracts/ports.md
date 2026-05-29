@@ -38,9 +38,9 @@ interface MessagingPort {
 }
 ```
 
-## 2) VideoTrackingPort — entrada (host de vídeo → core)  ⚠️ depende de Q1
+## 2) VideoTrackingPort — entrada (host de vídeo → core)  ⚠️ depende de Q1 y H3
 
-Normaliza el webhook del host (Wistia/Vimeo) a un evento de dominio. Requiere que el replay se entregue 1:1 con el `token` (H3).
+Normaliza el webhook del host a un evento de dominio. **⚠️ Hallazgo del research:** Wistia **NO** acepta un `token` propio en el webhook (solo `visitor.id` por cookie o email vía Turnstile). El puerto sigue devolviendo un `VideoView{token,...}` resuelto, pero **es responsabilidad del adaptador resolver la identidad** (email-gate, mapeo `visitor.id`↔token, o un host con session tokens como api.video). Además Wistia da umbrales discretos (25/50/75/100%), no un % continuo (ajustar H4). Ver `integration-research.md §2`.
 
 ```ts
 interface VideoView {

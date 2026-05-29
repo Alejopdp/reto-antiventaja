@@ -29,6 +29,7 @@ docs/                         ← documentación (fuente de verdad del diseño)
 ├── tasks.md                  desglose en waves + DAG (plan de ejecución)
 ├── engineering-guidelines.md capas, DI, estrategia de tests (TDD), convenciones, anti-overeng.
 ├── nfr-and-security.md       escala, idempotencia, GDPR/PII, ToS WhatsApp, observabilidad
+├── integration-research.md   candidatos (WhatsApp/video/PSP): rate limits, pricing, riesgos (deep-research)
 ├── ui-audit.md               inventario de controles UI ↔ comandos de dominio
 ├── open-questions.md         ⭐ DUDAS ABIERTAS vivas — [CLIENTE] vs [DISEÑO], algunas para el cliente
 ├── wireframe-brief.md        brief que originó los prototipos

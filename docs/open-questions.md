@@ -200,8 +200,9 @@ El breadcrumb "Cohortes › Mayo 2026" era engañoso. **Decisión de diseño ado
 Define la semántica de la acción `alta_grupo` y si la pantalla web "aceptado" tiene sentido.
 - **Modelo 1 — el equipo/automatizador AÑADE el número** (lo que dice el mapa: "lo añade al grupo"): la persona queda dentro sin hacer nada → NO hay acción de "unirse"; un CTA web "Unirme al grupo" es contradictorio.
 - **Modelo 2 — se envía un LINK DE INVITACIÓN** que la persona clickea: el link **llega por WhatsApp**, no por web → la pantalla web sería redundante/respaldo.
-- **Realidad técnica:** por privacidad, muchos usuarios restringen quién puede agregarlos a grupos → a menudo NO se puede añadir un número arbitrario, forzando el Modelo 2. **Confirmar con el cliente / probar con el automatizador elegido.**
-- **Implicación de diseño:** en un MVP WhatsApp-first, aceptación + alta + bienvenida ocurren en WhatsApp; la pantalla `aceptado.html` probablemente sobra (o queda solo como respaldo, sin un botón de "unirse" contradictorio). Relaciona Q42 (sin portal) y la nota de supuestos de P1.3.
+- **Realidad técnica — CONFIRMADA (research):** los automatizadores no-oficiales (Whapi) **no pueden añadir números desconocidos/no guardados** (anti-spam de WhatsApp) → **se fuerza el Modelo 2 (link de invitación)**. Ver `integration-research.md §1`. ⇒ `alta_grupo` debería significar **"enviar link de invitación"**, no "añadir número".
+- **Implicación de diseño:** la pantalla `aceptado.html` se reformuló a "te sumamos al grupo" (Modelo 1); con el Modelo 2 confirmado convendría ajustarla a "**unite con este link**" (que igual llega por WhatsApp). Relaciona Q42 y P1.3.
+- **GDPR (research):** añadir a alguien a un grupo sin consentimiento fue **multado con 70.000 €** en España → el alta exige consentimiento explícito (ya está el checkbox).
 
 ---
 
@@ -226,9 +227,9 @@ Tenemos el **motor**: segmentar por % visto del replay → `followup_1` (no vio)
 
 - **H1** identidad número formulario↔grupo (default E.164 + bandeja Ops — confirmar).
 - **H2** entrada al grupo sin formulario previo (permitir/bloquear/no-trackear). 🔴 abierto.
-- **H3** el host de video soporta pasar/devolver nuestro `token` (depende de Q1).
-- **H4** semántica del "80%" según el host elegido.
-- **H5** el PSP devuelve algo que linkee al participante + notifica reembolsos (relaciona Q21–Q24, H6).
+- **H3** 🔴 **CAMBIÓ (research):** Wistia **NO** acepta un token propio en el webhook (solo `visitor.id` por cookie o email vía Turnstile). El supuesto "token en la URL del replay" no aplica → opciones: email-gate / mapeo visitor.id↔token / otro host (api.video). Ver `integration-research.md §2`. Depende de Q1.
+- **H4** semántica del "80%": Wistia dispara a 25/50/75/100% (umbrales fijos), no un % continuo arbitrario. Ajustar el motor a esos umbrales.
+- **H5** ✅ **CONFIRMADO (research):** Stripe permite pasar el `token` como metadata en el Checkout Session y vuelve en el webhook `checkout.session.completed` → matching pago↔participante determinista, sin email-gate. (Reembolsos: webhooks soportados.)
 - **H9** 1 cohorte = 1 grupo y límite de capacidad del grupo.
-- **H11** rate limits del automatizador no oficial a 300+.
+- **H11** rate limits del automatizador no oficial a 300+: precio real de Whapi **sin confirmar** (claim refutada); riesgo de baneo no cuantificado. Ver research.
 - **H12** tono "anti-ventaja" como restricción de diseño de los mensajes.
