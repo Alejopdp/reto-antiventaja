@@ -25,10 +25,12 @@ docs/                         ← documentación (fuente de verdad del diseño)
 ├── contracts/                interfaces de los 3 puertos + frontera HTTP (webhooks/cola)
 ├── use-cases.md              casos de uso con criterios Given/When/Then
 ├── tasks.md                  desglose en waves + DAG (plan de ejecución)
+├── engineering-guidelines.md capas, DI, estrategia de tests (TDD), convenciones, anti-overeng.
+├── nfr-and-security.md       escala, idempotencia, GDPR/PII, ToS WhatsApp, observabilidad
 ├── ui-audit.md               inventario de controles UI ↔ comandos de dominio
 ├── open-questions.md         ⭐ DUDAS ABIERTAS vivas — [CLIENTE] vs [DISEÑO], algunas para el cliente
 ├── wireframe-brief.md        brief que originó los prototipos
-└── adr/0001-...              decisiones de arquitectura registradas (ADRs)
+└── adr/                      ADRs: 0001 acciones, 0002 persistencia, 0003 stack, 0004 cloud (propuesto)
 wireframes/                   ← prototipos HTML interactivos (abrir index.html)
 ```
 

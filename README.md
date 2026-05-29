@@ -39,6 +39,8 @@ O abrir directamente `wireframes/index.html` en el navegador. Para compartir onl
 | [`contracts/`](./docs/contracts/) | Interfaces de los 3 puertos + frontera HTTP (webhooks / cola) |
 | [`use-cases.md`](./docs/use-cases.md) | Casos de uso con criterios Given/When/Then |
 | [`tasks.md`](./docs/tasks.md) | Desglose en waves + DAG (plan de ejecución) |
+| [`engineering-guidelines.md`](./docs/engineering-guidelines.md) | Capas, DI, estrategia de tests (TDD), convenciones |
+| [`nfr-and-security.md`](./docs/nfr-and-security.md) | No funcionales, GDPR/PII, ToS WhatsApp, seguridad |
 | [`ui-audit.md`](./docs/ui-audit.md) | Inventario de controles UI ↔ comandos de dominio |
 | [`open-questions.md`](./docs/open-questions.md) | ⭐ Dudas abiertas vivas (para el cliente y de diseño) |
 | [`wireframe-brief.md`](./docs/wireframe-brief.md) | Brief que originó los prototipos |
