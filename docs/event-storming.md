@@ -16,8 +16,8 @@
 | 🩷 | **Sistema externo** | vive afuera del core, detrás de un puerto. |
 | 📦 | **Agregado** | a quién pertenece la consistencia (dónde se aplican las reglas). |
 
-Actores 🟨: **Participante**, **Ops**, **Organizador**, **Scheduler** (reloj del sistema).
-Sistemas externos 🩷 (detrás de un puerto): **Automatizador de grupos WhatsApp** (`MessagingPort`), **Host de video** Wistia/Vimeo (`VideoTrackingPort`), **Procesador de pago / PSP** (`PaymentPort`).
+Actores 🟨: **Participante**, **Ops**, **Organizador**, **Scheduler** (reloj del sistema), **Agente IA** (automático, guarded — Bloque H).
+Sistemas externos 🩷 (detrás de un puerto): **Automatizador de grupos WhatsApp** (`MessagingPort`), **Host de video** (`VideoTrackingPort`), **Procesador de pago / PSP** (`PaymentPort`), **Motor de IA conversacional** (`AIAgentPort` — GHL Conversation AI o LLM propio, Q58), **STT / transcripción** (notas de voz, futuro — Q57).
 Agregados 📦: **Participante** (su estado), **Cohorte**, **AcciónDeSalida** (la cola).
 
 > **Notas de clasificación:**
@@ -104,6 +104,43 @@ Agregados 📦: **Participante** (su estado), **Cohorte**, **AcciónDeSalida** (
 - 🟨 **Ops/Participante** → 🟦 `DarDeBaja` → 🟧 **ParticipanteDadoDeBaja** (resuelve el evento provisional de Q2)
   → 🟪 *Cuando ParticipanteDadoDeBaja: no encolar ninguna acción futura (estado `BAJA`).*
 
+### Bloque H — Conversación 1:1 con IA (guarded) + takeover — *surgido del handoff §5a / Q56 / Q58*
+
+> Convierte al Participante en interlocutor **bidireccional**. Reusa la cola (`respuesta_ia`) y el event log. El motor concreto (GHL Conversation AI o LLM propio) vive detrás del `AIAgentPort` (Q58).
+
+- 🟨 Participante → 🟦 `RegistrarMensajeEntrante` (webhook de mensajería 1:1) → 🟧 **MensajeEntranteDelParticipante**
+  → 🟪 *Cuando MensajeEntranteDelParticipante y modo=autopilot y sin cooldown: `GenerarRespuestaIA` dentro del allow-list; si off-topic/baja confianza → fallback o escalar.*
+- 🟨 **Agente IA** → 🟦 `GenerarRespuestaIA` → 🟧 **RespuestaIAGenerada** → 🟦 `EncolarAcciónDeSalida(respuesta_ia)` → 🟧 **AcciónEncolada(respuesta_ia)**
+  → 🟪 *Antes de enviar: si modo=humano o hay un entrante más nuevo → cancelar la respuesta obsoleta (Q17).*
+- 🟨 **Ops** → 🟦 `TomarConversación` → 🟧 **ConversaciónIntervenida** (modo=humano + cooldown)
+  → 🟪 *pausa-al-intervenir: no se generan respuestas IA mientras modo=humano / cooldown activo.*
+- 🟪 *IA con baja confianza / off-topic / "quiero una persona"* → 🟦 `EscalarAHumano` → 🟧 **ConversaciónEscaladaAHumano** (modo=humano + alerta a Ops)
+- 🟨 **Ops** → 🟦 `DevolverConversaciónALaIA` → 🟧 **ConversaciónDevueltaALaIA** (modo=autopilot)
+
+> 🟥 **Q58** (dónde corre la IA + superficie de takeover), **Q59/Q60** (Conversación atributo vs agregado; `AIAgentPort` 4º puerto + latencia push/pull) quedan abiertas.
+
+### Bloque I — Prueba social (resultados tipados + moderación) — *handoff §3-C4 / §5a*
+
+> Reemplaza el texto libre (con el que "la gente se liaba") por un form tipado + evidencia. La **captura y moderación** son del core; la **exhibición pública** es un read-model (Q61).
+
+- 🟨 Participante → 🟦 `RegistrarResultado` (form tipado propio; evidencia por upload o WhatsApp) → 🟧 **ResultadoRegistrado** (estado `pendiente`)
+- 🟨 **Ops** → 🟦 `AprobarResultado` → 🟧 **ResultadoAprobado** (pasa a público)
+  - o 🟦 `RechazarResultado` → 🟧 **ResultadoRechazado**
+- 🟨 **Ops** → 🟦 `OcultarResultado` (despublicar uno ya live) → 🟧 **ResultadoOcultado**
+- 🟪 *Solo `aprobada` y no `oculta` alimenta el dashboard público (read-model); nada público sin moderación.*
+
+> 🩷 Nuevo sistema externo: **Almacenamiento de objetos** (evidencia) — concreto en ADR-0004 (S3 vs Cloudflare R2). 🟥 **Q61** (dashboard público: mecánica + consentimiento), **Q62** (taxonomía de categorías) quedan abiertas.
+
+### Bloque J — Inacción + reprogramación — *handoff §5a*
+
+> Amplía las alertas: hoy solo se avisa por acción **fallida** (Q28); ahora también por **inacción del participante**. Umbrales/reglas = negocio (Q45/Q41).
+
+- 🟨 Scheduler → 🟦 `EvaluarInacción(participante)` → si lo esperado no se cumplió al umbral (Q45/Q41) → 🟧 **InacciónDetectada** `{tipo}`
+  → 🟪 *Cuando InacciónDetectada: `AlertarInacción` (bandeja Ops y/o agente IA "poner caña") y, según regla, `OfrecerReprogramación`.*
+- 🟨 **Ops / Agente IA** → 🟦 `OfrecerReprogramación` → 🟧 **ReprogramaciónOfrecida**
+- 🟨 Participante → 🟦 `RegistrarRespuestaReprogramación` → 🟧 **ReprogramaciónResuelta** `{aceptada|rechazada}`
+  → 🟪 *Si aceptada: re-encolar el paso perdido y correr el día relativo del participante (la presentación fija de la cohorte no se mueve).*
+
 ---
 
 ## Resumen de elementos
@@ -115,6 +152,12 @@ Agregados 📦: **Participante** (su estado), **Cohorte**, **AcciónDeSalida** (
 **Comandos 🟦 (22):** RegistrarParticipante, VerificarRegistro (aceptar/rechazar), RegistrarAltaAlGrupo, EncolarAcciónDeSalida, ConfirmarAcciónEnviada, EvaluarContenidoDelDía, EvaluarTimeoutReplay, RegistrarRespuestaEncuesta, MarcarPresentaciónRealizada, RegistrarVideoVisto, RegistrarPagoP60, ResolverAtribución, RegistrarExperiencia, RegistrarReembolso, **CrearCohorte**, **ActualizarCohorte**, **CambiarEstadoCohorte**, **ReintentarAcción**, **ReenviarAcceso**, **ResolverAtribuciónManual**, **MarcarSinInvitador**, **DarDeBaja**.
 
 **Policies 🟪 (el "cerebro") (12):** generar token; **al aceptar en cohorte → encolar `alta_grupo`**; matchear alta y encolar bienvenida; programar contenido relativo; encolar contenido del día N; **al realizarse la presentación → encolar replay**; segmentar por video; encolar follow-up por segmento; timeout→no_vio; matchear pago y convertir; resolver atribución; **al recibir reembolso → revertir estado**.
+
+**+ Bloque H — Agente IA 1:1 (2026-07-01):** eventos `MensajeEntranteDelParticipante`, `RespuestaIAGenerada`, `ConversaciónIntervenida`, `ConversaciónEscaladaAHumano`, `ConversaciónDevueltaALaIA`; comandos `RegistrarMensajeEntrante`, `GenerarRespuestaIA`, `TomarConversación`, `DevolverConversaciónALaIA`, `EscalarAHumano`; `ActionType` suma `respuesta_ia`; puerto `AIAgentPort` (4º). Detalle en `domain-model.md §10`.
+
+**+ Bloque I — Prueba social (2026-07-01):** eventos `ResultadoRegistrado`, `ResultadoAprobado`, `ResultadoRechazado`, `ResultadoOcultado`; comandos `RegistrarResultado`, `AprobarResultado`, `RechazarResultado`, `OcultarResultado`; nuevo agregado `Resultado`; sistema externo **Almacenamiento de objetos**. Detalle en `domain-model.md §11`.
+
+**+ Bloque J — Inacción + reprogramación (2026-07-01):** eventos `InacciónDetectada`, `AlertaInacciónEmitida`, `ReprogramaciónOfrecida`, `ReprogramaciónResuelta`; comandos `EvaluarInacción`, `AlertarInacción`, `OfrecerReprogramación`, `RegistrarRespuestaReprogramación`; enum `TipoInaccion`. Detalle en `domain-model.md §12`.
 
 ---
 

@@ -38,23 +38,40 @@ interface MessagingPort {
 }
 ```
 
-## 2) VideoTrackingPort — entrada (host de vídeo → core)  ⚠️ depende de Q1 y H3
+## 2) VideoTrackingPort — entrada (mundo de vídeo → core)  ✅ H3/H4 resueltos (ADR-0006)
 
-Normaliza el webhook del host a un evento de dominio. **⚠️ Hallazgo del research:** Wistia **NO** acepta un `token` propio en el webhook (solo `visitor.id` por cookie o email vía Turnstile). El puerto sigue devolviendo un `VideoView{token,...}` resuelto, pero **es responsabilidad del adaptador resolver la identidad** (email-gate, mapeo `visitor.id`↔token, o un host con session tokens como api.video). Además Wistia da umbrales discretos (25/50/75/100%), no un % continuo (ajustar H4). Ver `integration-research.md §2`.
+Dos superficies de medición **propias**, ambas atadas al `token` (no al `visitor.id` del host):
+- **Replay:** se entrega en una **página tokenizada propia**; el progreso lo mide **nuestro** reproductor (eventos JS) y se ingesta como pings. El host (Cloudflare Stream / S3+HTML5, Q55) es **commodity de entrega**: no dependemos de su webhook ni de sus umbrales.
+- **Directo en vivo (Zoom):** asistencia por persona vía registro con link único + webhooks/Reports (Q54).
 
 ```ts
-interface VideoView {
+interface VideoView {              // replay (nuestro reproductor)
   token: Token;
-  percentWatched: number;   // 0..100; máximo acumulado entre sesiones (H4)
+  percentWatched: number;          // 0..100, por segundos efectivamente vistos (no la posición máxima de la barra)
+  watchedSeconds: number;          // segundos únicos vistos acumulados
+  completed: boolean;              // alcanzó el umbral propio (Q20)
   occurredAt: ISODateTime;
-  providerEventId: string;  // idempotencia
+  providerEventId: string;         // idempotencia (id del ping)
+}
+
+interface LiveAttendance {         // directo en vivo (Zoom)
+  token: Token;                    // resuelto por registrant_id ↔ token
+  joinedAt: ISODateTime;
+  leftAt?: ISODateTime;
+  durationSeconds: number;
+  occurredAt: ISODateTime;
+  providerEventId: string;
 }
 
 interface VideoTrackingPort {
-  /** Devuelve null si el webhook no es válido o no trae token identificable. */
-  parseWebhook(raw: unknown, headers: Record<string, string>): VideoView | null;
+  /** Replay: normaliza el ping de progreso de NUESTRO reproductor tokenizado. null si inválido / sin token. */
+  parseReplayProgress(raw: unknown, headers: Record<string, string>): VideoView | null;
+  /** Directo: normaliza el webhook de asistencia de Zoom. null si inválido / sin token. */
+  parseLiveAttendance(raw: unknown, headers: Record<string, string>): LiveAttendance | null;
 }
 ```
+
+> El `Segment` (`no_vio|parcial|completo`) lo deriva el dominio a partir de `watchedSeconds`/`percentWatched` + asistencia al directo; umbral en Q20. El host de vídeo entra detrás de este puerto como commodity (ADR-0005/0006).
 
 ## 3) PaymentPort — entrada (PSP → core)
 

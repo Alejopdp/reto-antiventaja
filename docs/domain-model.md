@@ -48,6 +48,7 @@ Tres agregados (📦); cada uno es una frontera transaccional:
 id, cohort_id, full_name, whatsapp_number (E.164), email?, token (único),
 referred_by_raw (texto del formulario), referred_by_participant_id (nullable),
 state (ver §4), segment (nullable, ver §4), current_day (nullable, día relativo del reto),
+conversation_mode (autopilot|humano, default autopilot), conversation_paused_until? (cooldown del takeover, §10),
 accepted_at?, joined_group_at?, converted_p60_at?, reverted_at?, opted_out_at?,
 created_at
 ```
@@ -63,9 +64,10 @@ status ∈ {pendiente, enviada, fallida}, attempts, scheduled_for, sent_at?, fai
 
 ### Enums (value objects cerrados)
 - **ParticipantState**: `PENDIENTE_VERIFICACION | RECHAZADO | ACEPTADO | EN_GRUPO | POST_PRESENTACION | CONVERTIDO | REVERTIDO | BAJA` *(BAJA provisional — depende de Q2)*
-- **ActionType** — familia **mensajes**: `bienvenida | contenido_diario | followup_1 | followup_2 | cta_final | recordatorio`; familia **gestión**: `alta_grupo` (ADR-0001).
+- **ActionType** — familia **mensajes**: `bienvenida | contenido_diario | followup_1 | followup_2 | cta_final | recordatorio | respuesta_ia`; familia **gestión**: `alta_grupo` (ADR-0001). *(`respuesta_ia` = respuesta generada por el agente IA, no plantilla fija — §10.)*
 - **ActionStatus**: `pendiente | enviada | fallida`.
 - **Segment**: `no_vio | parcial | completo`.
+- **ConversationMode**: `autopilot | humano` (modo del 1:1; atributo, no estado — §10).
 
 ---
 
@@ -170,3 +172,131 @@ Nuevas, surgidas al formalizar el modelo (Q31–Q36):
 - **Q35 [DISEÑO]** Conversión directa sin segmentación (compra fuera del funnel). *Statechart ya lo permite; matching → Q21.*
 - **Q36 [DISEÑO]** ¿La cola `AcciónDeSalida` es agregado independiente del Participante? *Default: sí, consistencia por `dedupe_key`, ack async.*
 - **Persistencia**: definir si event log materializa estado o se reproyecta (candidato a ADR-0002).
+
+---
+
+## 10. Extensión — Agente IA 1:1 (guarded agent) — 2026-07-01
+
+> Surge del handoff (§5a), Q56 (nivel = autopiloto con red) y Q58 (motor + takeover). Convierte al **Participante** en interlocutor **bidireccional**, reusando la maquinaria existente (cola de acciones, event log, idempotencia — criterio de ADR-0001).
+
+### Glosario (añadidos)
+- **Conversación 1:1** — hilo de WhatsApp directo IA/equipo ↔ participante. El hilo vive **detrás del `MessagingPort`** (como el grupo); el core solo materializa su **modo** y los eventos relevantes.
+- **Modo de conversación** — `autopilot` (responde la IA) | `humano` (un operador la tomó). Atributo, no estado del lifecycle.
+- **Agente IA (guarded)** — motor que interpreta el mensaje entrante y responde **dentro de un allow-list** de acciones/temas derivado del dominio del reto. Vive detrás del `AIAgentPort`.
+- **Mensaje entrante** — mensaje del participante (texto o, a futuro, voz→STT, Q57).
+
+### Atributos añadidos al Participante
+`conversation_mode ∈ {autopilot, humano}` (default `autopilot`) · `conversation_paused_until?` (cooldown del takeover).
+
+### Enum / puerto añadidos
+- **ConversationMode**: `autopilot | humano`.
+- **ActionType** suma `respuesta_ia` (familia mensajes): respuesta generada por el agente, **no** plantilla; reusa cola/idempotencia/ack.
+- **`AIAgentPort` (4º puerto)**: el core pide *"dado el contexto del participante (día N, segmento, tareas, eventos) + el allow-list, generá una respuesta o escalá"*. Adaptador = **GHL Conversation AI** o **LLM propio** (Q58). Desacopla Q58 del dominio.
+
+### Eventos (añadidos)
+| Evento | Disparado por | Datos clave |
+|---|---|---|
+| MensajeEntranteDelParticipante | RegistrarMensajeEntrante (webhook 1:1) | texto, occurred_at |
+| RespuestaIAGenerada | GenerarRespuestaIA (agente) | → AcciónEncolada(respuesta_ia) |
+| ConversaciónIntervenida | TomarConversación (Ops) | modo=humano, paused_until |
+| ConversaciónEscaladaAHumano | policy (baja confianza/off-topic/pedido) | motivo |
+| ConversaciónDevueltaALaIA | DevolverConversaciónALaIA (Ops) | modo=autopilot |
+
+### Comandos (añadidos)
+RegistrarMensajeEntrante · GenerarRespuestaIA · TomarConversación · DevolverConversaciónALaIA · EscalarAHumano.
+
+### Policies (añadidas) — el cerebro conversacional
+- *MensajeEntranteDelParticipante + modo=autopilot + sin cooldown → GenerarRespuestaIA (dentro del allow-list); si off-topic/baja confianza → fallback o EscalarAHumano.*
+- *Humano toma/envía en la conversación → modo=humano + cooldown (**pausa-al-intervenir**).*
+- *Antes de enviar una `respuesta_ia` encolada: si el modo pasó a humano o llegó un entrante más nuevo → **cancelar la respuesta obsoleta*** (reusa la cancelación monótona de Q17).
+- *Cooldown vencido → volver a autopilot* (default; ver Q59).
+
+### Invariantes (añadidas)
+- **Allow-list:** el agente solo emite acciones/temas del allow-list; nada fuera del menú del reto.
+- **No responde** en `BAJA` / `RECHAZADO` / cooldown activo (extiende el invariante 5).
+- **Pausa-al-intervenir:** una intervención humana suprime la IA en esa conversación hasta reanudar.
+- **Cancelación de respuesta obsoleta:** una `respuesta_ia` encolada se cancela si el estado de la conversación la superó (modo o mensaje más nuevo).
+
+### Zonas grises (→ `open-questions.md` Q59/Q60)
+- **Q59 [DISEÑO]** Conversación como atributos del Participante (default, lean) vs agregado propio (si el agente crece: historial/múltiples hilos); y si el cooldown auto-reanuda a autopilot o requiere acción humana.
+- **Q60 [DISEÑO]** `AIAgentPort` como 4º puerto y **latencia**: la cola actual es *pull* (`GET /actions/pending`); el chat quiere baja latencia → `respuesta_ia` por camino **push/inmediato**, o (si Q58=GHL) GHL envía y no pasa por nuestra cola.
+
+---
+
+## 11. Extensión — Prueba social (resultados tipados + evidencia) — 2026-07-01
+
+> Surge del handoff §3-C4 / §5a (Kley 4-jun): reemplaza el **texto libre** (con el que "la gente se liaba") por un **form tipado** + **evidencia archivada**. Se modelan **captura** y **moderación**; la **exhibición pública** (dashboard) es una superficie aparte (Q61) que se alimenta de un read-model.
+
+### Glosario (añadidos)
+- **Resultado (prueba social)** — logro monetario auto-reportado por un participante (ahorro/generado), con monto **tipado** + evidencia. Un participante puede tener varios.
+- **Evidencia** — adjunto (factura/captura) que respalda un resultado. Vive en **almacenamiento de objetos** (concreto → ADR-0004: S3 vs **Cloudflare R2**) o, si llegó por WhatsApp, en GHL (referenciado, no duplicado).
+- **Moderación** — gate de Ops: un resultado no es público hasta ser **aprobado**; puede **ocultarse/despublicarse** aun estando live.
+
+### Entidad `Resultado` (nuevo agregado)
+```
+id, participant_id, categoria (enum), monto, moneda, tipo (recuperado|ganado),
+descripcion?, evidencias[] (refs a objetos/GHL),
+estado (pendiente|aprobada|rechazada|oculta),
+source (form|whatsapp|agente), captured_at, moderated_by?, moderated_at?
+```
+
+### Enums (añadidos)
+- **ResultadoEstado**: `pendiente | aprobada | rechazada | oculta`.
+- **ResultadoTipo**: `recuperado | ganado` (para que el dashboard sume bien).
+- **ResultadoCategoria**: [CLIENTE] taxonomía — seed `ahorro_suscripciones | factura_luz | venta_wallapop | otro` (Q62). Cada categoría mapea a un `tipo`.
+
+### Eventos (añadidos)
+| Evento | Disparado por | Datos |
+|---|---|---|
+| ResultadoRegistrado | RegistrarResultado (participante/form) | categoria, monto, evidencias |
+| ResultadoAprobado | AprobarResultado (Ops) | moderated_by |
+| ResultadoRechazado | RechazarResultado (Ops) | motivo? |
+| ResultadoOcultado | OcultarResultado (Ops) | despublica uno live |
+
+### Comandos (añadidos)
+RegistrarResultado · AprobarResultado · RechazarResultado · OcultarResultado.
+
+### Policies / invariantes (añadidas)
+- **Moderación previa:** solo un resultado `aprobada` (y no `oculta`) alimenta el read-model del **dashboard público** (Q61). **Nada público sin aprobación.**
+- **Consentimiento** para la exhibición pública (Q61, cruza Q25).
+- **Evidencia** en almacenamiento de objetos abstracto (concreto → ADR-0004); adjuntos de WhatsApp quedan en GHL y se **referencian**.
+- **Captura:** default **form propio** (link 1:1); a futuro, el **agente IA** (§10) puede capturarlo conversacionalmente.
+
+### Zonas grises (→ `open-questions.md`)
+- **Q61 [CLIENTE]** Dashboard público: mecánica de acceso/alcance + consentimiento (defaults-para-aprobar).
+- **Q62 [CLIENTE]** Taxonomía de categorías (seed propuesto).
+
+---
+
+## 12. Extensión — Detección de inacción + reprogramación — 2026-07-01
+
+> Surge del handoff §5a (Kley): alertar por **inacción** del participante (no solo por acción **fallida**, Q28) y **reprogramar** a quien no actuó. Los umbrales/reglas concretos son negocio (Q45/Q41); el motor ejecuta lo que definan.
+
+### Glosario (añadidos)
+- **Inacción** — el participante no hizo algo esperado para su día/deadline (no vio contenido, no asistió al directo, no vio el replay, no envió factura, no respondió). Se **deriva** de las señales existentes (Q41 + tracking Q54/Q55); no es un estado del lifecycle.
+- **Reprogramación** — ofrecer otra oportunidad y re-enviar el paso perdido, **corriendo el día relativo** del participante sin mover la presentación fija de la cohorte.
+
+### Enum (añadido)
+- **TipoInaccion**: `no_vio_contenido | no_asistio_directo | no_vio_replay | no_envio_factura | no_respondio`.
+
+### Eventos (añadidos)
+| Evento | Disparado por | Datos |
+|---|---|---|
+| InacciónDetectada | EvaluarInacción (scheduler) | tipo, día |
+| AlertaInacciónEmitida | policy (inacción) | destino (ops/agente) |
+| ReprogramaciónOfrecida | OfrecerReprogramación | día objetivo |
+| ReprogramaciónResuelta | RegistrarRespuestaReprogramación | aceptada\|rechazada |
+
+### Comandos (añadidos)
+EvaluarInacción (scheduler) · AlertarInacción · OfrecerReprogramación · RegistrarRespuestaReprogramación.
+
+### Policies (añadidas)
+- *Scheduler: `EvaluarInacción` por participante → si lo esperado no se cumplió al umbral (Q45/Q41) → `InacciónDetectada`.*
+- *Cuando `InacciónDetectada` → `AlertarInacción` (bandeja Ops y/o agente IA "poner caña") y, según regla, `OfrecerReprogramación`.*
+- *Cuando `ReprogramaciónResuelta(aceptada)` → re-encolar el paso perdido y correr el `current_day` del participante; la presentación de la cohorte NO se mueve.*
+- **No** se evalúa inacción para `BAJA` / `RECHAZADO` (extiende el invariante 5).
+
+### Zonas grises
+- **[CLIENTE]** Umbrales/reglas de inacción y cadencia de re-intento = **Q45/Q41** (negocio).
+- **[DISEÑO]** Reprogramar corre el `current_day` (relaciona Q31 anclaje). *Default adoptado.*
+- **[DISEÑO]** Destino de alerta: Ops + opción agente. *Default adoptado.*

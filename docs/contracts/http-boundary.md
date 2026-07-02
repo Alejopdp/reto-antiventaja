@@ -20,8 +20,18 @@
 // matchea por número (H1); si no matchea → bandeja Ops
 ```
 
-### `POST /webhooks/video` — visionado (host de vídeo) ⚠️ Q1
-Body específico del host; lo normaliza `VideoTrackingPort.parseWebhook` → `VideoView{ token, percentWatched }`.
+### `POST /track/replay` — progreso del replay (nuestro reproductor tokenizado) ✅ ADR-0006
+```jsonc
+{ "token": "...", "watchedSeconds": 812, "percentWatched": 74, "completed": false,
+  "event": "timeupdate|pause|seeked|ended|unload", "providerEventId": "..." }
+// lo normaliza VideoTrackingPort.parseReplayProgress → VideoView (medición propia, no del host)
+```
+
+### `POST /webhooks/live-attendance` — asistencia al directo en vivo (Zoom) ✅ Q54
+```jsonc
+{ "token": "...", "joinedAt": "...", "leftAt": "...", "durationSeconds": 1560, "providerEventId": "..." }
+// registro con link único → registrant_id ↔ token; lo normaliza VideoTrackingPort.parseLiveAttendance → LiveAttendance
+```
 
 ### `POST /webhooks/payment` — pago/reembolso (PSP)
 Body específico del PSP; lo normaliza `PaymentPort.parseWebhook` → `PaymentEvent{ kind, token?, ... }`.

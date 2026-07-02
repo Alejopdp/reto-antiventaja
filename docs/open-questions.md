@@ -235,6 +235,84 @@ Tenemos el **motor**: segmentar por % visto del replay → `followup_1` (no vio)
 
 ---
 
+## Surgidas al integrar GHL (2026-07-01) — ver ADR-0005
+
+### Q51 [CLIENTE/ACCIÓN] 🔴 — Proveedor de WhatsApp para el 1:1: GHL vs Kapso.
+GHL hace 1:1 con la **WhatsApp Business API oficial**; Kapso solo se justifica por los **grupos** (su Groups API está en waitlist, Q48). **Default propuesto MVP:** GHL para todo el 1:1 automático; grupo **manual**; Kapso diferido hasta que su Groups API exista. Relaciona Q47, Q48, Q50, Q52.
+
+### Q52 [CLIENTE] 🔴 — Estrategia de número(s) de WhatsApp.
+Un número en la API oficial (GHL) **no puede** correr además automatización **no oficial** de grupos. ⇒ o **dos números** (uno grupo manual, uno 1:1 oficial en GHL), o un número con *coexistence* (limitaciones por país). A confirmar con el cliente/Kapso. Relaciona Q51, Q47.
+
+### Q53 [CLIENTE - Max] 🔴 — ¿Qué trabajo concreto se espera de GHL?
+¿Solo CRM? ¿Reusar funnels ya montados en LV? ¿Membership del P60? Determina si GHL entra como **sistema base** o solo como **pieza detrás de un puerto**. **Línea roja:** BeZy ≠ Lector Voraz → si es la GHL de LV, requiere acuerdo de coste. Si Max no justifica un trabajo concreto, aplica el **plan B "espejo" sin GHL** (ADR-0005, alternativas). Cierra C1/C2 del handoff.
+
+---
+
+## Surgidas al definir la medición de vídeo (2026-07-01)
+
+### Q54 [CLIENTE/DISEÑO] 🔴 — Medición de la asistencia al directo EN VIVO (Zoom).
+Aparte del replay, el directo dominical en vivo es señal por persona: **quién asistió, cuánto se quedó, quién se fue** → define a quién mandarle el replay y qué follow-up. **Mecanismo propuesto:** registro por participante en Zoom (link de join único por WhatsApp) + webhooks `participant_joined/left` / Reports API → cerebro (atado al token/`registrant_id`). **A confirmar:** plan de Zoom (requiere Pro+ con registro) y si el directo es *Meeting* o *Webinar*. Es una **segunda superficie de tracking** además del replay; relaciona el requisito "grabación por Zoom API" del handoff, Q41 (señales de participación) y "alertas por inacción".
+
+### Q55 [DISEÑO] — Host y reproductor del replay.
+Como la analítica la calculamos nosotros (eventos JS del player en la página tokenizada), el host queda como **commodity** de entrega/seguridad/costo detrás del `VideoTrackingPort`. **Default propuesto:** **Cloudflare Stream** (HLS automático + CDN + playback firmado + bring-your-own-player) o, mínimo viable, **mp4 en S3 + HTML5 + CloudFront/URL firmada**. **Wistia se descarta** (innecesario; el cliente lo asumía → avisar). Mux queda para más adelante si se necesita DRM. **Resuelve H3** (medición atada a nuestro token, no al `visitor.id` del host) y **H4** (umbral propio, Q20).
+
+## Surgidas al definir el agente IA 1:1 (2026-07-01)
+
+### Q56 [CLIENTE] ✅ DECIDIDO (dev — validar con cliente): nivel = **(b) Autopiloto con red**.
+Se **descarta (a) copiloto** por inescalable (un humano no puede enviar cada mensaje a ~100/grupo). La conversación 1:1 con IA (handoff §5a), 3 niveles evaluados — decisión de **negocio/riesgo → validar con cliente**:
+- **(a) Copiloto:** IA sugiere, humano envía. Máximo control, no escala.
+- **(b) Autopiloto con red:** IA responde sola + handoff a humano en casos complejos. Escala (es lo que subió conversión ~20→40%), más riesgo (mitigado por guardrails).
+- **(c) Semilla ahora, IA después:** cola determinista + respuestas guiadas (botones/plantillas) en MVP; agente conversacional en fase 2.
+Relaciona Q45 (reglas/copy), Q46 (contenido), Q41 (señales).
+
+> **Nota de diseño (nuestra, independiente del nivel):** el agente opera SIEMPRE como **"guarded agent"** — allow-list de acciones derivadas del dominio del reto; contexto que lo aterriza (retos, tiempos/día N, tareas del participante, cosas a revisar, eventos a conocer/asistir/reaccionar: directo, replay, deadlines); clasificador on-topic + fallback ("esto no tiene que ver con el reto, probá de nuevo"); handoff a humano. Ese contexto/conocimiento sale de Q45/Q46/Q41. Cuando se decida el nivel → candidato a ADR.
+
+> **Impacto en el dominio (independiente del nivel):** los **mensajes entrantes del participante** pasan a ser ciudadanos de primera (evento nuevo, p.ej. `MensajeEntranteDelParticipante`) y la salida deja de ser solo plantillas fijas (`ActionType` cerrado) → puede ser generada por el agente dentro del allow-list. Afecta `domain-model.md` (event-storming, `ActionType`) — tratar al modelar el agente.
+
+### Q57 [CLIENTE/DISEÑO] — Notas de voz del participante (STT).
+¿Permitimos notas de voz entrantes? Requiere **transcripción (STT, p.ej. Whisper)** antes de que la IA interprete. Factible; probable **entrega futura**. Presentar al cliente. Relaciona Q56.
+
+### Q58 [DISEÑO/CLIENTE] 🔴 — Motor de la IA 1:1 y superficie de intervención humana (takeover).
+**Provenencia (importante):** el cliente pidió **GHL como sistema base** + una **conversación 1:1 con IA** — **NO** pidió que el motor de IA sea GHL. Usar la IA de GHL como motor fue una **opción propuesta por el dev** al investigar GHL, no un mandato del cliente.
+
+Decidido el nivel (b, Q56), falta **quién GENERA** la respuesta (ver aclaración abajo) y **dónde interviene el humano**. **Verificado (GHL 2026):** GHL tiene Conversation AI + **Agent Studio** (builder visual multi-step, nodos condicionales, fallback), **Knowledge Base** (RAG: PDF/DOCX/CSV), **Custom Actions** (la IA llama POST a APIs externas —p.ej. nuestro cerebro— con auth/params dinámicos; **≤10 tools/agente**), guardrails por prompt, e inbox + takeover nativos.
+- **Opción 1 — Agente en GHL (Conversation AI / Agent Studio):** takeover + inbox nativos, poco build, **editable por el equipo**; **puede ser domain-aware** llamando a nuestra API por Custom Actions (día N, segmento, tareas) — corrige la idea previa de "contexto pobre". Límites: ≤10 tools/agente, sin código arbitrario (solo nodos), es el LLM de GHL (menos control de modelo/prompt), lock-in + coste, y cada contexto es un round-trip webhook.
+- **Opción 2 — Guarded agent propio (cerebro):** domain-aware total (día N, segmento, %replay, tareas) + allow-list de acciones; construimos takeover **y** pantalla de chat en vivo.
+- **Opción 3 — Híbrido (recomendado):** conversación + takeover en GHL Conversation AI; el cerebro le **alimenta contexto** (custom fields) y **consume señales** (webhooks) para estado/acciones de dominio. Menos build; candidato fuerte de "trabajo para GHL" (Q53).
+
+**Aclaración clave (generar ≠ entregar) — el eje real de Q58 es "¿quién GENERA?":**
+- *Generar* (la inteligencia, qué decir): **nuestro agente** (contexto completo: día N, segmento, tareas, historial → respuestas ricas + allow-list de acciones) **vs la IA de GHL** (solo el contexto sincronizado a custom fields → más floja).
+- *Entregar* (mandar el WhatsApp): GHL o Kapso; es lo de menos, no define la arquitectura.
+- **Consecuencia:** si genera **GHL**, el takeover es **nativo** (pausar bot, ON/OFF, handoff) pero con **menos contexto**. Si genera **nuestro agente**, respuestas ricas pero el takeover nativo de GHL **no aplica** → lo implementamos nosotros (el modo IA/humano de `domain-model.md §10`). Instinto del dev (favorito): **genera nuestro agente, GHL/Kapso entrega**.
+
+**Mecánica de takeover a preservar (cualquiera sea la opción):** modo por conversación (IA/humano), **pausa-al-intervenir**, **cancelar la respuesta IA encolada antes de enviar** (reusa el patrón de cancelación de acciones obsoletas, Q17), cooldown, y handoff iniciado por la IA (baja confianza / off-topic / "quiero una persona").
+
+**GHL vs dashboard interno (aclaración):** con Opción 1/3, la **charla en vivo vive en GHL** (no construimos inbox); el **dashboard interno** queda solo para vistas de dominio (cohortes, embudo, verificación, dashboard público) que GHL no da. Con Opción 2, sumamos una pantalla de conversación propia.
+
+### Q59 [DISEÑO] — Conversación: ¿atributos del Participante o agregado propio?
+**Default:** atributos en el Participante (`conversation_mode`, `conversation_paused_until`) + el hilo detrás del `MessagingPort` (lean, como el grupo). **Alternativa:** agregado `Conversación` propio si el agente crece (historial, múltiples hilos, métricas por conversación). Además: ¿el **cooldown** auto-reanuda a autopilot, o requiere acción humana explícita? *Default: auto-reanuda.* Ver `domain-model.md §10`.
+
+### Q60 [DISEÑO] — `AIAgentPort` (4º puerto) y latencia de la respuesta IA.
+El dominio ahora tiene 4 puertos (suma `AIAgentPort`). **Latencia:** la cola actual es *pull* (`GET /actions/pending`), pensada para el automatizador no-code; el chat 1:1 quiere baja latencia. **Opciones de ENTREGA** (aparte de quién genera, ver Q58): si **genera nuestro agente**, la `respuesta_ia` se entrega por un camino **push/inmediato** hacia GHL/Kapso (no espera el *pull* de la cola); si **genera la IA de GHL**, GHL entrega directo y ni pasa por nuestra cola. Depende de Q58. Ver `domain-model.md §10`.
+
+---
+
+## Surgidas al modelar prueba social / C4 (2026-07-01)
+
+### Q61 [CLIENTE] 🔴 — Dashboard público de prueba social: mecánica de acceso y consentimiento.
+**Provenencia:** pedido del cliente (handoff §5a, Kley 4-jun): *"mini-landing + mini-dashboard **público**, rankings por semana y TOTAL + nombre"*. **NO especificado:** cómo/cuándo se accede. **Defaults-para-aprobar** (facilitar la decisión del cliente):
+- **Acceso:** link compartible enviado por WhatsApp al **cierre del reto** + disponible siempre en la landing.
+- **Alcance:** ranking **por cohorte (semana)** + **TOTAL acumulado**; muestra montos recuperado/ganado agregados.
+- **Consentimiento:** se muestra con **nombre de pila**; quien no quiera puede pedir **anonimato** (cruza Q25).
+Solo se alimenta de resultados **aprobados** (moderados). La **exhibición** (esta superficie/landing) se construye **aparte** de la captura+moderación (C4, ya modelada en `domain-model.md §11`).
+
+### Q62 [CLIENTE] — Taxonomía de categorías de resultado.
+**Default-para-aprobar (seed):** `ahorro_suscripciones`, `factura_luz`, `venta_wallapop`, `otro`. Cada una mapea a `tipo` (`recuperado`|`ganado`) para sumar en el dashboard. ¿Suman/sacan categorías? Es contenido/negocio. Ver `domain-model.md §11`.
+
+> **Nota de arquitectura (storage):** la evidencia (adjuntos) va a **almacenamiento de objetos**; el concreto (S3 vs **Cloudflare R2**) se decide en **ADR-0004** (Propuesto). Lean del dueño: evitar sobre-complejizar con AWS → evaluar Cloudflare (R2 pega con Cloudflare Stream del vídeo, Q55).
+
+---
+
 ## Hotspots del event-storming que siguen para el CLIENTE
 (referencia cruzada; no se decidieron internamente)
 
