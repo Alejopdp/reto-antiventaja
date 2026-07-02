@@ -15,6 +15,7 @@
 **Por qué es crítico:** si el contenido/replay va al grupo como broadcast, **no se puede trackear por persona** → se cae el motor de follow-up segmentado (no_vio / parcial / completo), que es el corazón del producto. El tracking por persona (H3, H4) **exige** entrega 1:1 con link tokenizado.
 **Impacto:** define si el "cerebro" tiene señal de comportamiento o no. Afecta `VideoTrackingPort`, las policies de follow-up y casi todo el valor del MVP.
 **Probable resolución:** híbrido — comunidad/dinámicas al grupo; replay y CTAs 1:1 tokenizados.
+> ✅ **Núcleo CONFIRMADO (call 4-jun):** híbrido — grupo = comunidad; **replay 1:1 tokenizado** con **medición propia** (ADR-0006). El tracking por persona existe. Queda solo el *valor* de umbrales/timeout (Q20).
 
 ### Q2 [PARCIAL] — Política de baja / opt-out (derecho a no recibir más mensajes).
 **Por qué es crítico:** legal y de reputación. Sin baja, riesgo de spam/baneo (agravado por canal no oficial).
@@ -322,6 +323,9 @@ El grupo no se puede automatizar (sin API compliant). El sistema **compone el me
 ### Q64 [DISEÑO/CLIENTE] — Superficie de verificación de Ops: GHL vs pantalla propia.
 Ops acepta/rechaza el ingreso a la cohorte (UC-02/03). **Opción GHL:** mover etapa del contacto en GHL → **webhook** (`ContactUpdate`/`OpportunityStageUpdate`) → lo guardamos en nuestra DB (verificado: factible). **Opción propia:** pantalla de verificación nuestra (más control, más build). Depende de Q53/Q58.
 
+### Q65 [DISEÑO/CLIENTE] — Contenido editable por el equipo (dónde se edita).
+Requisito de Kley ("máquina de creación"): el equipo edita **sin dev**. **Editable (texto/config):** contenido diario, plantillas 1:1, conocimiento/prompt del agente, copy de landing/replay. **No editable en el sistema:** los **medios** (video/audio) se producen afuera (Q46) y se suben/linkean. **Dónde:** en GHL (plantillas + knowledge base), en config propia (CMS-lite), o **híbrido**. **NO es decisión independiente — se deriva de Q58:** si la IA la corre **GHL**, sus plantillas/knowledge se editan en GHL (**híbrido**); si la IA es **propia**, **todo el contenido se administra desde nuestro dashboard** (**propio**), con mejores pantallas de config. *Lean del dev: dashboard propio (más claro/prolijo).* Relaciona UC-05, Q58.
+
 ---
 
 ## Hotspots del event-storming que siguen para el CLIENTE
@@ -329,8 +333,8 @@ Ops acepta/rechaza el ingreso a la cohorte (UC-02/03). **Opción GHL:** mover et
 
 - **H1** identidad número formulario↔grupo (default E.164 + bandeja Ops — confirmar).
 - **H2** entrada al grupo sin formulario previo (permitir/bloquear/no-trackear). 🔴 abierto.
-- **H3** 🔴 **CAMBIÓ (research):** Wistia **NO** acepta un token propio en el webhook (solo `visitor.id` por cookie o email vía Turnstile). El supuesto "token en la URL del replay" no aplica → opciones: email-gate / mapeo visitor.id↔token / otro host (api.video). Ver `integration-research.md §2`. Depende de Q1.
-- **H4** semántica del "80%": Wistia dispara a 25/50/75/100% (umbrales fijos), no un % continuo arbitrario. Ajustar el motor a esos umbrales.
+- **H3** ✅ **RESUELTO (ADR-0006/Q55):** medimos el visionado en **nuestra página tokenizada** con eventos JS del player → señal atada a **nuestro token**, sin depender del host. Wistia descartado.
+- **H4** ✅ **RESUELTO (ADR-0006/Q55):** como medimos por **segundos efectivamente vistos**, fijamos **umbral propio** (Q20); ya no dependemos de los 25/50/75/100 de Wistia.
 - **H5** ✅ **CONFIRMADO (research):** Stripe permite pasar el `token` como metadata en el Checkout Session y vuelve en el webhook `checkout.session.completed` → matching pago↔participante determinista, sin email-gate. (Reembolsos: webhooks soportados.)
 - **H9** 1 cohorte = 1 grupo y límite de capacidad del grupo.
 - **H11** rate limits del automatizador no oficial a 300+: precio real de Whapi **sin confirmar** (claim refutada); riesgo de baneo no cuantificado. Ver research.

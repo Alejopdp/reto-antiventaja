@@ -51,6 +51,10 @@ Alguien que estuvo en una cohorte anterior y vuelve, ¿es la misma persona (con 
 **10. Roles del panel interno.** `(Q13)`
 Ya sabemos que lo usan **varias personas**. La pregunta: ¿todas ven y hacen todo, o hace falta separar roles/permisos (ej. Ops vs responsable del negocio)?
 
+**Extra del reto/grupo:**
+- **Entrar al grupo sin haberse registrado.** `(H2)` ¿Qué hacemos si alguien entra al grupo sin llenar el formulario? *Recomendación: no permitir el acceso sin registro (para poder seguirlo y cumplir consentimiento).*
+- **Alta tardía.** `(Q14)` Si alguien se suma en el "día 4" de la cohorte, ¿empieza en **su** día 1 o se sincroniza con el resto? *Recomendación: empieza en su día 1 (contenido relativo a cada persona).*
+
 ---
 
 ## 🟡 Bloque 3 — Pago y cierre
