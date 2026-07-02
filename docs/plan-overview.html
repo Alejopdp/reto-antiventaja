@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Reto Antiventaja — Mapa del MVP</title>
+<style>
+  @page { size: A4; margin: 16mm 15mm; }
+  * { box-sizing: border-box; }
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body {
+    font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: #211C15; line-height: 1.5; font-size: 11.2px; margin: 0;
+    background: #fff;
+  }
+  h1,h2,h3 { font-family: Georgia, "Times New Roman", serif; color: #0E3A2A; margin: 0 0 .3em; }
+  h1 { font-size: 30px; line-height: 1.1; }
+  .sub { color: #6B6256; font-size: 12px; margin: 0; }
+  .rule { height: 3px; background: #C97B36; width: 64px; margin: 12px 0 20px; border-radius: 2px; }
+  h2 { font-size: 17px; margin-top: 26px; padding-bottom: 4px; border-bottom: 1px solid #E4D8C1; }
+  h3 { font-size: 13px; color: #16513C; margin-top: 14px; }
+  p, li { font-size: 11.2px; }
+  ul { margin: .3em 0 .6em; padding-left: 18px; }
+  li { margin: 2px 0; }
+  .lead { font-size: 12.5px; color: #3a352c; }
+  .tag { display:inline-block; background:#EDE3CF; color:#6B4A1f; font-size:9.5px; font-weight:700;
+         padding:1px 7px; border-radius:10px; letter-spacing:.03em; vertical-align:middle; }
+  .grid { display:grid; grid-template-columns: 1fr 1fr; gap: 10px; margin:8px 0; }
+  .card { border:1px solid #E4D8C1; border-radius:8px; padding:10px 12px; background:#FFFDF8; }
+  .card h3 { margin-top:0; }
+  .flow { counter-reset: step; margin: 6px 0; padding:0; list-style:none; }
+  .flow li { position:relative; padding-left: 30px; margin: 5px 0; }
+  .flow li::before { counter-increment: step; content: counter(step);
+    position:absolute; left:0; top:0; width:20px; height:20px; border-radius:50%;
+    background:#16513C; color:#fff; font-size:11px; font-weight:700; text-align:center; line-height:20px; }
+  .arch { border:1px dashed #16513C; border-radius:8px; padding:10px 12px; background:#FBF6EC; }
+  .ports { display:grid; grid-template-columns: repeat(2,1fr); gap:6px; margin-top:6px; }
+  .port { background:#fff; border:1px solid #E4D8C1; border-radius:6px; padding:6px 9px; font-size:10.5px; }
+  .rec { background:#eef5ef; border-left:3px solid #16513C; padding:8px 11px; border-radius:0 6px 6px 0; margin:8px 0; }
+  .warn { background:#fbeee7; border-left:3px solid #A8462E; padding:8px 11px; border-radius:0 6px 6px 0; margin:8px 0; }
+  table { width:100%; border-collapse:collapse; margin:8px 0; font-size:10.5px; }
+  th,td { border:1px solid #E4D8C1; padding:5px 8px; text-align:left; vertical-align:top; }
+  th { background:#EDE3CF; color:#3a352c; }
+  .phase { border-left:3px solid #C97B36; padding:2px 0 2px 12px; margin:10px 0; }
+  .phase b { color:#0E3A2A; }
+  .muted { color:#6B6256; }
+  .foot { margin-top:26px; padding-top:8px; border-top:1px solid #E4D8C1; color:#6B6256; font-size:9.5px; }
+  .avoidbreak { break-inside: avoid; }
+</style>
+</head>
+<body>
+
+  <h1>Reto Antiventaja — Mapa del MVP</h1>
+  <p class="sub">Plan high-level para la reunión &middot; 2026-07-01 &middot; documento de lectura previa</p>
+  <div class="rule"></div>
+
+  <p class="lead">Un <b>“cerebro” propio</b> que orquesta un embudo de <b>educación financiera por WhatsApp</b>: un reto gratuito de <b>7 días</b> que convierte al plan pago <b>P60 (60&nbsp;€)</b>, con <b>seguimiento 1:1 asistido por IA</b>, captura de <b>prueba social</b> y <b>atribución</b> de referidos. Arquitectura <b>hexagonal</b> (agnóstica del canal): las herramientas externas (GHL, WhatsApp, vídeo, pago, IA) viven detrás de “puertos” intercambiables. Mercado <b>España</b>, single-tenant (para BeZy).</p>
+
+  <h2>1 &middot; El recorrido — qué hace el sistema</h2>
+  <div class="grid">
+    <div class="card avoidbreak">
+      <h3>Recorrido del participante</h3>
+      <ol class="flow">
+        <li><b>Registro</b> (formulario) → crea contacto + participante.</li>
+        <li><b>Verificación</b> — Ops acepta/rechaza (gate humano).</li>
+        <li><b>Alta al grupo</b> (manual) + <b>bienvenida 1:1</b> (automática).</li>
+        <li><b>Reto 7 días</b> — contenido diario (grupo: manual · 1:1: auto) + <b>seguimiento 1:1 con IA</b>.</li>
+        <li><b>Directo dominical</b> (Zoom) = <b>la venta</b> — se mide la asistencia.</li>
+        <li><b>Replay 1:1 tokenizado</b> → segmentación → <b>follow-ups</b>.</li>
+        <li><b>Pago P60</b> (Stripe/Bizum) → convertido + <b>atribución</b>.</li>
+        <li><b>Prueba social</b> (form tipado + evidencia, moderada) → <b>dashboard público</b>.</li>
+      </ol>
+    </div>
+    <div class="card avoidbreak">
+      <h3>Operación interna (equipo/Ops)</h3>
+      <ul>
+        <li>Verificar inscriptos · bloqueo permanente</li>
+        <li>Gestionar cohortes (crear/estado)</li>
+        <li>Cola de mensajes: reintentar / reenviar acceso</li>
+        <li>Resolver atribución (quién invitó)</li>
+        <li>Dar de baja</li>
+        <li><b>Tomar la conversación</b> (takeover de la IA)</li>
+        <li><b>Moderar</b> prueba social (aprobar/ocultar)</li>
+        <li>Recibir <b>alertas de inacción</b> + reprogramar</li>
+        <li><b>Componer</b> el mensaje del día para el grupo</li>
+      </ul>
+      <p class="muted">26 casos de uso en total (UC-01…UC-26; detalle en <i>use-cases.md</i>).</p>
+    </div>
+  </div>
+
+  <h2>2 &middot; Arquitectura (alto nivel)</h2>
+  <div class="arch avoidbreak">
+    <p style="margin:0 0 6px"><b>El CEREBRO (propio)</b> — dueño del <b>dominio</b>: event log + estado, lógica del reto, segmentación, atribución, dashboards. <span class="muted">(Next.js + PostgreSQL, hexagonal.)</span></p>
+    <p style="margin:0 0 4px" class="muted">…habla con el mundo exterior solo a través de <b>puertos</b> (piezas intercambiables):</p>
+    <div class="ports">
+      <div class="port"><b>Mensajería / CRM</b> → GHL (contacto + 1:1) &middot; Kapso (grupos, diferido)</div>
+      <div class="port"><b>Vídeo</b> → página propia tokenizada + host commodity (Cloudflare Stream)</div>
+      <div class="port"><b>Pago</b> → Stripe / Bizum</div>
+      <div class="port"><b>IA</b> → motor del agente (ver §3)</div>
+    </div>
+    <p style="margin:8px 0 0"><span class="tag">regla clave</span> el <b>cerebro</b> es dueño del <b>dominio</b> (cohorte, estado, segmentación, atribución); <b>GHL</b> es dueño del <b>contacto y las conversaciones</b>. Sincronización <b>en una dirección</b> (empujamos datos de display a GHL) + <b>webhooks</b> de GHL hacia el cerebro. No se duplica la verdad.</p>
+  </div>
+
+  <h2>3 &middot; La gran decisión: ¿quién corre la IA? <span class="tag">Q58 — para la call</span></h2>
+  <p>El seguimiento 1:1 lo lleva un <b>“agente guarded”</b>: responde solo dentro de un <b>menú acotado</b> del reto (no se va de tema), y un humano puede <b>intervenir</b> en cualquier momento (la IA se pausa). Lo decidido: la IA <b>responde sola con supervisión humana</b> (se descartó “humano envía cada mensaje”: no escala). <b>Falta decidir quién la GENERA</b> — y de esto cuelgan varias decisiones:</p>
+  <table class="avoidbreak">
+    <tr><th>Opción</th><th>Qué implica</th><th>A favor / En contra</th></tr>
+    <tr>
+      <td><b>A · Agente propio</b></td>
+      <td>Lo construimos nosotros (nuestro cerebro + un LLM): prompt, tools, contexto de dominio completo.</td>
+      <td>➕ Control total, cualquier modelo, respuestas ricas.<br>➖ Construimos agente + chat + takeover.</td>
+    </tr>
+    <tr>
+      <td><b>B · Agente de GHL</b><br><span class="muted">(Agent Studio)</span></td>
+      <td>Le damos prompt + base de conocimiento + “custom actions” que llaman a nuestro cerebro para el contexto (día, tareas…).</td>
+      <td>➕ Managed, takeover nativo, lo edita el equipo.<br>➖ Límites (≤10 tools, LLM de GHL), lock-in + coste.</td>
+    </tr>
+    <tr>
+      <td><b>C · Híbrido</b></td>
+      <td>GHL corre la conversación y el takeover; el cerebro le da contexto y recibe señales.</td>
+      <td>➕ Menos build, aprovecha lo nativo.<br>➖ Reparte responsabilidades (coordinación).</td>
+    </tr>
+  </table>
+  <div class="rec"><b>Para la call:</b> la decisión depende de <b>qué se espera de GHL</b> (¿solo CRM, o reusar embudos/membresía ya montados?) y de cuánto priorizan <b>control/inteligencia</b> (→ propio) vs <b>rapidez y edición por el equipo</b> (→ GHL/híbrido). <span class="muted">Nota: “generar” la respuesta (la inteligencia) es distinto de “entregarla” (mandar el WhatsApp); entregar lo hace GHL/Kapso en cualquier caso.</span></div>
+
+  <h2>4 &middot; Cómo lo partimos — entregas</h2>
+  <p class="muted">Pensado desde el final hacia atrás: fases que entregan valor por sí solas.</p>
+  <div class="phase"><b>Fase 0 · Esqueleto</b> — registro → verificación → alta (manual) → contenido básico. <span class="muted">Prueba el flujo de punta a punta.</span></div>
+  <div class="phase"><b>Fase 1 · Motor de conversión</b> — directo Zoom (asistencia) + replay tokenizado + medición propia + follow-ups segmentados + pago/atribución. <span class="muted">El corazón del producto.</span></div>
+  <div class="phase"><b>Fase 2 · Agente IA 1:1 + takeover</b> — escala el seguimiento (fue lo que subió la conversión ~20%→40%). <span class="muted">Depende de Q58.</span></div>
+  <div class="phase"><b>Fase 3 · Prueba social + dashboard público + inacción/reprogramación</b> — motivación y optimización.</div>
+  <div class="phase"><b>Transversal</b> — integración con GHL y configuración de contenido editable por el equipo.</div>
+
+  <h2>5 &middot; Decisiones abiertas para la reunión</h2>
+  <div class="grid">
+    <div class="card avoidbreak">
+      <h3>Prioritarias (destraban el resto)</h3>
+      <ul>
+        <li><b>Q58</b> — quién corre la IA / rol de GHL (Q53). ← la clave.</li>
+        <li><b>Q50/Q52</b> — rol del grupo de WhatsApp y estrategia de número.</li>
+        <li><b>Q46</b> — alcance: ¿solo los 7 días o también los 60 del P60?</li>
+        <li><b>Q45/Q20</b> — reglas de follow-up y umbrales.</li>
+      </ul>
+    </div>
+    <div class="card avoidbreak">
+      <h3>Del negocio / a confirmar</h3>
+      <ul>
+        <li><b>Pago P60</b> — cuotas, moneda (€), reembolsos (Q21–Q24).</li>
+        <li><b>Consentimiento</b> para prueba social pública / testimonio (Q25/Q61).</li>
+        <li>Categorías de prueba social (Q62), roles del panel (Q13).</li>
+        <li><b>Acciones:</b> hablar con Kapso (grupos) · confirmar plan de Zoom.</li>
+      </ul>
+    </div>
+  </div>
+  <p class="muted">Agenda completa y en lenguaje llano: <i>client-questions.md</i> (23 puntos + extras, con recomendaciones para aprobar rápido).</p>
+
+  <div class="foot">
+    Reto Antiventaja · fase de diseño (sin implementación aún) · fuentes: <i>docs/</i> (discovery, event-storming, domain-model §10–12, ADR-0005/0006, use-cases UC-19–26, open-questions Q51–Q65). Este documento es un resumen de lectura previa; la fuente de verdad es <i>docs/</i>.
+  </div>
+
+</body>
+</html>
