@@ -72,3 +72,40 @@
 
 ### UC-18 — Baja / opt-out (Ops o Participante) ⚠️ Q2
 - **Given** un participante activo **When** pide la baja (palabra clave por WhatsApp o acción de Ops) **Then** `ParticipanteDadoDeBaja`, estado `BAJA`; **no se encola ninguna acción futura**. (Mecanismo de detección desde WhatsApp: Q2.)
+
+---
+
+## Nuevos (surgidos de la call 4-jun / decisiones 2026-07-01)
+
+### UC-19 — Conversación 1:1 con IA (Participante ↔ Agente)
+- **Given** una conversación en modo `autopilot` **When** el participante envía un mensaje **Then** el agente (guarded) interpreta y responde **dentro del allow-list**; si off-topic/baja confianza → fallback o escala. (`domain-model §10`; motor por Q58.)
+
+### UC-20 — Intervención humana / takeover (Ops)
+- **Given** una conversación en `autopilot` **When** Ops la toma (o responde) **Then** modo `humano` + cooldown; la IA se pausa y se cancela la respuesta IA encolada obsoleta (Q17). **When** Ops la devuelve **Then** vuelve a `autopilot`.
+
+### UC-21 — Registrar prueba social (Participante)
+- **Given** un participante con un logro **When** completa el form tipado (categoría + monto + evidencia) **Then** `ResultadoRegistrado` en estado `pendiente` (§11). *Edge:* evidencia por WhatsApp → queda en GHL, referenciada.
+
+### UC-22 — Moderar prueba social (Ops)
+- **Given** un `Resultado` `pendiente` **When** Ops aprueba/rechaza **Then** `ResultadoAprobado`/`ResultadoRechazado`; **solo aprobados** alimentan el dashboard público. **When** Ops oculta uno live **Then** `ResultadoOcultado`.
+
+### UC-23 — Alerta por inacción (Scheduler → Ops/Agente)
+- **Given** un participante activo **When** no cumple lo esperado al umbral (Q45/Q41) **Then** `InacciónDetectada{tipo}` → alerta a Ops y/o al agente para intervenir ("poner caña").
+
+### UC-24 — Reprogramación (Ops/Agente ↔ Participante)
+- **Given** una inacción detectada **When** se ofrece otra oportunidad y el participante responde **Then** `ReprogramaciónResuelta{aceptada|rechazada}`; si acepta → re-encola el paso perdido y corre su día relativo (la presentación fija no se mueve).
+
+### UC-25 — Medición de asistencia al directo en vivo (Zoom)
+- **Given** un directo con registro por participante (link único) **When** entra/sale **Then** `LiveAttendance{joinedAt, leftAt, duración}` atado al token → alimenta la segmentación y decide a quién enviar el replay (ADR-0006, Q54).
+
+### UC-26 — Ver el dashboard público (Visitante / Participante)
+- **Given** resultados aprobados **When** alguien abre el dashboard público **Then** ve totales recuperado/ganado + ranking (nombre de pila / anónimo). *(Naturaleza —dashboard vs landing, con/sin login— y acceso: Q61.)*
+
+---
+
+## Cambios funcionales en UCs existentes (2026-07-01)
+- **UC-01** además hace *upsert* del **contacto en GHL** (si va GHL, Q53).
+- **UC-02/03** la verificación de Ops puede ocurrir **en GHL** (mover etapa → capturada por webhook → guardada en nuestra DB) o en **pantalla propia** (Q64).
+- **UC-04** en MVP el **alta al grupo es manual** (Kapso diferido); el 1:1 de bienvenida sí automático.
+- **UC-05** el contenido **al grupo** se publica **manual** (no hay API compliant de grupos): el sistema **compone** el mensaje del día y Ops lo pega (**botón copiar**; deep-link a grupo con texto no es viable — Q63). El contenido/seguimiento **1:1** sí automatizado.
+- **UC-08** el visionado se mide con **nuestra página tokenizada** (no el webhook del host) y suma **asistencia al directo** (ADR-0006).

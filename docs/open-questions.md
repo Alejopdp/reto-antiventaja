@@ -304,12 +304,23 @@ El dominio ahora tiene 4 puertos (suma `AIAgentPort`). **Latencia:** la cola act
 - **Acceso:** link compartible enviado por WhatsApp al **cierre del reto** + disponible siempre en la landing.
 - **Alcance:** ranking **por cohorte (semana)** + **TOTAL acumulado**; muestra montos recuperado/ganado agregados.
 - **Consentimiento:** se muestra con **nombre de pila**; quien no quiera puede pedir **anonimato** (cruza Q25).
+- **Naturaleza:** ¿página **pública sin login** (recomendado — es prueba social/marketing) o con login? ¿**integrada a la landing** o separada? *Default: pública sin login, parte de la landing.*
 Solo se alimenta de resultados **aprobados** (moderados). La **exhibición** (esta superficie/landing) se construye **aparte** de la captura+moderación (C4, ya modelada en `domain-model.md §11`).
 
 ### Q62 [CLIENTE] — Taxonomía de categorías de resultado.
 **Default-para-aprobar (seed):** `ahorro_suscripciones`, `factura_luz`, `venta_wallapop`, `otro`. Cada una mapea a `tipo` (`recuperado`|`ganado`) para sumar en el dashboard. ¿Suman/sacan categorías? Es contenido/negocio. Ver `domain-model.md §11`.
 
 > **Nota de arquitectura (storage):** la evidencia (adjuntos) va a **almacenamiento de objetos**; el concreto (S3 vs **Cloudflare R2**) se decide en **ADR-0004** (Propuesto). Lean del dueño: evitar sobre-complejizar con AWS → evaluar Cloudflare (R2 pega con Cloudflare Stream del vídeo, Q55).
+
+---
+
+## Surgidas al revisar casos de uso funcionales (2026-07-01)
+
+### Q63 [DISEÑO] — UX de publicación del contenido al grupo (manual).
+El grupo no se puede automatizar (sin API compliant). El sistema **compone el mensaje del día**; Ops lo publica. *Default: **botón "copiar"** (copy-to-clipboard).* **Ojo:** el deep-link de WhatsApp con texto prellenado funciona para **1:1** (`wa.me/<número>?text=`), **no para grupos** → para el grupo, copy-paste. Confirmar. Relaciona UC-05.
+
+### Q64 [DISEÑO/CLIENTE] — Superficie de verificación de Ops: GHL vs pantalla propia.
+Ops acepta/rechaza el ingreso a la cohorte (UC-02/03). **Opción GHL:** mover etapa del contacto en GHL → **webhook** (`ContactUpdate`/`OpportunityStageUpdate`) → lo guardamos en nuestra DB (verificado: factible). **Opción propia:** pantalla de verificación nuestra (más control, más build). Depende de Q53/Q58.
 
 ---
 
